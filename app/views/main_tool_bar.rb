@@ -19,11 +19,37 @@ class MainToolBar < UIToolbar
     self.barStyle = UIBarStyleBlack
     self.stylename = :base_view
 
-    @start_button = button(:start_button).tap do |b|
-      b.when(UIControlEventTouchUpInside) { on_start_button_tapped }
-      b.setTitleColor BW.rgb_color(255, 255, 255), forState: UIControlStateHighlighted
-      b.setTitleColor BW.rgb_color(40, 40, 40), forState: UIControlStateDisabled
-      b.enabled = true
+    spacer = UIBarButtonItem.alloc.initWithBarButtonSystemItem(UIBarButtonSystemItemFlexibleSpace,
+                                                               target: nil,
+                                                               action: nil)
+
+    action_button = UIBarButtonItem.alloc.initWithBarButtonSystemItem(UIBarButtonSystemItemAction,
+                                                                        target: self,
+                                                                        action: "on_start_button_tapped")
+
+    start_button = UIBarButtonItem.alloc.initWithBarButtonSystemItem(UIBarButtonSystemItemPlay,
+                                                                        target: self,
+                                                                        action: "on_start_button_tapped")
+
+    pause_button = UIBarButtonItem.alloc.initWithBarButtonSystemItem(UIBarButtonSystemItemPause,
+                                                                        target: self,
+                                                                        action: "on_start_button_tapped")
+
+    add_button = UIBarButtonItem.alloc.initWithBarButtonSystemItem(UIBarButtonSystemItemAdd,
+                                                                        target: self,
+                                                                        action: "on_start_button_tapped")
+
+    preview_button = UIBarButtonItem.alloc.initWithImage(UIImage.imageNamed('images/right2.png'),
+                                                 style: UIBarButtonItemStylePlain,
+                                                 target: self,
+                                                 action: "on_start_button_tapped")
+
+    @playing_buttons = [add_button, spacer, pause_button, spacer, action_button, spacer, preview_button]
+    @pausing_buttons = [add_button, spacer, start_button, spacer, action_button, spacer, preview_button]
+
+
+    @transparent_toolbar = subview(TransparentToolbar, :clear_toolbar).tap do |t|
+      t.items = @pausing_buttons
     end
 
     @slider = subview(UISlider.new, :slider).tap do |s|
@@ -31,6 +57,8 @@ class MainToolBar < UIToolbar
     end
 
     @counter_label = subview VerticallyAlignedLabel.new, :counter_label
+
+    segment_control = subview UISegmentedControl.alloc.initWithItems(['-', '+']), :segment_control
     true
   end
 
@@ -61,7 +89,7 @@ class MainToolBar < UIToolbar
     end
 
     observe(@article_manager, "is_reading") do |old_value, new_value|
-      @start_button.stylename = new_value ? :playing_button : :paused_button
+      @transparent_toolbar.items = new_value ? @playing_buttons : @pausing_buttons
     end
   end
 
