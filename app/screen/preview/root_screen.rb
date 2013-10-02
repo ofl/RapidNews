@@ -1,4 +1,4 @@
-class PreviewScreen < PM::WebScreen
+class Preview::RootScreen < PM::WebScreen
 
   stylesheet :preview_screen
 

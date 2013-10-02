@@ -26,6 +26,12 @@ Teacup::Stylesheet.new :main_tool_bar do
     titleColor: BW.rgb_color(60,60,60),
     userInteractionEnabled: false
 
+  style :action_button,
+    top: 17,
+    left: 240,
+    height: 30,
+    width: 30
+
   style :slider,
     tag: 4,
     top: 60,
