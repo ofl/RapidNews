@@ -1,4 +1,4 @@
-class SettingsScreen < PM::GroupedTableScreen
+class Settings::RootScreen < PM::GroupedTableScreen
 
   title "Settings"
 

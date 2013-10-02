@@ -37,3 +37,4 @@ end
 class Settings; end
 class Bookmarks; end
 class Channels; end
+class Preview; end
