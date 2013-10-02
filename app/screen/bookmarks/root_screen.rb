@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-class BookmarksScreen < PM::TableScreen
+class Bookmarks::RootScreen < PM::TableScreen
   stylesheet :bookmarks_screen
 
   def will_appear

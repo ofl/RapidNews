@@ -96,7 +96,7 @@ class MainScreen < PM::Screen
   end
 
   def add_observers
-    BW::App.notification_center.observe ChannelsScreen::CrawlNewsSource do |n|
+    BW::App.notification_center.observe Channels::RootScreen::CrawlNewsSource do |n|
       n.userInfo[:ids].each do |id|
         source = NewsSource.find(id)
         source.crawl_articles if source
@@ -133,7 +133,7 @@ class MainScreen < PM::Screen
   end
 
   def open_preview_screen
-    open_modal PreviewScreen.new(
+    open_modal Preview::RootScreen.new(
       nav_bar: true,
       article: @article_manager.displaying,
       modalTransitionStyle: UIModalTransitionStyleCrossDissolve
@@ -207,15 +207,15 @@ class MainScreen < PM::Screen
   end
 
   def on_navbar_settings_button_tapped
-    open_modal SettingsScreen.new(nav_bar: true)
+    open_modal Settings::RootScreen.new(nav_bar: true)
   end
 
   def on_navbar_channels_button_tapped
-    open_modal ChannelsScreen.new(nav_bar: true)
+    open_modal Channels::RootScreen.new(nav_bar: true)
   end
 
   def on_navbar_bookmarks_button_tapped
-    open_modal BookmarksScreen.new(nav_bar: true)
+    open_modal Bookmarks::RootScreen.new(nav_bar: true)
   end
 
   def on_navbar_hide_menu_button_tapped

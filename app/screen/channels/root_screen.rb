@@ -1,4 +1,4 @@
-class ChannelsScreen < PM::Screen
+class Channels::RootScreen < PM::Screen
   stylesheet :channels_screen
 
   CrawlNewsSource = "CrawlNewsSource"
