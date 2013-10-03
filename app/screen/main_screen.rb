@@ -28,38 +28,12 @@ class MainScreen < PM::Screen
     layout(self.view, :base_view) do # from rubymotion/TeaCup
       self.navigation_controller.navigationBarHidden = true
       @slide_view = subview MainSlideView.new, {frame: self.view.bounds, delegate: self}
-
-      @bookmarked_button = button(:bookmarked_button).tap do |b|
-        b.when(UIControlEventTouchUpInside) { on_bookmarked_button_tapped }
-      end
-
-      button(:preview_button).tap do |b|
-        b.when(UIControlEventTouchUpInside) { on_preview_button_tapped }
-        b.setTitleColor(BW.rgb_color(255, 255, 255), forState: UIControlStateHighlighted)
-        b.setTitleColor(BW.rgb_color(40, 40, 40), forState: UIControlStateDisabled)
-      end
-      @counter_label = subview VerticallyAlignedLabel.new, :counter_label
-
       @nav_bar = subview MainNavigationBar.new, delegate: self
       @tool_bar = subview MainToolBar.new, delegate: self
     end
 
     @article_manager.load_data
     true
-  end
-
-  def refresh_view
-    @counter_label.text = @article_manager.label_text
-    update_bookmarked_button_color
-  end
-
-  def update_bookmarked_button_color
-    article = @article_manager.displaying
-    if article && article.is_bookmarked
-      @bookmarked_button.stylename = :is_bookmarked
-    else
-      @bookmarked_button.stylename = :is_not_bookmarked
-    end
   end
 
   #Show/Hide Menu
@@ -75,6 +49,7 @@ class MainScreen < PM::Screen
                                animations: -> {
                                  @nav_bar.frame = nf
                                  @tool_bar.frame = tf
+                                 @tool_bar.backgroundColor = BW.rgba_color(150, 150, 150, 0.30)
                                },
                                completion: nil)
     true
@@ -82,7 +57,7 @@ class MainScreen < PM::Screen
 
   def hide_controller
     nf = CGRectMake(0, -66, App.frame.size.width, @nav_bar.frame.size.height)
-    tf = CGRectMake(0, self.view.bounds.size.height,
+    tf = CGRectMake(0, self.view.bounds.size.height - 44,
                     App.frame.size.width, @tool_bar.frame.size.height)
     UIView.animateWithDuration(0.40,
                                delay: 0.0,
@@ -90,6 +65,7 @@ class MainScreen < PM::Screen
                                animations: -> {
                                  @nav_bar.frame = nf
                                  @tool_bar.frame = tf
+                                 @tool_bar.backgroundColor = BW.rgba_color(60, 60, 60, 0)
                                },
                                completion: -> (finished) {true})
     false
@@ -103,12 +79,6 @@ class MainScreen < PM::Screen
       end
     end
 
-    observe(@article_manager, "count") do |old_value, new_value|
-      Dispatch::Queue.main.async{
-        @counter_label.text = @article_manager.label_text
-      }
-    end
-
     observe(@article_manager, "crawling_urls_count") do |old_value, new_value|
       if old_value > new_value && new_value == 0
         Dispatch::Queue.main.async{
@@ -120,10 +90,6 @@ class MainScreen < PM::Screen
           end
         }
       end
-    end
-
-    observe(@article_manager, "index") do |old_value, new_value|
-      refresh_view
     end
   end
 
@@ -145,20 +111,6 @@ class MainScreen < PM::Screen
     if article
       article.is_bookmarked = !article.is_bookmarked
       article.save
-      update_bookmarked_button_color
-    else
-      App.alert("No article is selected.")
-    end
-  end
-
-  def open_activity
-    article = @article_manager.displaying
-    if article
-      text = article.title + " (#{article.company.host_name})"
-      url = NSURL.URLWithString(article.link_url)
-
-      activityView = URLActivityViewController.alloc.initWithDefaultActivities([text, url])
-      self.presentViewController(activityView, animated:true, completion:nil)
     else
       App.alert("No article is selected.")
     end
@@ -198,12 +150,25 @@ class MainScreen < PM::Screen
     action_sheet.showInView(self.view)
   end
 
-  def on_bookmarked_button_tapped
+  def on_toolbar_add_button_tapped
     add_to_bookmark
   end
 
-  def on_preview_button_tapped
+  def on_toolbar_preview_button_tapped
     open_preview_screen
+  end
+
+  def on_toolbar_action_button_tapped
+    article = @article_manager.displaying
+    if article
+      text = article.title + " (#{article.company.host_name})"
+      url = NSURL.URLWithString(article.link_url)
+
+      activityView = URLActivityViewController.alloc.initWithDefaultActivities([text, url])
+      self.presentViewController(activityView, animated:true, completion:nil)
+    else
+      App.alert("No article is selected.")
+    end
   end
 
   def on_navbar_settings_button_tapped

@@ -1,7 +1,8 @@
 Teacup::Stylesheet.new :main_tool_bar do
   style :base_view,
     frame: [[0, '100% -90'], ['100%', 90]],
-    backgroundColor: BW.rgba_color(90, 90, 90, 0.55)
+    # translucent: true,
+    backgroundColor: BW.rgba_color(150, 150, 150, 0.30)
 
   style :clear_toolbar,
     frame: [[0, 0], ['100%', 44]]
