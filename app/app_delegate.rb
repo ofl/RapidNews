@@ -7,7 +7,7 @@ class AppDelegate < PM::Delegate
     set_consumer_key
 
     open MainScreen.new(nav_bar: true)
-    self.window.tintColor = UIColor.purpleColor
+    self.window.tintColor = BW.rgb_color(0,255,255)
   end
 
   def application(application, openURL: url, sourceApplication: s, annotation: a)

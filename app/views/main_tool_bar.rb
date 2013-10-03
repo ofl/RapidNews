@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-class MainToolBar < UIToolbar
+class MainToolBar < TransparentToolbar
 
   include BW::KVO
 
@@ -8,7 +8,7 @@ class MainToolBar < UIToolbar
     super.tap do
       @article_manager = ArticleManager.instance
       @timer = nil
-    
+
       @view_setup ||= set_up_view
       add_observers
     end
@@ -16,14 +16,40 @@ class MainToolBar < UIToolbar
 
   def set_up_view
     self.stylesheet = :main_tool_bar
-    self.barStyle = UIBarStyleBlack
+    # self.barStyle = UIBarStyleBlack
     self.stylename = :base_view
 
-    @start_button = button(:start_button).tap do |b|
-      b.when(UIControlEventTouchUpInside) { on_start_button_tapped }
-      b.setTitleColor BW.rgb_color(255, 255, 255), forState: UIControlStateHighlighted
-      b.setTitleColor BW.rgb_color(40, 40, 40), forState: UIControlStateDisabled
-      b.enabled = true
+    spacer = UIBarButtonItem.alloc.initWithBarButtonSystemItem(UIBarButtonSystemItemFlexibleSpace,
+                                                               target: nil,
+                                                               action: nil)
+
+    action_button = UIBarButtonItem.alloc.initWithBarButtonSystemItem(UIBarButtonSystemItemAction,
+                                                                      target: self,
+                                                                      action: "on_action_button_tapped")
+
+    start_button = UIBarButtonItem.alloc.initWithBarButtonSystemItem(UIBarButtonSystemItemPlay,
+                                                                     target: self,
+                                                                     action: "on_start_button_tapped")
+
+    pause_button = UIBarButtonItem.alloc.initWithBarButtonSystemItem(UIBarButtonSystemItemPause,
+                                                                     target: self,
+                                                                     action: "on_start_button_tapped")
+
+    add_button = UIBarButtonItem.alloc.initWithBarButtonSystemItem(UIBarButtonSystemItemAdd,
+                                                                   target: self,
+                                                                   action: "on_add_button_tapped")
+
+    preview_button = UIBarButtonItem.alloc.initWithImage(UIImage.imageNamed('images/right2.png'),
+                                                         style: UIBarButtonItemStylePlain,
+                                                         target: self,
+                                                         action: "on_preview_button_tapped")
+
+    @playing_buttons = [add_button, spacer, pause_button, spacer, action_button, spacer, preview_button]
+    @pausing_buttons = [add_button, spacer, start_button, spacer, action_button, spacer, preview_button]
+
+
+    @transparent_toolbar = subview(TransparentToolbar, :clear_toolbar).tap do |t|
+      t.items = @pausing_buttons
     end
 
     @slider = subview(UISlider.new, :slider).tap do |s|
@@ -31,6 +57,8 @@ class MainToolBar < UIToolbar
     end
 
     @counter_label = subview VerticallyAlignedLabel.new, :counter_label
+
+    segment_control = subview UISegmentedControl.alloc.initWithItems(['-', '+']), :segment_control
     true
   end
 
@@ -50,7 +78,7 @@ class MainToolBar < UIToolbar
   end
 
   private
-  
+
   def add_observers
     observe(@article_manager, "index") do |old_value, new_value|
       Dispatch::Queue.main.async { refresh_view }
@@ -61,7 +89,7 @@ class MainToolBar < UIToolbar
     end
 
     observe(@article_manager, "is_reading") do |old_value, new_value|
-      @start_button.stylename = new_value ? :playing_button : :paused_button
+      @transparent_toolbar.items = new_value ? @playing_buttons : @pausing_buttons
     end
   end
 
@@ -70,6 +98,10 @@ class MainToolBar < UIToolbar
   end
 
   # event listner
+
+  def on_action_button_tapped
+    self.delegate.on_toolbar_action_button_tapped
+  end
 
   def on_start_button_tapped
     if @article_manager.is_reading
@@ -83,15 +115,23 @@ class MainToolBar < UIToolbar
     end
   end
 
+  def on_preview_button_tapped
+    self.delegate.on_toolbar_preview_button_tapped
+  end
+
+  def on_add_button_tapped
+    self.delegate.on_toolbar_add_button_tapped
+  end
+
   def on_slide(args)
     if @timer
       @timer.invalidate
       @timer = nil
     end
-    @timer = NSTimer.scheduledTimerWithTimeInterval(0.4, 
-                                                    target: self, 
-                                                    selector: 'show_article_at_index:', 
-                                                    userInfo: args, 
+    @timer = NSTimer.scheduledTimerWithTimeInterval(0.4,
+                                                    target: self,
+                                                    selector: 'show_article_at_index:',
+                                                    userInfo: args,
                                                     repeats: false)
   end
 end
