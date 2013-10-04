@@ -29,6 +29,7 @@ class MainSlideView < UIView
     @lower = nil
     @cursor = 0
     @beginY = 0
+    @interval = @article_manager.interval
   end
 
   # show
@@ -287,6 +288,7 @@ class MainSlideView < UIView
 
   def show_next_article
     if @article_manager.index < @article_manager.count - 1
+      adjust_interval
       slide_up
     end
   end
@@ -313,11 +315,20 @@ class MainSlideView < UIView
     end
   end
 
+  def adjust_interval
+    if @interval > @article_manager.interval
+      @interval = [@interval * 0.7, @article_manager.interval].max
+    else
+      @interval = @article_manager.interval
+    end
+  end
+
   #timer
 
   def start_timer
     stop_timer
-    @timer = NSTimer.scheduledTimerWithTimeInterval(4.0, 
+    @interval = @article_manager.interval > 2.0 ? @article_manager.interval : 2.0
+    @timer = NSTimer.scheduledTimerWithTimeInterval(@interval, 
                                                     target: self, 
                                                     selector: 'show_next_article', 
                                                     userInfo: nil, 
