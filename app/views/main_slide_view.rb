@@ -9,56 +9,59 @@ class MainSlideView < UIView
   FRAME_HEIGHT = App.frame.size.height
   ORIGINAL_FRAME = CGRectMake(0,  0, FRAME_WIDTH, FRAME_HEIGHT)
   UPPER_FRAME = CGRectMake(0, -FRAME_HEIGHT, FRAME_WIDTH, FRAME_HEIGHT)
+  THRESHOLD = 1.0
 
   def initWithFrame(frame)
     super.tap do
-      self.userInteractionEnabled = true
-      self.backgroundColor = UIColor.blackColor
+      userInteractionEnabled = true
+      backgroundColor = UIColor.blackColor
 
-      intitialize_variables
+      @article_manager = ArticleManager.instance
+      @view_stack = []
+      @timer = nil
+      @current_idx = 0
+      @upper_idx = nil
+      @lower_idx = nil
+      @beginY = 0
+      @interval = 5.0
+
       add_observers
       add_gesture_recognizer
     end
   end
 
-  def intitialize_variables
-    @article_manager = ArticleManager.instance
-    @view_stack = []
-    @timer = nil
-    @upper = nil
-    @lower = nil
-    @cursor = 0
-    @beginY = 0
-    @interval = @article_manager.interval
-  end
-
   # show
 
-  def show_article_at_index(index)
+  def set_article_at_index(index)
     return if @article_manager.count == 0
-    index = index < @article_manager.count ? index : 0
-    max_index = index + 1 < @article_manager.count - 1 ? index + 1 : @article_manager.count - 1
-    min_index = index - 1 > 0 ? index - 1 : 0
 
-    self.push_article(index) if @view_stack.count == 0
-    add_next_article min_index, max_index
-    add_prev_article min_index, max_index
-    sweep_after_articles max_index
-    sweep_before_articles min_index
-    set_index(index)
+    if @interval > THRESHOLD
+      index = index < @article_manager.count ? index : 0
+      max_index = [index + 1, @article_manager.count - 1].min
+      min_index = [index - 1, 0].max
+
+      push_article(index) if @view_stack.count == 0
+      add_next_article min_index, max_index
+      add_prev_article min_index, max_index
+      sweep_after_articles max_index
+      sweep_before_articles min_index
+      update_index(index)
+    else
+      @view_stack[0].update_article(@article_manager.index)
+    end
   end
 
-  def set_index(index)
-    @upper = nil
-    @lower = nil
+  def update_index(index)
+    @upper_idx = nil
+    @lower_idx = nil
 
     @view_stack.each_with_index do |view, i|
       if view.index == index
-        @cursor = i
+        @current_idx = i
       elsif view.index == index - 1
-        @upper = i
+        @upper_idx = i
       elsif view.index == index + 1
-        @lower = i
+        @lower_idx = i
       end
     end
   end
@@ -71,7 +74,7 @@ class MainSlideView < UIView
     while upper_index > min_index
       upper_index -= 1
       next if upper_index > max_index
-      self.shift_article upper_index
+      shift_article upper_index
     end
   end
 
@@ -83,7 +86,7 @@ class MainSlideView < UIView
     while lower_index < max_index
       lower_index += 1
       next if lower_index < min_index
-      self.push_article lower_index
+      push_article lower_index
     end
   end
 
@@ -112,27 +115,33 @@ class MainSlideView < UIView
   def shift_article(index)
     frame = index < @article_manager.index ? UPPER_FRAME : ORIGINAL_FRAME
     view = MainArticleView.alloc.initWithFrame(frame)
-    view.update_article(@article_manager.find_by_index(index)) if @article_manager.ids[index]
-    view.index = index
-    self.addSubview(view)
+    view.update_article(index)
+    addSubview(view)
     @view_stack.insertObject view, atIndex: 0
     view
   end
 
   def push_article(index)
     view = MainArticleView.alloc.initWithFrame(ORIGINAL_FRAME)
-    view.update_article(@article_manager.find_by_index(index)) if @article_manager.ids[index]
-    view.index = index
-    self.insertSubview view, atIndex: 0
+    view.update_article(index)
+    insertSubview view, atIndex: 0
     @view_stack.addObject(view)
     view
+  end
+
+  def pop_view_except_current
+    current_view = @view_stack[@current_idx]
+    @view_stack.each_with_index do |view|
+      view.removeFromSuperview
+      @view_stack.delete view
+    end
   end
 
   # animation
 
   def slide_up
-    current_view = @view_stack[@cursor]
-    lower_view = @view_stack[@lower]
+    current_view = @view_stack[@current_idx]
+    lower_view = @view_stack[@lower_idx]
     UIView.animateWithDuration(0.25,
                                delay: 0.0,
                                options: UIViewAnimationOptionCurveEaseOut,
@@ -147,8 +156,8 @@ class MainSlideView < UIView
   end
 
   def slide_down
-    current_view = @view_stack[@cursor]
-    upper_view = @view_stack[@upper]
+    current_view = @view_stack[@current_idx]
+    upper_view = @view_stack[@upper_idx]
     UIView.animateWithDuration(0.25,
                                delay: 0.0,
                                options: UIViewAnimationOptionCurveEaseOut,
@@ -173,17 +182,37 @@ class MainSlideView < UIView
   end
 
   def touchesMoved(touches, withEvent: event)
-    return if @view_stack.count < 1
+    return if @view_stack.count < 1 || @article_manager.is_reading
     offset = touches.anyObject.locationInView(self).y - @beginY
 
-    current_view = @view_stack[@cursor]
-    upper_view = @upper ? @view_stack[@upper] : nil
-    lower_view = @lower ? @view_stack[@lower] : nil
+    current_view = @view_stack[@current_idx]
+    upper_view = @upper_idx ? @view_stack[@upper_idx] : nil
+    lower_view = @lower_idx ? @view_stack[@lower_idx] : nil
 
     if offset > 0
       move_down current_view, upper_view, offset
     else
       move_up current_view, lower_view, offset
+    end
+  end
+
+  def touchesEnded(touches, withEvent: event)
+    return if @view_stack.count < 1 || @article_manager.is_reading
+    offset = touches.anyObject.locationInView(self).y - @beginY
+
+    current_view = @view_stack[@current_idx]
+    upper_view = @upper_idx ? @view_stack[@upper_idx] : nil
+    lower_view = @lower_idx ? @view_stack[@lower_idx] : nil
+
+    if offset < 44 && offset > -44
+      return_default_position current_view, upper_view, lower_view
+      delegate.show_controller if offset < 5 && offset > -5
+    elsif offset > 0
+      return_default_position(current_view, upper_view, lower_view) unless upper_view
+      pull_down current_view, upper_view, offset
+    else
+      return_default_position(current_view, upper_view, lower_view) unless lower_view
+      pull_up current_view, lower_view, offset
     end
   end
 
@@ -217,26 +246,6 @@ class MainSlideView < UIView
     end
   end
 
-  def touchesEnded(touches, withEvent: event)
-    return if @view_stack.count < 1
-    offset = touches.anyObject.locationInView(self).y - @beginY
-
-    current_view = @view_stack[@cursor]
-    upper_view = @upper ? @view_stack[@upper] : nil
-    lower_view = @lower ? @view_stack[@lower] : nil
-
-    if offset < 44 && offset > -44
-      return_default_position current_view, upper_view, lower_view
-      self.delegate.show_controller if offset < 5 && offset > -5
-    elsif offset > 0
-      return_default_position(current_view, upper_view, lower_view) unless upper_view
-      pull_down current_view, upper_view, offset
-    else
-      return_default_position(current_view, upper_view, lower_view) unless lower_view
-      pull_up current_view, lower_view, offset
-    end
-  end
-
   # もとに戻す
   # offset < 44
   # current_viewはもとに戻す
@@ -263,7 +272,7 @@ class MainSlideView < UIView
     if upper_view
       slide_down
     else
-      self.delegate.show_controller
+      delegate.show_controller
     end
   end
 
@@ -276,7 +285,7 @@ class MainSlideView < UIView
     if lower_view
       slide_up
     else
-      self.delegate.confirm_load_article
+      delegate.confirm_load_article
     end
   end
 
@@ -289,20 +298,27 @@ class MainSlideView < UIView
   def show_next_article
     if @article_manager.index < @article_manager.count - 1
       adjust_interval
-      slide_up
+      if @interval > THRESHOLD
+        slide_up
+      else
+        pop_view_except_current if @view_stack.count > 1
+        @article_manager.index = @article_manager.index + 1
+      end
+    else
+      stop_timer
     end
   end
 
   def add_observers
     observe(@article_manager, "count") do |old_value, new_value|
       Dispatch::Queue.main.async{
-        show_article_at_index(@article_manager.index)
+        set_article_at_index(@article_manager.index)
       }
     end
 
     observe(@article_manager, "index") do |old_value, new_value|
       Dispatch::Queue.main.async{
-        show_article_at_index(@article_manager.index)
+        set_article_at_index(@article_manager.index)
       }
     end
 
@@ -327,7 +343,6 @@ class MainSlideView < UIView
 
   def start_timer
     stop_timer
-    @interval = @article_manager.interval > 2.0 ? @article_manager.interval : 2.0
     @timer = NSTimer.scheduledTimerWithTimeInterval(@interval, 
                                                     target: self, 
                                                     selector: 'show_next_article', 
@@ -339,7 +354,13 @@ class MainSlideView < UIView
     if @timer
       @timer.invalidate
       @timer = nil
+
+      if @interval <= THRESHOLD
+        @interval = @article_manager.interval > 2.0 ? @article_manager.interval : 2.0
+        set_article_at_index(@article_manager.index)
+      end
     end
+    @interval = @article_manager.interval > 2.0 ? @article_manager.interval : 2.0
   end
 
   # Gesture
@@ -349,7 +370,7 @@ class MainSlideView < UIView
       recognizer = UISwipeGestureRecognizer.alloc.initWithTarget(self, action:'on_view_swiped:')
       recognizer.direction = direction
       recognizer.delegate = self
-      self.addGestureRecognizer(recognizer)
+      addGestureRecognizer(recognizer)
     end
   end
 
