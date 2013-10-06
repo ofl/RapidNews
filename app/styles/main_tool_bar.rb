@@ -32,7 +32,7 @@ Teacup::Stylesheet.new :main_tool_bar do
     font: UIFont.systemFontOfSize(15.0)
 
   style :segment_control,
-    height: 20,
+    height: 22,
     width: 50,
     top: 53,
     left: 10

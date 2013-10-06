@@ -305,7 +305,7 @@ class MainSlideView < UIView
         @article_manager.index = @article_manager.index + 1
       end
     else
-      stop_timer
+      @article_manager.is_reading = false
     end
   end
 
