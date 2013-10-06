@@ -8,6 +8,8 @@ class MainArticleView < UIView
       self.stylesheet = :main_article_view
       self.stylename = :base_view
       subview UIView, :title_background
+
+      @article_manager = ArticleManager.instance
       @default_image = UIImage.imageNamed('images/77x50.png')
       @image_view = subview UIImageView.alloc.initWithImage(@default_image), :image_view
       @title_label = subview VerticallyAlignedLabel.new, :title_label
@@ -15,17 +17,23 @@ class MainArticleView < UIView
     end
   end
 
-  def update_article(article)
+  def update_article(index, load_image = true)
+    article = @article_manager.find_by_index(index) if @article_manager.ids[index]
+    return unless article
+
+    @index = index
     @title_label.text = article.title
     @summary_label.text = article.summary
 
-    if article.image_url
-      @image_view.setImageWithURLRequest( NSURLRequest.alloc.initWithURL(NSURL.URLWithString(article.image_url)),
-                                          placeholderImage: @default_image,
-                                          success: -> (req, res, image) { @image_view.image = image },
-                                          failure: -> (req, res, error) { @image_view.image = @default_image })
-    else
-      @image_view.image = @default_image
+    if load_image
+      if article.image_url
+        @image_view.setImageWithURLRequest( NSURLRequest.alloc.initWithURL(NSURL.URLWithString(article.image_url)),
+                                            placeholderImage: @default_image,
+                                            success: -> (req, res, image) { @image_view.image = image },
+                                            failure: -> (req, res, error) { @image_view.image = @default_image })
+      else
+        @image_view.image = @default_image
+      end
     end
   end
 

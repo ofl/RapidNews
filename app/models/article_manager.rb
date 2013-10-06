@@ -3,7 +3,7 @@
 class ArticleManager
   
   include BW::KVO
-  attr_accessor :index, :is_reading, :count, :ids, :crawling_urls_count
+  attr_accessor :index, :is_reading, :count, :ids, :crawling_urls_count, :interval
 
   def self.instance
     Dispatch.once { @instance ||= new }
@@ -21,6 +21,7 @@ class ArticleManager
       @crawling_urls = {}
       @crawling_urls_count = 0
       @is_reading = false
+      @interval = App::Persistence[:interval] || 0.7
 
       add_observers
     end
