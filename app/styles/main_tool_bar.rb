@@ -31,9 +31,10 @@ Teacup::Stylesheet.new :main_tool_bar do
     textAlignment: UITextAlignmentRight,
     font: UIFont.systemFontOfSize(15.0)
 
-  style :segment_control,
+  style :segmented_control,
     height: 22,
     width: 50,
     top: 53,
-    left: 10
+    left: 10,
+    momentary: true
 end

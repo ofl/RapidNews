@@ -23,7 +23,7 @@ class MainSlideView < UIView
       @upper_idx = nil
       @lower_idx = nil
       @beginY = 0
-      @interval = 5.0
+      @interval = 3.0
 
       add_observers
       add_gesture_recognizer
@@ -304,6 +304,7 @@ class MainSlideView < UIView
         pop_view_except_current if @view_stack.count > 1
         @article_manager.index = @article_manager.index + 1
       end
+      set_timer
     else
       @article_manager.is_reading = false
     end
@@ -324,9 +325,9 @@ class MainSlideView < UIView
 
     observe(@article_manager, "is_reading") do |old_value, new_value|
       if new_value
-        start_timer
+        start_playing
       else
-        stop_timer
+        stop_playing
       end
     end
   end
@@ -339,24 +340,32 @@ class MainSlideView < UIView
     end
   end
 
-  #timer
+  def stop_timer
+    if @timer
+      @timer.invalidate
+      @timer = nil
+    end
+  end
 
-  def start_timer
+  def set_timer
     stop_timer
     @timer = NSTimer.scheduledTimerWithTimeInterval(@interval, 
                                                     target: self, 
                                                     selector: 'show_next_article', 
                                                     userInfo: nil, 
-                                                    repeats: true)
+                                                    repeats: false)    
   end
 
-  def stop_timer
+  def start_playing
+    set_timer
+  end
+
+  def stop_playing
     if @timer
-      @timer.invalidate
-      @timer = nil
+      stop_timer
 
       if @interval <= THRESHOLD
-        @interval = @article_manager.interval > 2.0 ? @article_manager.interval : 2.0
+        @interval = [@article_manager.interval, 2.0].max
         set_article_at_index(@article_manager.index)
       end
     end

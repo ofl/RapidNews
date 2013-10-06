@@ -62,6 +62,11 @@ module RapidNews
       CC = 3
       BCC = 4
     end
+
+    module SlideShow
+      MAX_INTERVAL = 30.0
+      MIN_INTERVAL = 0.3
+    end
   end
 
   module Titles
