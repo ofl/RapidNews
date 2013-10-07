@@ -19,6 +19,7 @@ module RapidNews
       App::Persistence['email_cc'] ||= []
       App::Persistence['email_bcc'] ||= []
       App::Persistence['email_bcc'] ||= []
+      App::Persistence['interval'] ||= 3.0
     end
 
     module_function :load

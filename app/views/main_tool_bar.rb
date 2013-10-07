@@ -58,7 +58,8 @@ class MainToolBar < TransparentToolbar
 
     @counter_label = subview VerticallyAlignedLabel.new, :counter_label
 
-    segment_control = subview UISegmentedControl.alloc.initWithItems(['-', '+']), :segment_control
+    segmented_control = subview UISegmentedControl.alloc.initWithItems(['-', '+']), :segmented_control
+    segmented_control.addTarget(self, action: 'on_segmented_control_changed:', forControlEvents: UIControlEventValueChanged)
     true
   end
 
@@ -121,6 +122,18 @@ class MainToolBar < TransparentToolbar
 
   def on_add_button_tapped
     self.delegate.on_toolbar_add_button_tapped
+  end
+
+  def on_segmented_control_changed(segment)
+    case segment.selectedSegmentIndex
+    when 0
+      interval = [@article_manager.interval * 1.2, 30.0].min
+    when 1
+      interval = [@article_manager.interval * 0.8, 0.3].max
+    end
+    @article_manager.interval = interval
+    App::Persistence[:interval] = interval
+    p interval
   end
 
   def on_slide(args)

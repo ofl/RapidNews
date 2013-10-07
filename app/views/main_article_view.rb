@@ -17,7 +17,7 @@ class MainArticleView < UIView
     end
   end
 
-  def update_article(index, load_image = true)
+  def update_article(index)
     article = @article_manager.find_by_index(index) if @article_manager.ids[index]
     return unless article
 
@@ -25,7 +25,7 @@ class MainArticleView < UIView
     @title_label.text = article.title
     @summary_label.text = article.summary
 
-    if load_image
+    if !@article_manager.is_reading || @article_manager.interval > 1.0
       if article.image_url
         @image_view.setImageWithURLRequest( NSURLRequest.alloc.initWithURL(NSURL.URLWithString(article.image_url)),
                                             placeholderImage: @default_image,

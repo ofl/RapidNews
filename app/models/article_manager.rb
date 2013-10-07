@@ -21,7 +21,7 @@ class ArticleManager
       @crawling_urls = {}
       @crawling_urls_count = 0
       @is_reading = false
-      @interval = App::Persistence[:interval] || 0.7
+      @interval = App::Persistence[:interval]
 
       add_observers
     end
