@@ -13,31 +13,44 @@ class Preview::RootScreen < PM::WebScreen
     @beginScrollOffsetY = 0
     @toolbarScrollStatus = QVToolBarScrollStatusInit
     @toolbar_hidden = false
-    self.navigationController.navigationBarHidden = true
+    self.navigationController.navigationBarHidden = false
     self.navigationController.setToolbarHidden(false, animated:false)
+    self.automaticallyAdjustsScrollViewInsets = false
 
     @view_is_set_up ||= set_up_view
   end
 
   def set_up_view
-    layout(self.view, {})  do
-      @nav_bar = subview(UINavigationBar.new, :nav_bar) do
-        subview UIView.new, :title_view do
-          @title_label = subview VerticallyAlignedLabel.new, :title_label, {text: @page_title}
-          @url_label = subview VerticallyAlignedLabel.new, :url_label, {text: @url}
+    layout(self.view, :base_view)  do
+      self.webview.stylename = :webview
+
+      self.navigationItem.titleView = UIView.new.tap do |t|
+        t.frame = [[0, 0], [App.frame.size.width - 100, 40]]
+
+        @title_label = VerticallyAlignedLabel.new.tap do |tl|
+          tl.frame = [[0, 2], [App.frame.size.width - 100, 20]]
+          tl.textAlignment = UITextAlignmentCenter
+          tl.textColor = UIColor.blackColor
+          tl.font = UIFont.systemFontOfSize(14.0)
+          t.addSubview tl
+        end
+
+        @url_label = VerticallyAlignedLabel.new.tap do |ul|
+          ul.frame = [[0, 20], [App.frame.size.width - 100, 20]]
+          ul.textAlignment = UITextAlignmentCenter
+          ul.textColor = BW.rgb_color(150,150,150)
+          ul.font = UIFont.systemFontOfSize(10.0)
+          t.addSubview ul
         end
       end
-      @toolbar = self.navigationController.toolbar
+      self.navigationItem.rightBarButtonItem = UIBarButtonItem.alloc.initWithBarButtonSystemItem(UIBarButtonSystemItemRefresh,
+                                                                               target: self,
+                                                                               action: "on_refresh_tapped")
+      self.navigationItem.leftBarButtonItem = UIBarButtonItem.alloc.initWithBarButtonSystemItem(UIBarButtonSystemItemStop,
+                                                                              target: self,
+                                                                              action: "close_screen")
 
-      UINavigationItem.alloc.initWithTitle("").tap do |n|
-        @nav_bar.pushNavigationItem(n, animated:true)
-        n.rightBarButtonItem = UIBarButtonItem.alloc.initWithBarButtonSystemItem(UIBarButtonSystemItemRefresh,
-                                                                                 target: self,
-                                                                                 action: "on_refresh_tapped")
-        n.leftBarButtonItem = UIBarButtonItem.alloc.initWithBarButtonSystemItem(UIBarButtonSystemItemStop,
-                                                                                target: self,
-                                                                                action: "close_screen")
-      end
+      @toolbar = self.navigationController.toolbar
       @button_is_set_up ||= set_up_buttons
       set_scroll_view_delegate
     end
@@ -73,7 +86,7 @@ class Preview::RootScreen < PM::WebScreen
   def set_scroll_view_delegate
     scroll_view = self.webview.scrollView
     scroll_view.contentInset = UIEdgeInsetsMake(64, 0, 0, 0);
-    scroll_view.setContentOffset(CGPointMake(0, @nav_bar.frame.origin.y), animated: false)
+    scroll_view.setContentOffset(CGPointMake(0, self.navigationController.navigationBar.frame.origin.y), animated: false)
     scroll_view.showsHorizontalScrollIndicator = false
     scroll_view.delegate = self
   end
