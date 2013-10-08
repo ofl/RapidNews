@@ -1,11 +1,9 @@
 Teacup::Stylesheet.new :preview_screen do
   style :base_view,
-    backgroundColor: BW.rgb_color(60, 60, 60)
+    backgroundColor: BW.rgb_color(255, 255, 255)
 
-  style :web_view,
-    width: App.frame.size.width,
-    top: 0,
-    left: 0
+  style :webview,
+    backgroundColor: BW.rgb_color(255, 255, 255)
 
   style :nav_bar,
     barStyle: UIBarStyleBlack,
@@ -37,28 +35,4 @@ Teacup::Stylesheet.new :preview_screen do
     tag: 5,
     left: 281,
     title: FontAwesome.icon('refresh')
-
-  style :title_view,
-    height: 40,
-    width: App.frame.size.width - 100,
-    top: 22,
-    left: 50
-
-  style :title_label,
-    textAlignment: UITextAlignmentCenter,
-    textColor: UIColor.whiteColor,
-    font: UIFont.systemFontOfSize(14.0),
-    height: 20,
-    width: App.frame.size.width - 100,
-    top: 2,
-    left: 0
-
-  style :url_label,
-    textAlignment: UITextAlignmentCenter,
-    textColor: BW.rgb_color(200,200,200),
-    font: UIFont.systemFontOfSize(10.0),
-    height: 15,
-    width: App.frame.size.width - 100,
-    top: 22,
-    left: 0
 end
