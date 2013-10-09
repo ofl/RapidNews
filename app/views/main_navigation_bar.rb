@@ -24,10 +24,15 @@ class MainNavigationBar < UINavigationBar
                                                    target: self,
                                                    action: "on_channels_button_tapped")
 
-      bookmarks_button = UIBarButtonItem.alloc.initWithImage(UIImage.imageNamed('images/bookmark.png'),
-                                                   style: UIBarButtonItemStylePlain,
-                                                   target: self,
-                                                   action: "on_bookmarks_button_tapped")
+      image = UIImage.imageNamed('images/bookmark.png')
+      tinted_image = image.tintedImageWithColor(BW.rgb_color(0,255,255))
+
+      book_button = UIButton.buttonWithType(UIButtonTypeCustom)
+      book_button.setFrame(CGRectMake(0, 0, 40, 30))
+      book_button.setImage(tinted_image, forState: UIControlStateNormal)
+      book_button.addTarget(self, action: "on_bookmarks_button_tapped", forControlEvents: UIControlEventTouchUpInside)
+
+      bookmarks_button = UIBarButtonItem.alloc.initWithCustomView(book_button)
 
       hide_menu_button = UIBarButtonItem.alloc.initWithImage(UIImage.imageNamed('images/expand.png'),
                                                    style: UIBarButtonItemStylePlain,
