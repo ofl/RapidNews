@@ -3,6 +3,7 @@ class Bookmarks::RootScreen < PM::TableScreen
   stylesheet :bookmarks_screen
 
   def will_appear
+    @article_manager = ArticleManager.instance
     @view_is_set_up ||= set_up_view
   end
 
@@ -101,6 +102,8 @@ class Bookmarks::RootScreen < PM::TableScreen
   end
 
   def on_close_button_tapped
+    Article.save_to_file
+    @article_manager.update_bookmarks_count
     close(model_saved: @is_saved)
   end
 
