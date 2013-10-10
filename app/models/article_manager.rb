@@ -22,8 +22,8 @@ class ArticleManager
       @crawling_urls_count = 0
       @is_reading = false
       @interval = App::Persistence[:interval]
-      @bookmarks_count = Article.where(:is_bookmarked).eq(true).count
 
+      update_bookmarks_count
       add_observers
     end
   end
@@ -120,11 +120,16 @@ class ArticleManager
     if self.displaying
       self.displaying.is_bookmarked = true
       self.displaying.save
-      self.bookmarks_count = Article.where(:is_bookmarked).eq(true).count
+      update_bookmarks_count
+      Article.save_to_file
       return true
     else
       return false
     end
+  end
+
+  def update_bookmarks_count
+    self.bookmarks_count = Article.where(:is_bookmarked).eq(true).count    
   end
 
   def remove_from_crawling_urls(url)
