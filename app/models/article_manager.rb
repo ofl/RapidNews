@@ -3,7 +3,7 @@
 class ArticleManager
   
   include BW::KVO
-  attr_accessor :index, :is_reading, :count, :ids, :crawling_urls_count, :interval
+  attr_accessor :index, :is_reading, :count, :ids, :crawling_urls_count, :interval, :bookmarks_count
 
   def self.instance
     Dispatch.once { @instance ||= new }
@@ -23,6 +23,7 @@ class ArticleManager
       @is_reading = false
       @interval = App::Persistence[:interval]
 
+      update_bookmarks_count
       add_observers
     end
   end
@@ -113,6 +114,22 @@ class ArticleManager
   def add_to_crawling_urls(source)
     @crawling_urls[source.url] = source
     @crawling_urls_count = @crawling_urls.count
+  end
+
+  def add_to_bookmarks
+    if self.displaying
+      self.displaying.is_bookmarked = true
+      self.displaying.save
+      update_bookmarks_count
+      Article.save_to_file
+      return true
+    else
+      return false
+    end
+  end
+
+  def update_bookmarks_count
+    self.bookmarks_count = Article.where(:is_bookmarked).eq(true).count    
   end
 
   def remove_from_crawling_urls(url)
