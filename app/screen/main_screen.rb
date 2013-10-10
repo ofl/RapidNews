@@ -107,13 +107,7 @@ class MainScreen < PM::Screen
   end
 
   def add_to_bookmark
-    article = @article_manager.displaying
-    if article
-      article.is_bookmarked = !article.is_bookmarked
-      article.save
-    else
-      App.alert("No article is selected.")
-    end
+    App.alert("No article is selected.") unless @article_manager.add_to_bookmarks
   end
 
   def refresh_default_channel
