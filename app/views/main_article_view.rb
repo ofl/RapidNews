@@ -1,6 +1,7 @@
 class MainArticleView < UIView
 
   attr_accessor :index
+  HIDE_IMAGE_THRESHOLD = 1.0
 
   def initWithFrame(frame)
     @index = 0
@@ -17,6 +18,14 @@ class MainArticleView < UIView
     end
   end
 
+  def set_image(image_url)
+    @image_view.hidden = false
+    @image_view.setImageWithURLRequest( NSURLRequest.alloc.initWithURL(NSURL.URLWithString(image_url)),
+                                        placeholderImage: @default_image,
+                                        success: -> (req, res, image) { @image_view.image = image },
+                                        failure: -> (req, res, error) { @image_view.image = @default_image })    
+  end
+
   def update_article(index)
     article = @article_manager.find_by_index(index) if @article_manager.ids[index]
     return unless article
@@ -25,15 +34,14 @@ class MainArticleView < UIView
     @title_label.text = article.title
     @summary_label.text = article.summary
 
-    if !@article_manager.is_reading || @article_manager.interval > 1.0
-      if article.image_url
-        @image_view.setImageWithURLRequest( NSURLRequest.alloc.initWithURL(NSURL.URLWithString(article.image_url)),
-                                            placeholderImage: @default_image,
-                                            success: -> (req, res, image) { @image_view.image = image },
-                                            failure: -> (req, res, error) { @image_view.image = @default_image })
-      else
-        @image_view.image = @default_image
-      end
+    if !article.image_url
+      @image_view.hidden = true
+    elsif !@article_manager.is_reading
+        set_image(article.image_url)
+    elsif @article_manager.interval > HIDE_IMAGE_THRESHOLD
+        set_image(article.image_url)
+    else
+      @image_view.hidden = true
     end
   end
 
