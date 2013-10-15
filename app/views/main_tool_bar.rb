@@ -52,8 +52,13 @@ class MainToolBar < TransparentToolbar
       t.items = @pausing_buttons
     end
 
+    image = UIImage.imageNamed('images/slide_thumb.png')
+    thumb_image = image.tintedImageWithColor(BW.rgb_color(0,255,255))
+
     @slider = subview(UISlider.new, :slider).tap do |s|
       s.addTarget self, action: "on_slide:", forControlEvents: UIControlEventValueChanged
+      s.setThumbImage(thumb_image, forState: UIControlStateNormal)
+      s.setThumbImage(thumb_image, forState: UIControlStateHighlighted)
     end
 
     @counter_label = subview VerticallyAlignedLabel.new, :counter_label
