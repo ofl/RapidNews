@@ -65,11 +65,13 @@ class MainToolBar < TransparentToolbar
 
   def refresh_view
     if @article_manager.count > 0
+      @slider.minimumValue = 1.0
       @slider.maximumValue = @article_manager.count.to_f
       @slider.value = @article_manager.index.to_f + 1.0
       @slider.alpha = 1.0
       @slider.userInteractionEnabled = true
     else
+      @slider.minimumValue = 0
       @slider.maximumValue = 0
       @slider.value = 0
       @slider.alpha = 0.5
