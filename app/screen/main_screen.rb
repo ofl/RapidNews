@@ -5,9 +5,13 @@ class MainScreen < PM::Screen
   include BW::KVO
   stylesheet :main_screen
 
+  THRESHOLD = 1.0
+
   def on_load
     @channel = nil
     @article_manager = ArticleManager.instance
+    @interval = 3.0
+    @timer = nil
     add_observers
   end
 
@@ -35,6 +39,80 @@ class MainScreen < PM::Screen
     @article_manager.load_data
     true
   end
+
+
+  #reading
+
+  def set_article_at_index(index)
+    return if @article_manager.count == 0
+
+    if @interval > THRESHOLD
+      @slide_view.set_article_at_index(@article_manager.index)
+    else
+      @slide_view.update_article_at_index(@article_manager.index)
+    end
+  end
+
+
+  def show_next_article
+    if @article_manager.index < @article_manager.count - 1
+      adjust_interval
+      if @interval > THRESHOLD
+        @slide_view.slide_up
+      else
+        @slide_view.pop_view_except_current
+        @article_manager.index = @article_manager.index + 1
+      end
+      set_timer
+    else
+      @article_manager.is_reading = false
+    end
+  end
+
+  def adjust_interval
+    if @interval > @article_manager.interval
+      @interval = [@interval * 0.7, @article_manager.interval].max
+    else
+      @interval = @article_manager.interval
+    end
+  end
+
+  def stop_timer
+    if @timer
+      @timer.invalidate
+      @timer = nil
+    end
+  end
+
+  def set_timer
+    stop_timer
+    @timer = NSTimer.scheduledTimerWithTimeInterval(@interval, 
+                                                    target: self, 
+                                                    selector: 'show_next_article', 
+                                                    userInfo: nil, 
+                                                    repeats: false)    
+  end
+
+  def start_playing
+    set_timer
+  end
+
+  def stop_playing
+    if @timer
+      stop_timer
+
+      if @interval <= THRESHOLD
+        @interval = [@article_manager.interval, 2.0].max
+        @slide_view.set_article_at_index(@article_manager.index)
+      end
+    end
+    @interval = @article_manager.interval > 2.0 ? @article_manager.interval : 2.0
+  end
+
+  def stop_reading
+    @article_manager.is_reading = false if @article_manager.is_reading
+  end
+
 
   #Show/Hide Menu
 
@@ -71,33 +149,6 @@ class MainScreen < PM::Screen
     false
   end
 
-  def add_observers
-    BW::App.notification_center.observe Channels::RootScreen::CrawlNewsSource do |n|
-      n.userInfo[:ids].each do |id|
-        source = NewsSource.find(id)
-        source.crawl_articles if source
-      end
-    end
-
-    observe(@article_manager, "crawling_urls_count") do |old_value, new_value|
-      if old_value > new_value && new_value == 0
-        Dispatch::Queue.main.async{
-          new_article_size = @article_manager.count - @article_manager.index - 1
-          if new_article_size > 0
-            SVProgressHUD.showSuccessWithStatus("#{new_article_size} new articles.")
-          else
-            SVProgressHUD.showErrorWithStatus("No new articles found.")
-          end
-        }
-      end
-    end
-  end
-
-
-  def stop_reading
-    @article_manager.is_reading = false if @article_manager.is_reading
-  end
-
   def open_preview_screen
     open_modal Preview::RootScreen.new(
       nav_bar: true,
@@ -131,8 +182,6 @@ class MainScreen < PM::Screen
     end
   end
 
-  #Event handler
-
   def confirm_load_article
     action_sheet = UIActionSheet.alloc.init.tap do |as|
       as.delegate = self
@@ -142,6 +191,51 @@ class MainScreen < PM::Screen
       as.cancelButtonIndex = 1
     end
     action_sheet.showInView(self.view)
+  end
+
+
+  #Event handler
+
+  def add_observers
+    BW::App.notification_center.observe Channels::RootScreen::CrawlNewsSource do |n|
+      n.userInfo[:ids].each do |id|
+        source = NewsSource.find(id)
+        source.crawl_articles if source
+      end
+    end
+
+    observe(@article_manager, "crawling_urls_count") do |old_value, new_value|
+      if old_value > new_value && new_value == 0
+        Dispatch::Queue.main.async{
+          new_article_size = @article_manager.count - @article_manager.index - 1
+          if new_article_size > 0
+            SVProgressHUD.showSuccessWithStatus("#{new_article_size} new articles.")
+          else
+            SVProgressHUD.showErrorWithStatus("No new articles found.")
+          end
+        }
+      end
+    end
+
+    observe(@article_manager, "count") do |old_value, new_value|
+      Dispatch::Queue.main.async{
+        @slide_view.set_article_at_index(@article_manager.index)
+      }
+    end
+
+    observe(@article_manager, "index") do |old_value, new_value|
+      Dispatch::Queue.main.async{
+        @slide_view.set_article_at_index(@article_manager.index)
+      }
+    end
+
+    observe(@article_manager, "is_reading") do |old_value, new_value|
+      if new_value
+        start_playing
+      else
+        stop_playing
+      end
+    end
   end
 
   def on_toolbar_add_button_tapped
@@ -187,5 +281,27 @@ class MainScreen < PM::Screen
     end
     # if args[:model_saved]
     # end
+  end
+
+  def gesture_action(direction)
+    case App::Persistence[direction]
+    when RN::Const::SwipeAction::START
+      start_reading
+    when RN::Const::SwipeAction::STOP
+      stop_reading
+    when RN::Const::SwipeAction::PREVIEW
+      open_preview_screen
+    when RN::Const::SwipeAction::BOOKMARK
+      add_to_bookmarked
+    when RN::Const::SwipeAction::SAFARI
+      UIApplication.sharedApplication.openURL(NSURL.URLWithString(@article_manager.displaying.link_url))
+    when RN::Const::SwipeAction::CHROME
+      # sdk, urlscheme,  x-callback-url
+    when RN::Const::SwipeAction::TWEET
+    when RN::Const::SwipeAction::FACEBOOK
+    when RN::Const::SwipeAction::POCKET
+    when RN::Const::SwipeAction::READABILITY
+      true
+    end
   end
 end
