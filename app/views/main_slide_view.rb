@@ -9,7 +9,6 @@ class MainSlideView < UIView
   FRAME_HEIGHT = App.frame.size.height
   ORIGINAL_FRAME = CGRectMake(0,  0, FRAME_WIDTH, FRAME_HEIGHT)
   UPPER_FRAME = CGRectMake(0, -FRAME_HEIGHT, FRAME_WIDTH, FRAME_HEIGHT)
-  THRESHOLD = 1.0
 
   def initWithFrame(frame)
     super.tap do
@@ -18,14 +17,10 @@ class MainSlideView < UIView
 
       @article_manager = ArticleManager.instance
       @view_stack = []
-      @timer = nil
       @current_idx = 0
       @upper_idx = nil
       @lower_idx = nil
-      @beginY = 0
-      @interval = 3.0
 
-      add_observers
       add_gesture_recognizer
     end
   end
@@ -33,22 +28,20 @@ class MainSlideView < UIView
   # show
 
   def set_article_at_index(index)
-    return if @article_manager.count == 0
+    index = index < @article_manager.count ? index : 0
+    max_index = [index + 1, @article_manager.count - 1].min
+    min_index = [index - 1, 0].max
 
-    if @interval > THRESHOLD
-      index = index < @article_manager.count ? index : 0
-      max_index = [index + 1, @article_manager.count - 1].min
-      min_index = [index - 1, 0].max
+    push_article(index) if @view_stack.count == 0
+    add_next_article min_index, max_index
+    add_prev_article min_index, max_index
+    sweep_after_articles max_index
+    sweep_before_articles min_index
+    update_index(index)
+  end
 
-      push_article(index) if @view_stack.count == 0
-      add_next_article min_index, max_index
-      add_prev_article min_index, max_index
-      sweep_after_articles max_index
-      sweep_before_articles min_index
-      update_index(index)
-    else
-      @view_stack[0].update_article(@article_manager.index)
-    end
+  def update_article_at_indx(index)
+    @view_stack[0].update_article(index)    
   end
 
   def update_index(index)
@@ -130,10 +123,12 @@ class MainSlideView < UIView
   end
 
   def pop_view_except_current
-    current_view = @view_stack[@current_idx]
-    @view_stack.each_with_index do |view|
-      view.removeFromSuperview
-      @view_stack.delete view
+    if @view_stack.count > 1
+      current_view = @view_stack[@current_idx]
+      @view_stack.each_with_index do |view|
+        view.removeFromSuperview
+        @view_stack.delete view
+      end
     end
   end
 
@@ -293,85 +288,6 @@ class MainSlideView < UIView
     p 'stay'
   end
 
-  #control
-
-  def show_next_article
-    if @article_manager.index < @article_manager.count - 1
-      adjust_interval
-      if @interval > THRESHOLD
-        slide_up
-      else
-        pop_view_except_current if @view_stack.count > 1
-        @article_manager.index = @article_manager.index + 1
-      end
-      set_timer
-    else
-      @article_manager.is_reading = false
-    end
-  end
-
-  def add_observers
-    observe(@article_manager, "count") do |old_value, new_value|
-      Dispatch::Queue.main.async{
-        set_article_at_index(@article_manager.index)
-      }
-    end
-
-    observe(@article_manager, "index") do |old_value, new_value|
-      Dispatch::Queue.main.async{
-        set_article_at_index(@article_manager.index)
-      }
-    end
-
-    observe(@article_manager, "is_reading") do |old_value, new_value|
-      if new_value
-        start_playing
-      else
-        stop_playing
-      end
-    end
-  end
-
-  def adjust_interval
-    if @interval > @article_manager.interval
-      @interval = [@interval * 0.7, @article_manager.interval].max
-    else
-      @interval = @article_manager.interval
-    end
-  end
-
-  def stop_timer
-    if @timer
-      @timer.invalidate
-      @timer = nil
-    end
-  end
-
-  def set_timer
-    stop_timer
-    @timer = NSTimer.scheduledTimerWithTimeInterval(@interval, 
-                                                    target: self, 
-                                                    selector: 'show_next_article', 
-                                                    userInfo: nil, 
-                                                    repeats: false)    
-  end
-
-  def start_playing
-    set_timer
-  end
-
-  def stop_playing
-    if @timer
-      stop_timer
-
-      if @interval <= THRESHOLD
-        @interval = [@article_manager.interval, 2.0].max
-        set_article_at_index(@article_manager.index)
-      end
-    end
-    @interval = @article_manager.interval > 2.0 ? @article_manager.interval : 2.0
-  end
-
   # Gesture
 
   def add_gesture_recognizer
@@ -389,28 +305,6 @@ class MainSlideView < UIView
       # gesture_action('swipe_up')
     when UISwipeGestureRecognizerDirectionLeft
       # gesture_action('swipe_down')
-    end
-  end
-
-  def gesture_action(direction)
-    case App::Persistence[direction]
-    when RN::Const::SwipeAction::START
-      start_reading
-    when RN::Const::SwipeAction::STOP
-      stop_reading
-    when RN::Const::SwipeAction::PREVIEW
-      open_preview_screen
-    when RN::Const::SwipeAction::BOOKMARK
-      add_to_bookmarked
-    when RN::Const::SwipeAction::SAFARI
-      UIApplication.sharedApplication.openURL(NSURL.URLWithString(@article_manager.displaying.link_url))
-    when RN::Const::SwipeAction::CHROME
-      # sdk, urlscheme,  x-callback-url
-    when RN::Const::SwipeAction::TWEET
-    when RN::Const::SwipeAction::FACEBOOK
-    when RN::Const::SwipeAction::POCKET
-    when RN::Const::SwipeAction::READABILITY
-      true
     end
   end
 end
