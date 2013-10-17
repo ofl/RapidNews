@@ -53,7 +53,6 @@ class MainScreen < PM::Screen
     end
   end
 
-
   def show_next_article
     if @article_manager.index < @article_manager.count - 1
       adjust_interval
@@ -202,6 +201,10 @@ class MainScreen < PM::Screen
         source = NewsSource.find(id)
         source.crawl_articles if source
       end
+    end
+
+    BW::App.notification_center.observe FXReachabilityStatusDidChangeNotification do |n|
+      @article_manager.set_online_status FXReachability.sharedInstance.status
     end
 
     observe(@article_manager, "crawling_urls_count") do |old_value, new_value|

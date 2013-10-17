@@ -1,7 +1,6 @@
 class MainArticleView < UIView
 
   attr_accessor :index
-  HIDE_IMAGE_THRESHOLD = 1.0
 
   def initWithFrame(frame)
     @index = 0
@@ -18,7 +17,7 @@ class MainArticleView < UIView
     end
   end
 
-  def set_image(image_url)
+  def update_image_view(image_url)
     @image_view.hidden = false
     @image_view.setImageWithURLRequest( NSURLRequest.alloc.initWithURL(NSURL.URLWithString(image_url)),
                                         placeholderImage: @default_image,
@@ -36,10 +35,8 @@ class MainArticleView < UIView
 
     if !article.image_url
       @image_view.hidden = true
-    elsif !@article_manager.is_reading
-        set_image(article.image_url)
-    elsif @article_manager.interval > HIDE_IMAGE_THRESHOLD
-        set_image(article.image_url)
+    elsif @article_manager.can_load_image
+        update_image_view(article.image_url)
     else
       @image_view.hidden = true
     end

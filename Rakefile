@@ -40,7 +40,7 @@ Motion::Project::App.setup do |app|
     pod 'TUSafariActivity'
     pod 'AFNetworking', '~> 1.3'
     pod 'SVProgressHUD'
-    pod 'KSReachability'
+    pod 'FXReachability'
   end
 
   app.entitlements['keychain-access-groups'] = [app.seed_id + '.' + app.identifier]  

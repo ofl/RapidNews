@@ -3,7 +3,7 @@
 class ArticleManager
   
   include BW::KVO
-  attr_accessor :index, :is_reading, :count, :ids, :crawling_urls_count, :interval, :bookmarks_count
+  attr_accessor :index, :is_reading, :count, :ids, :crawling_urls_count, :interval, :bookmarks_count, :can_load_image
 
   def self.instance
     Dispatch.once { @instance ||= new }
@@ -22,6 +22,7 @@ class ArticleManager
       @crawling_urls_count = 0
       @is_reading = false
       @interval = App::Persistence[:interval]
+      @can_load_image = true
 
       update_bookmarks_count
       add_observers
@@ -36,6 +37,20 @@ class ArticleManager
 
   def can_go_back
     @index > 0
+  end
+
+  def set_online_status(online_status)
+    if online_status == FXReachabilityStatusNotReachable
+      @can_load_image = false
+    elsif !@is_reading
+      @can_load_image = true
+    elsif online_status == FXReachabilityStatusReachableViaWiFi && @interval > 1.0
+      @can_load_image = true
+    elsif online_status == FXReachabilityStatusReachableViaWWAN && @interval > 2.0
+      @can_load_image = true
+    else
+      @can_load_image = false
+    end
   end
 
   def label_text
