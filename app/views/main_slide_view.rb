@@ -2,7 +2,6 @@
 
 class MainSlideView < UIView
 
-  include BW::KVO
   attr_accessor :delegate
 
   FRAME_WIDTH = App.frame.size.width
@@ -61,8 +60,8 @@ class MainSlideView < UIView
 
   # add article_views that are missing on left side
   def add_prev_article(min_index, max_index)
-    first_article = @view_stack[0]
-    upper_index = first_article.index
+    first_article_view = @view_stack[0]
+    upper_index = first_article_view.index
 
     while upper_index > min_index
       upper_index -= 1
@@ -73,8 +72,8 @@ class MainSlideView < UIView
 
   # add article_views that are missing on right side
   def add_next_article(min_index, max_index)
-    last_article = @view_stack.lastObject
-    lower_index = last_article.index
+    last_article_view = @view_stack.lastObject
+    lower_index = last_article_view.index
 
     while lower_index < max_index
       lower_index += 1
@@ -85,23 +84,23 @@ class MainSlideView < UIView
 
   # remove article_views that have fallen off left edge
   def sweep_before_articles(min_index)
-    first_article = @view_stack[0]
+    first_article_view = @view_stack[0]
 
-    while first_article.index < min_index
-      first_article.removeFromSuperview
+    while first_article_view.index < min_index
+      first_article_view.removeFromSuperview
       @view_stack.removeObjectAtIndex 0
-      first_article = @view_stack[0]
+      first_article_view = @view_stack[0]
     end
   end
 
   # remove article_views that have fallen off right edge
   def sweep_after_articles(max_index)
-    last_article = @view_stack.lastObject
+    last_article_view = @view_stack.lastObject
 
-    while last_article.index > max_index
-      last_article.removeFromSuperview
+    while last_article_view.index > max_index
+      last_article_view.removeFromSuperview
       @view_stack.removeLastObject
-      last_article = @view_stack.lastObject
+      last_article_view = @view_stack.lastObject
     end
   end
 
