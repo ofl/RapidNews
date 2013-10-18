@@ -171,26 +171,27 @@ class Bookmarks::RootScreen < PM::TableScreen
       App.alert("No bookmarks are selected.")
       return
     end
-    urls = send_bookmarks.map do |bookmark|
-      {
-        action: 'add',
-        url: bookmark.link_url
-      }
-    end
+
+    urls = send_bookmarks.map {|bookmark| { action: 'add', url: bookmark.link_url}}
+    query = {
+      consumer_key: MY_ENV['pocket']['consumer_key'],
+      access_token: pocket_access_token("PocketAPI", "token"),
+      actions: BW::JSON.generate(urls)
+    }.map{ |k,v| "#{k}=#{v}" }.join("&")
 
     SVProgressHUD.showWithStatus("保存中...")
-    PocketAPI.sharedAPI.callAPIMethod('v3/send',
-                                      withHTTPMethod: PocketAPIHTTPMethodPOST,
-                                      arguments: {actions: urls},
-                                      handler: -> (api, apiMethod, response, error) {
-                                        if error
-                                          SVProgressHUD.showErrorWithStatus(error.localizedDescription)
-                                        else
-                                          cleanup(reader)
-                                          SVProgressHUD.showSuccessWithStatus("保存しました")
-                                        end
-                                      }
-                                      )
+    BubbleWrap::HTTP.get("https://getpocket.com/v3/send?#{query}") do |response|
+      if response.ok?
+        cleanup(reader)
+        SVProgressHUD.showSuccessWithStatus("保存しました")
+      elsif response.status_code.to_s =~ /40\d/
+        NSLog("#{response.headers}")
+        SVProgressHUD.showErrorWithStatus(response.body.to_s)
+      else
+        NSLog("#{response.headers}")
+        SVProgressHUD.showErrorWithStatus(response.body.to_s)
+      end
+    end
   end
 
   def send_to_readability
@@ -277,6 +278,19 @@ class Bookmarks::RootScreen < PM::TableScreen
     bookmarks.each do |bookmark|
       bookmark.is_bookmarked = false
       bookmark.is_checked = false
+    end
+  end
+
+  def pocket_access_token(serviceName, key)
+
+    # dic = NSUserDefaults.standardUserDefaults.dictionaryRepresentation
+    # NSLog("defualts:%@", dic)
+
+    if Device.simulator?
+      return NSUserDefaults.standardUserDefaults.objectForKey("#{serviceName}.#{key}")
+    else
+      p 456
+      return SFHFKeychainUtils.getPasswordForUsername(key, andServiceName:serviceName, error:nil)
     end
   end
 end
