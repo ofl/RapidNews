@@ -282,14 +282,9 @@ class Bookmarks::RootScreen < PM::TableScreen
   end
 
   def pocket_access_token(serviceName, key)
-
-    # dic = NSUserDefaults.standardUserDefaults.dictionaryRepresentation
-    # NSLog("defualts:%@", dic)
-
     if Device.simulator?
       return NSUserDefaults.standardUserDefaults.objectForKey("#{serviceName}.#{key}")
     else
-      p 456
       return SFHFKeychainUtils.getPasswordForUsername(key, andServiceName:serviceName, error:nil)
     end
   end

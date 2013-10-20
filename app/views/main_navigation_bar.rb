@@ -3,6 +3,8 @@ class MainNavigationBar < UINavigationBar
   include BW::KVO
 
   BUTTONS = [:settings_button, :channels_button, :bookmarks_button, :hide_menu_button]
+  CAUTION_BOOKMARKS_COUNT = 25
+  ALERT_BOOKMARKS_COUNT = 50
 
   def initWithFrame(frame)
     super.tap do
@@ -28,26 +30,7 @@ class MainNavigationBar < UINavigationBar
                                                    target: self,
                                                    action: "on_channels_button_tapped")
 
-      btn_view = UIView.alloc.initWithFrame(CGRectMake(0,0,42,30))
-      btn_view.backgroundColor = BW.rgba_color(30, 30, 30, 0.80)
-
-      image = UIImage.imageNamed('images/bookmark.png')
-      tinted_image = image.tintedImageWithColor(BW.rgb_color(0,255,255))
-
-      book_button = UIButton.buttonWithType(UIButtonTypeCustom).tap do |b|
-        b.setFrame(CGRectMake(0, 0, 40, 30))
-        b.setImage(tinted_image, forState: UIControlStateNormal)
-        b.addTarget(self, action: "on_bookmarks_button_tapped", forControlEvents: UIControlEventTouchUpInside)
-      end
-
-      btn_view.addSubview book_button
-      bookmarks_button = UIBarButtonItem.alloc.initWithCustomView(btn_view)
-
-      @badge = UILabel.new
-      @badge.stylename = :badge
-      @badge.layer.cornerRadius = 8
-      refresh_badge
-      btn_view.addSubview @badge
+      bookmarks_button = UIBarButtonItem.alloc.initWithCustomView(create_bookmarks_button_view)
 
       hide_menu_button = UIBarButtonItem.alloc.initWithImage(UIImage.imageNamed('images/expand.png'),
                                                    style: UIBarButtonItemStylePlain,
@@ -63,8 +46,38 @@ class MainNavigationBar < UINavigationBar
     end
   end
 
+  def create_bookmarks_button_view
+    btn_view = UIView.alloc.initWithFrame(CGRectMake(0,0,42,30))
+    btn_view.backgroundColor = UIColor.clearColor
+
+    image = UIImage.imageNamed('images/bookmark.png')
+    tinted_image = image.tintedImageWithColor(BW.rgb_color(0,255,255))
+
+    book_button = UIButton.buttonWithType(UIButtonTypeCustom).tap do |b|
+      b.setFrame(CGRectMake(0, 0, 40, 30))
+      b.setImage(tinted_image, forState: UIControlStateNormal)
+      b.addTarget(self, action: "on_bookmarks_button_tapped", forControlEvents: UIControlEventTouchUpInside)
+    end
+    btn_view.addSubview book_button
+
+    @badge = UILabel.new
+    @badge.stylename = :badge
+    @badge.layer.cornerRadius = 8
+    refresh_badge
+    btn_view.addSubview @badge
+    return btn_view
+  end
+
   def refresh_badge
-    @badge.text = @article_manager.bookmarks_count.to_s
+    count = @article_manager.bookmarks_count
+    @badge.text = count.to_s
+    if count < CAUTION_BOOKMARKS_COUNT  
+      @badge.backgroundColor = BW.rgb_color(0, 255, 255)
+    elsif count < ALERT_BOOKMARKS_COUNT
+      @badge.backgroundColor = BW.rgb_color(255, 255, 0)
+    else
+      @badge.backgroundColor = BW.rgb_color(255, 0, 0)
+    end
   end
 
   def on_settings_button_tapped
