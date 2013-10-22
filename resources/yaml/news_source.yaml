@@ -3,15 +3,18 @@
   url: http://www.telegraph.co.uk/news/uknews/rss
   fetched_at: 2013-01-01 11:00:00
   image_path: enclosure.url
+  host: www.telegraph.co.uk
 
 - cc: 10011
   name: World News
   url: http://www.telegraph.co.uk/news/worldnews/rss
   fetched_at: 2013-01-01 11:00:00
   image_path: enclosure.url
+  host: www.telegraph.co.uk
 
 - cc: 10011
   name: Politics
   url: http://www.telegraph.co.uk/news/politics/rss
   fetched_at: 2013-01-01 11:00:00
   image_path: enclosure.url
+  host: www.telegraph.co.uk

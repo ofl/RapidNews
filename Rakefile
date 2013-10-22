@@ -6,6 +6,10 @@ require 'motion-fontawesome'
 require 'motion-cocoapods'
 require 'motion_model'
 require 'motion-yaml'
+require 'motion-my_env'
+require 'bubble-wrap'
+require 'ProMotion'
+require 'teacup'
 
 begin
   require 'bundler'

@@ -55,8 +55,9 @@ class Bookmarks::RootScreen < PM::TableScreen
     end
     {
       cell_identifier: "Cell",
-      cell_style: UITableViewCellStyleDefault,
+      cell_style: UITableViewCellStyleSubtitle,
       title: article.title,
+      subtitle: article.host,
       indentationLevel: 2,
       selectionStyle: UITableViewCellSelectionStyleGray,
       arguments: article,

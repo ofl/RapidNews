@@ -222,13 +222,17 @@ class MainScreen < PM::Screen
 
     observe(@article_manager, "count") do |old_value, new_value|
       Dispatch::Queue.main.async{
-        @slide_view.set_article_at_index(@article_manager.index)
+        if @article_manager.count > 0
+          @slide_view.set_article_at_index(@article_manager.index)
+        end
       }
     end
 
     observe(@article_manager, "index") do |old_value, new_value|
       Dispatch::Queue.main.async{
-        @slide_view.set_article_at_index(@article_manager.index)
+        if @article_manager.count > 0 && @article_manager.index < @article_manager.count
+          @slide_view.set_article_at_index(@article_manager.index)
+        end
       }
     end
 

@@ -8,6 +8,7 @@ class Article
           :summary      => :string,
           :cc           => :int,
           :link_url     => :string,
+          :host         => :string,
           :image_url    => :string,
           :pub_at       => :string,
           :is_bookmarked => :bool,
@@ -29,6 +30,7 @@ class Article
       article.pub_at        = item[:pubDate][:text]
       article.summary       = item[:description][:text].split('<')[0]
       article.link_url      = item[:link][:text]
+      article.host          = source.host
       article.is_checked    = false
       article.is_bookmarked = false
       article.image_url     = search_image_url(item, source.image_path)
