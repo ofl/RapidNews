@@ -91,7 +91,7 @@ class Settings::RootScreen < PM::GroupedTableScreen
           {
             title: "Swipe Left",
             indentationLevel: 2,
-            subtitle: RN::Titles::SWIPE_ACTION[App::Persistence['swipe_left']],
+            subtitle: RN::Titles::SWIPE_LEFT[App::Persistence['swipe_left']],
             action: :on_cell_tapped,
             arguments: { menu: "swipe_left" },
             accessoryType: UITableViewCellAccessoryDisclosureIndicator,
@@ -101,7 +101,7 @@ class Settings::RootScreen < PM::GroupedTableScreen
           {
             title: "Swipe Right",
             indentationLevel: 2,
-            subtitle: RN::Titles::SWIPE_ACTION[App::Persistence['swipe_right']],
+            subtitle: RN::Titles::SWIPE_RIGHT[App::Persistence['swipe_right']],
             action: :on_cell_tapped,
             arguments: { menu: "swipe_right" },
             accessoryType: UITableViewCellAccessoryDisclosureIndicator,
@@ -144,11 +144,7 @@ class Settings::RootScreen < PM::GroupedTableScreen
   end
 
   def on_cell_tapped(args = {})
-    if ['swipe_left', 'swipe_right'].include?(args[:menu])
-      property = "swipe_action"
-    else
-      property = args[:menu]
-    end
+    property = args[:menu]
     open Settings::PreferenceScreen.new(
       nav_bar: true,
       property: property,

@@ -215,13 +215,13 @@ class MainSlideView < UIView
   # 1, upper_viewをoffsetの2倍の距離下げる
   # 2, current_viewのalpha値を下げる
   # なければ(最初)
-  # current_viewをoffsetの半分の距離下げる
+  # current_viewをoffsetの0.25倍の距離下げる
   def move_down(current_view, upper_view, offset)
     if upper_view
       upper_view.frame = CGRectMake(0, offset * 2 - FRAME_HEIGHT, FRAME_WIDTH, FRAME_HEIGHT)
       current_view.alpha = 1.0 - (0.25 * offset / FRAME_HEIGHT)
     else
-      current_view.frame = CGRectMake(0, offset * 0.5, FRAME_WIDTH, FRAME_HEIGHT)
+      current_view.frame = CGRectMake(0, offset * 0.25, FRAME_WIDTH, FRAME_HEIGHT)
     end
   end
 
@@ -236,7 +236,7 @@ class MainSlideView < UIView
       current_view.frame = CGRectMake(0, offset, FRAME_WIDTH, FRAME_HEIGHT)
       lower_view.alpha = 0.75 - (0.25 * offset / FRAME_HEIGHT)
     else
-      current_view.frame = CGRectMake(0, offset * 0.5, FRAME_WIDTH, FRAME_HEIGHT)
+      current_view.frame = CGRectMake(0, offset * 0.25, FRAME_WIDTH, FRAME_HEIGHT)
     end
   end
 
@@ -284,7 +284,7 @@ class MainSlideView < UIView
   end
 
   def touchesCancelled(touches, withEvent: event)
-    p 'stay'
+    # p 'stay'
   end
 
   # Gesture
@@ -301,9 +301,9 @@ class MainSlideView < UIView
   def on_view_swiped(recognizer)
     case recognizer.direction
     when UISwipeGestureRecognizerDirectionRight
-      # gesture_action('swipe_up')
+      delegate.gesture_action('swipe_right')
     when UISwipeGestureRecognizerDirectionLeft
-      # gesture_action('swipe_down')
+      delegate.gesture_action('swipe_left')
     end
   end
 end
