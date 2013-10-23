@@ -1,17 +1,16 @@
 Teacup::Stylesheet.new :bookmarks_screen do
   style :button,
-    height: 22,
-    width: 22,
-    top: 13,
-    left: 8,
+    height: 42,
+    width: 38,
+    top: 1,
+    left: 0,
+    title: FontAwesome.icon('ok-sign'),
     font: FontAwesome.fontWithSize(20.0),
     titleColor: BW.rgb_color(200,200,200)
 
   style :checked_button, extends: :button,
-    title: FontAwesome.icon('ok-sign'),
     titleColor: BW.rgb_color(0,150,255)
 
   style :nochecked_button, extends: :button,
-    title: FontAwesome.icon('circle-blank'),
-    titleColor: BW.rgb_color(200,200,200)
+    titleColor: BW.rgb_color(230,230,230)
 end

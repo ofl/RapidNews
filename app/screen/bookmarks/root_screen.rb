@@ -55,13 +55,22 @@ class Bookmarks::RootScreen < PM::TableScreen
     end
     {
       cell_identifier: "Cell",
+      cell_class: PM::TableViewCell,
       cell_style: UITableViewCellStyleSubtitle,
       title: article.title,
-      subtitle: article.host,
+      subtitle: "#{article.host} - #{article.since_post}",
       indentationLevel: 2,
       selectionStyle: UITableViewCellSelectionStyleGray,
       arguments: article,
+      action: :on_cell_tapped,
       subviews: [button],
+      textLabel: {
+        font: UIFont.systemFontOfSize(14.0)
+      },
+      detailTextLabel: {
+        textColor: BW.rgb_color(120,120,120),
+        font: UIFont.systemFontOfSize(11.0)
+      }
     }
   end
 
@@ -78,7 +87,9 @@ class Bookmarks::RootScreen < PM::TableScreen
   end
 
   def on_cell_tapped(article)
-    p 'tapped'
+    open Preview::RootScreen.new(nav_bar: true,
+                                is_modal: false,
+                                article: article)
   end
 
   def on_trash_button_tapped

@@ -55,6 +55,23 @@ class Article
     end
   end
 
+  # https://gist.github.com/is8r/5855992
+  def since_post
+    date = NSDate.dateWithNaturalLanguageString(self.pub_at)
+    now = NSDate.dateWithTimeIntervalSinceNow(NSTimeZone.systemTimeZone.secondsFromGMT)
+    since = now.timeIntervalSinceDate(date)
+    day = (since/(24*60*60)).floor
+    hour = (since/(60*60)).floor
+    minutes = ((since/60)%60).to_i
+    if hour == 0
+      return "#{minutes}m ago"
+    elsif day == 0
+      return "#{hour}h ago"
+    else
+      return "#{day}d ago"
+    end
+  end
+
   def company
     NewsCompany.where(:cc).eq(self.cc).first
   end  

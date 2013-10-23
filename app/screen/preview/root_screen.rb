@@ -5,7 +5,7 @@ class Preview::RootScreen < PM::WebScreen
   QVToolBarScrollStatusInit = 0
   QVToolBarScrollStatusAnimation = 1
 
-  attr_accessor :article
+  attr_accessor :article, :is_modal
 
   def will_appear
     @url = @article.link_url
@@ -46,9 +46,11 @@ class Preview::RootScreen < PM::WebScreen
       self.navigationItem.rightBarButtonItem = UIBarButtonItem.alloc.initWithBarButtonSystemItem(UIBarButtonSystemItemRefresh,
                                                                                target: self,
                                                                                action: "on_refresh_tapped")
-      self.navigationItem.leftBarButtonItem = UIBarButtonItem.alloc.initWithBarButtonSystemItem(UIBarButtonSystemItemStop,
-                                                                              target: self,
-                                                                              action: "close_screen")
+      if is_modal
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem.alloc.initWithBarButtonSystemItem(UIBarButtonSystemItemStop,
+                                                                                target: self,
+                                                                                action: "close_screen")
+      end
 
       @toolbar = self.navigationController.toolbar
       @button_is_set_up ||= set_up_buttons

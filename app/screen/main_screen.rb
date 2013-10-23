@@ -151,6 +151,7 @@ class MainScreen < PM::Screen
   def open_preview_screen
     open_modal Preview::RootScreen.new(
       nav_bar: true,
+      is_modal: true,
       article: @article_manager.displaying,
       modalTransitionStyle: UIModalTransitionStyleCrossDissolve
     )
