@@ -8,6 +8,7 @@ class Article
           :summary      => :string,
           :cc           => :int,
           :link_url     => :string,
+          :host         => :string,
           :image_url    => :string,
           :pub_at       => :string,
           :is_bookmarked => :bool,
@@ -29,6 +30,7 @@ class Article
       article.pub_at        = item[:pubDate][:text]
       article.summary       = item[:description][:text].split('<')[0]
       article.link_url      = item[:link][:text]
+      article.host          = source.host
       article.is_checked    = false
       article.is_bookmarked = false
       article.image_url     = search_image_url(item, source.image_path)
@@ -50,6 +52,23 @@ class Article
 
     def bookmarks
       self.where(:is_bookmarked).eq(true).order{ |one, two| two.id <=> one.id }.all
+    end
+  end
+
+  # https://gist.github.com/is8r/5855992
+  def since_post
+    date = NSDate.dateWithNaturalLanguageString(self.pub_at)
+    now = NSDate.dateWithTimeIntervalSinceNow(NSTimeZone.systemTimeZone.secondsFromGMT)
+    since = now.timeIntervalSinceDate(date)
+    day = (since/(24*60*60)).floor
+    hour = (since/(60*60)).floor
+    minutes = ((since/60)%60).to_i
+    if hour == 0
+      return "#{minutes}m ago"
+    elsif day == 0
+      return "#{hour}h ago"
+    else
+      return "#{day}d ago"
     end
   end
 
