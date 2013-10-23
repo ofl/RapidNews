@@ -13,16 +13,21 @@ class Preview::RootScreen < PM::WebScreen
     @beginScrollOffsetY = 0
     @toolbarScrollStatus = QVToolBarScrollStatusInit
     @toolbar_hidden = false
-    self.navigationController.navigationBarHidden = false
-    self.navigationController.setToolbarHidden(false, animated:false)
-    self.automaticallyAdjustsScrollViewInsets = false
 
     @view_is_set_up ||= set_up_view
+  end
+
+  def will_disappear
+    webview.delegate = nil
+    webview.stopLoading
   end
 
   def set_up_view
     layout(self.view, :base_view)  do
       self.webview.stylename = :webview
+      self.navigationController.navigationBarHidden = false
+      self.navigationController.setToolbarHidden(false, animated:false)
+      self.automaticallyAdjustsScrollViewInsets = false
 
       self.navigationItem.titleView = UIView.new.tap do |t|
         t.frame = [[0, 0], [App.frame.size.width - 100, 40]]
@@ -114,10 +119,6 @@ class Preview::RootScreen < PM::WebScreen
   def load_failed(error)
     @url = ''
     @page_title = error
-  end
-
-  def will_disappear
-    # self.navigation_controller.navigationBarHidden = true
   end
 
   def open_activity
