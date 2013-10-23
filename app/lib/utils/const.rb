@@ -27,7 +27,7 @@ module RapidNews
       LARGE = 2
     end
 
-    module SwipeAction
+    module SwipeRight
       START = 0
       STOP = 1
       PREVIEW = 2
@@ -37,8 +37,22 @@ module RapidNews
       TWEET = 6
       FACEBOOK = 7
       POCKET = 8
-      INSTAPAPER = 9
-      READABILITY = 10
+      # INSTAPAPER = 9
+      # READABILITY = 10
+    end
+
+    module SwipeLeft
+      START = 0
+      STOP = 1
+      PREVIEW = 2
+      BOOKMARK = 3
+      SAFARI = 4
+      CHROME = 5
+      TWEET = 6
+      FACEBOOK = 7
+      POCKET = 8
+      # INSTAPAPER = 9
+      # READABILITY = 10
     end
 
     module BookmarkReader
@@ -98,18 +112,32 @@ module RapidNews
       Const::FontSize::LARGE    => 'large',
     }
 
-    SWIPE_ACTION = {
-      Const::SwipeAction::START       => 'start',
-      Const::SwipeAction::STOP        => 'stop',
-      Const::SwipeAction::PREVIEW     => 'preview',
-      Const::SwipeAction::BOOKMARK    => 'bookmark',
-      Const::SwipeAction::SAFARI      => 'safari',
-      Const::SwipeAction::CHROME      => 'chrome',
-      Const::SwipeAction::TWEET       => 'tweet',
-      Const::SwipeAction::FACEBOOK    => 'facebook',
-      Const::SwipeAction::POCKET      => 'pocket',
-      Const::SwipeAction::INSTAPAPER  => 'instapaper',
-      Const::SwipeAction::READABILITY => 'readability',
+    SWIPE_RIGHT = {
+      Const::SwipeRight::START       => 'start',
+      Const::SwipeRight::STOP        => 'stop',
+      Const::SwipeRight::PREVIEW     => 'preview',
+      Const::SwipeRight::BOOKMARK    => 'bookmark',
+      Const::SwipeRight::SAFARI      => 'safari',
+      Const::SwipeRight::CHROME      => 'chrome',
+      Const::SwipeRight::TWEET       => 'tweet',
+      Const::SwipeRight::FACEBOOK    => 'facebook',
+      Const::SwipeRight::POCKET      => 'pocket',
+      # Const::SwipeRight::INSTAPAPER  => 'instapaper',
+      # Const::SwipeRight::READABILITY => 'readability',
+    }
+
+    SWIPE_LEFT = {
+      Const::SwipeLeft::START       => 'start',
+      Const::SwipeLeft::STOP        => 'stop',
+      Const::SwipeLeft::PREVIEW     => 'preview',
+      Const::SwipeLeft::BOOKMARK    => 'bookmark',
+      Const::SwipeLeft::SAFARI      => 'safari',
+      Const::SwipeLeft::CHROME      => 'chrome',
+      Const::SwipeLeft::TWEET       => 'tweet',
+      Const::SwipeLeft::FACEBOOK    => 'facebook',
+      Const::SwipeLeft::POCKET      => 'pocket',
+      # Const::SwipeLeft::INSTAPAPER  => 'instapaper',
+      # Const::SwipeLeft::READABILITY => 'readability',
     }
 
     BOOKMARK_READER = {

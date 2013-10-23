@@ -6,8 +6,8 @@ module RapidNews
       App::Persistence['accelerate'] ||= RN::Const::Accelerate::YES
       App::Persistence['font_size']  ||= RN::Const::FontSize::MEDIUM
       App::Persistence['design']     ||= RN::Const::Design::BLACK
-      App::Persistence['swipe_left'] ||= RN::Const::SwipeAction::PREVIEW
-      App::Persistence['swipe_right'] ||= RN::Const::SwipeAction::BOOKMARK
+      App::Persistence['swipe_left'] ||= RN::Const::SwipeLeft::PREVIEW
+      App::Persistence['swipe_right'] ||= RN::Const::SwipeRight::BOOKMARK
       App::Persistence['lang']       ||= ['en_US', 'en_GB', 'ja_JP']
       App::Persistence['index']      ||= 0
       App::Persistence['bookmark_readers'] ||= [RN::Const::BookmarkReader::EMAIL, RN::Const::BookmarkReader::POCKET]

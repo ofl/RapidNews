@@ -293,22 +293,22 @@ class MainScreen < PM::Screen
 
   def gesture_action(direction)
     case App::Persistence[direction]
-    when RN::Const::SwipeAction::START
+    when RN::Const::SwipeLeft::START, RN::Const::SwipeRight::START
       start_reading
-    when RN::Const::SwipeAction::STOP
+    when RN::Const::SwipeLeft::STOP, RN::Const::SwipeRight::STOP
       stop_reading
-    when RN::Const::SwipeAction::PREVIEW
+    when RN::Const::SwipeLeft::PREVIEW, RN::Const::SwipeRight::PREVIEW
       open_preview_screen
-    when RN::Const::SwipeAction::BOOKMARK
-      add_to_bookmarked
-    when RN::Const::SwipeAction::SAFARI
+    when RN::Const::SwipeLeft::BOOKMARK, RN::Const::SwipeRight::BOOKMARK
+      add_to_bookmark
+    when RN::Const::SwipeLeft::SAFARI, RN::Const::SwipeRight::SAFARI
       UIApplication.sharedApplication.openURL(NSURL.URLWithString(@article_manager.displaying.link_url))
-    when RN::Const::SwipeAction::CHROME
+    when RN::Const::SwipeLeft::CHROME, RN::Const::SwipeRight::CHROME
       # sdk, urlscheme,  x-callback-url
-    when RN::Const::SwipeAction::TWEET
-    when RN::Const::SwipeAction::FACEBOOK
-    when RN::Const::SwipeAction::POCKET
-    when RN::Const::SwipeAction::READABILITY
+    when RN::Const::SwipeLeft::TWEET, RN::Const::SwipeRight::TWEET
+    when RN::Const::SwipeLeft::FACEBOOK, RN::Const::SwipeRight::FACEBOOK
+    when RN::Const::SwipeLeft::POCKET, RN::Const::SwipeRight::POCKET
+    # when RN::Const::SwipeLeft::READABILITY, RN::Const::SwipeRight::READABILITY
       true
     end
   end
