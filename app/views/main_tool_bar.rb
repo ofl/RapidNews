@@ -118,7 +118,7 @@ class MainToolBar < TransparentToolbar
       if @article_manager.can_go_forward
         @article_manager.is_reading = true
       else
-        self.delegate.confirm_load_article
+        self.delegate.open_channel_modal_view
       end
     end
   end

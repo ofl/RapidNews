@@ -10,4 +10,4 @@ gem 'motion-my_env', :git => 'git@github.com:Watson1978/motion-my_env.git'
 gem 'motion-fontawesome', :git => 'git@github.com:trivektor/fontawesome.git'
 
 gem "ProMotion", "~> 1.0.3" 
-gem "motion_model"
+gem "motion_model", "0.4.4"

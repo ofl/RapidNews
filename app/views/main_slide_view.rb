@@ -279,7 +279,7 @@ class MainSlideView < UIView
     if lower_view
       slide_up
     else
-      delegate.confirm_load_article
+      delegate.open_channel_modal_view
     end
   end
 

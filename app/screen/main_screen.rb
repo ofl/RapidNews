@@ -19,15 +19,6 @@ class MainScreen < PM::Screen
     @view_setup ||= set_up_view
   end
 
-  def actionSheet(actionSheet, clickedButtonAtIndex: buttonIndex)
-    case buttonIndex
-    when 0
-      if refresh_default_channel
-        SVProgressHUD.showWithStatus("Loading...")
-      end
-    end
-  end
-
   def set_up_view
     layout(self.view, :base_view) do # from rubymotion/TeaCup
       self.navigation_controller.navigationBarHidden = true
@@ -157,40 +148,32 @@ class MainScreen < PM::Screen
     )
   end
 
+  def open_channel_modal_view
+    channels_modal_view = ChannelsModalView.new
+    channels_modal_view.delegate = self
+    self.navigation_controller.presentSemiView(channels_modal_view, withOptions:{})    
+  end
+
   def add_to_bookmark
     App.alert("No article is selected.") unless @article_manager.add_to_bookmarks
   end
 
-  def refresh_default_channel
-    @channel = Channel.find(App::Persistence['default_channel_id'])
-    @channel ||= Channel.where(:is_checked).eq(true).order(:position).first
-    if @channel
-      ids = @channel.news_sources.all.map(&:id)
-      if ids.length > 0
-        ids.each do |id|
-          source = NewsSource.find(id)
-          source.crawl_articles if source
-        end
-        true
-      else
-        App.alert("No source is selected.")
-        false
+  def load_channel_articles(channel_id)
+    @channel = Channel.find(channel_id)
+    ids = @channel.news_sources.all.map(&:id)
+    if ids.count > 0
+      ids.each do |id|
+        source = NewsSource.find(id)
+        source.crawl_articles if source
       end
+      SVProgressHUD.showWithStatus("Loading...")
     else
-      App.alert("No channel is selected.")
-      false
-    end
+      App.alert("No source is selected.")
+    end    
   end
 
-  def confirm_load_article
-    action_sheet = UIActionSheet.alloc.init.tap do |as|
-      as.delegate = self
-      as.title = 'Load Default Channel?'
-      as.addButtonWithTitle('Load')
-      as.addButtonWithTitle('Cancel')
-      as.cancelButtonIndex = 1
-    end
-    action_sheet.showInView(self.view)
+  def dismiss_channel_view
+    self.navigation_controller.dismissSemiModalView
   end
 
 
