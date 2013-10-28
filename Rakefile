@@ -45,6 +45,7 @@ Motion::Project::App.setup do |app|
     pod 'AFNetworking', '~> 1.3'
     pod 'SVProgressHUD'
     pod 'FXReachability'
+    pod 'KNSemiModalViewController'
   end
 
   app.entitlements['keychain-access-groups'] = [app.seed_id + '.' + app.identifier]  
