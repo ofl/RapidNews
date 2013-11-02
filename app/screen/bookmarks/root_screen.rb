@@ -2,6 +2,8 @@
 class Bookmarks::RootScreen < PM::TableScreen
   stylesheet :bookmarks_screen
 
+  title "Bookmarks"
+
   def will_appear
     @article_manager = ArticleManager.instance
     @view_is_set_up ||= set_up_view

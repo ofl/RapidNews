@@ -1,14 +1,14 @@
-class Channels::CountriesCompaniesSourcesDetailFeedsScreen < PM::TableScreen
+class Channels::ChannelFeedsScreen < PM::TableScreen
   attr_accessor :link_url
   title "BlankNews"
   refreshable callback: :on_refresh,
     pull_message: "Pull to refresh",
     refreshing: "Refreshing data..."
 
-  stylesheet :channels_settings_countries_companies_sources_detail_feeds_screen
+  stylesheet :channel_feeds_screen
 
   def fetch_feed
-    BW::HTTP.get(self.link_url) do |res|
+    BW::HTTP.get(@link_url) do |res|
       items = []
       if res.ok?
         BW::RSSParser.new(res.body.to_str, true).parse do |item|
