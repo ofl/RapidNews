@@ -1,5 +1,5 @@
-class Channels::ChannelsDetailScreen < PM::GroupedTableScreen
-  stylesheet :channels_settings_channel_detail_screen
+class Channels::EditScreen < PM::GroupedTableScreen
+  stylesheet :channels_edit_screen
 
   attr_accessor :id
 
@@ -12,10 +12,7 @@ class Channels::ChannelsDetailScreen < PM::GroupedTableScreen
   end
 
   def settiing
-    @text_field = UITextField.new
-    @text_field.delegate = self    
-    set_attributes @text_field, {stylename: :text_field}
-    @text_field.text = @channel.name
+    @text_field = create_text_field
     [
       {
         cells: [
@@ -24,8 +21,7 @@ class Channels::ChannelsDetailScreen < PM::GroupedTableScreen
             selectionStyle: UITableViewCellSelectionStyleNone,
             value: @channel.name,
             accessory: {
-              view: @text_field,
-              arguments: {}
+              view: @text_field
             }
           }, {
             title: "Enabled",
@@ -38,18 +34,21 @@ class Channels::ChannelsDetailScreen < PM::GroupedTableScreen
             }
           }
         ]
-      },
-      {
-        title: 'Sources',
-        cells: [
-          {
-            title: "Sources",
-            action: :on_cell_tapped,
-            accessoryType: UITableViewCellAccessoryDisclosureIndicator
-          }
-        ]
       }
     ]
+  end
+
+  def create_text_field
+    text_field = UITextField.alloc.initWithFrame(CGRectMake(100, 10, 200, 22)).tap do |tf|
+      tf.delegate = self
+      tf.text = @channel.name
+      tf.autocorrectionType = UITextAutocorrectionTypeNo
+      tf.autocapitalizationType = UITextAutocapitalizationTypeNone
+      tf.textAlignment = UITextAlignmentRight
+      tf.returnKeyType = UIReturnKeyDone
+      tf.placeholder = 'Channel Name'
+      tf.textColor = BW.rgb_color(0,0,255)
+    end
   end
 
   def table_data
@@ -65,21 +64,16 @@ class Channels::ChannelsDetailScreen < PM::GroupedTableScreen
   def on_switch_changed(args={})
     @channel.is_checked = args[:value]
     @channel.save
-    Channel.load_from_file
+    Channel.save_to_file
 
     @is_saved = true
-  end
-
-  def on_cell_tapped
-    open Channels::ChannelsDetailSourcesScreen.new(nav_bar: true, 
-                                                   channel_id: @channel.id)
   end
 
   def will_dismiss
     unless @channel.name == @text_field.text
       @channel.name = @text_field.text
       @channel.save
-      Channel.load_from_file
+      Channel.save_to_file
       @is_saved = true
     end
     self.parent_screen.on_return(model_saved: @is_saved)

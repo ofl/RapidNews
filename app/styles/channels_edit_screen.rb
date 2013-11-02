@@ -1,4 +1,4 @@
-Teacup::Stylesheet.new :channels_settings_channel_detail_screen do
+Teacup::Stylesheet.new :channels_edit_screen do
   style :titleLabel,
     top: 5,
     left: 87,

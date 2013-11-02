@@ -5,14 +5,15 @@ class NewsSource
   include RapidNews::Model
 
   columns :name        => :string,
+    :category    => :int,
+    :country     => :string,
     :cc          => :int,
     :url         => :string,
     :host        => :string,
     :position    => :int,
     :fetched_at  => :date,
-    :image_path  => :string
-
-  belongs_to  :channel
+    :image_path  => :string,
+    :channels    => :array
 
   def company
     Company.where(:cc).eq(self.cc).first

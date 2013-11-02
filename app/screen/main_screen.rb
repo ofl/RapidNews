@@ -160,7 +160,7 @@ class MainScreen < PM::Screen
 
   def load_channel_articles(channel_id)
     @channel = Channel.find(channel_id)
-    ids = @channel.news_sources.all.map(&:id)
+    ids = @channel.news_sources.map(&:id)
     if ids.count > 0
       ids.each do |id|
         source = NewsSource.find(id)
@@ -180,13 +180,6 @@ class MainScreen < PM::Screen
   #Event handler
 
   def add_observers
-    BW::App.notification_center.observe Channels::RootScreen::CrawlNewsSource do |n|
-      n.userInfo[:ids].each do |id|
-        source = NewsSource.find(id)
-        source.crawl_articles if source
-      end
-    end
-
     BW::App.notification_center.observe FXReachabilityStatusDidChangeNotification do |n|
       @article_manager.set_online_status FXReachability.sharedInstance.status
     end

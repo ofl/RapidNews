@@ -1,5 +1,16 @@
 module RapidNews
   module Const
+    module Category
+      SOCIAL = 0
+      BUSINESS = 1
+      ENTERTAINMENT = 2
+      SPORTS = 3
+      TECHNOLOGY = 4
+      POLITICS = 5
+      SCIENCE = 6
+      WORLD = 7
+    end
+
     module Speed
       FIXED = 0
       VARIABLE = 1
@@ -84,6 +95,17 @@ module RapidNews
   end
 
   module Titles
+    CATEGORY = {
+      Const::Category::SOCIAL => 'social',
+      Const::Category::BUSINESS => 'business',
+      Const::Category::ENTERTAINMENT => 'ent',
+      Const::Category::SPORTS => 'sports',
+      Const::Category::TECHNOLOGY => 'tech',
+      Const::Category::POLITICS => 'politics',
+      Const::Category::SCIENCE => 'sience',
+      Const::Category::WORLD => 'world'
+    }
+
     ARTICLES_SIZE = {
       # Const::ArticlesSize::SMALL       => "250",
       Const::ArticlesSize::SMALL       => "20",

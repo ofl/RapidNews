@@ -1,4 +1,4 @@
-Teacup::Stylesheet.new :channels_settings_countries_companies_sources_detail_feeds_screen do
+Teacup::Stylesheet.new :channel_feeds_screen do
   style UILabel,
     top: 10,
     left: 10,
