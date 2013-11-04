@@ -2,7 +2,6 @@
 $:.unshift("/Library/RubyMotion/lib")
 
 require 'motion/project/template/ios'
-require 'motion-fontawesome'
 require 'motion-cocoapods'
 require 'motion_model'
 require 'motion-yaml'
@@ -30,6 +29,7 @@ Motion::Project::App.setup do |app|
     { 'CFBundleURLName' => 'com.getpocket.sdk', 'CFBundleURLSchemes' => ['pocketapp17764']},
   ]  
   app.my_env.file = 'Resources/yaml/environment.yaml'
+  app.fonts = ["ionicons.ttf"]  
 
   app.libs += ['/usr/lib/libsqlite3.dylib']
   app.frameworks += %w(Security SafariServices MessageUI MapKit QuartzCore)

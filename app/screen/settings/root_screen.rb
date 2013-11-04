@@ -26,6 +26,7 @@ class Settings::RootScreen < PM::GroupedTableScreen
             action: :on_cell_tapped,
             arguments: { menu: :articles_size },
             accessoryType: UITableViewCellAccessoryDisclosureIndicator,
+            subviews: [icon_label(0xe6ef)],
             cell_style: UITableViewCellStyleValue1,
           },
         ]
@@ -39,6 +40,7 @@ class Settings::RootScreen < PM::GroupedTableScreen
             action: :on_cell_tapped,
             arguments: { menu: :speed },
             accessoryType: UITableViewCellAccessoryDisclosureIndicator,
+            subviews: [icon_label(0xe64d)],
             cell_style: UITableViewCellStyleValue1,
           },
           {
@@ -82,6 +84,7 @@ class Settings::RootScreen < PM::GroupedTableScreen
             action: :on_share_cell_tapped,
             arguments: { menu: :share },
             accessoryType: UITableViewCellAccessoryDisclosureIndicator,
+            subviews: [icon_label(0xe6ef)],
             cell_style: UITableViewCellStyleValue1,
           }
         ]
@@ -95,7 +98,7 @@ class Settings::RootScreen < PM::GroupedTableScreen
             action: :on_cell_tapped,
             arguments: { menu: "swipe_left" },
             accessoryType: UITableViewCellAccessoryDisclosureIndicator,
-            subviews: [icon_label('arrow-left')],
+            subviews: [icon_label(0xe6e7)],
             cell_style: UITableViewCellStyleValue1,
           },
           {
@@ -105,7 +108,7 @@ class Settings::RootScreen < PM::GroupedTableScreen
             action: :on_cell_tapped,
             arguments: { menu: "swipe_right" },
             accessoryType: UITableViewCellAccessoryDisclosureIndicator,
-            subviews: [icon_label('arrow-right')],
+            subviews: [icon_label(0xe6e6)],
             cell_style: UITableViewCellStyleValue1,
           }
         ]
@@ -117,7 +120,7 @@ class Settings::RootScreen < PM::GroupedTableScreen
             indentationLevel: 2,
             action: :on_cell_tapped,
             arguments: { menu: "web" },
-            subviews: [icon_label('globe')],
+            subviews: [icon_label(0xe62f)],
             accessoryType: UITableViewCellAccessoryNone
           },
           {
@@ -125,7 +128,7 @@ class Settings::RootScreen < PM::GroupedTableScreen
             indentationLevel: 2,
             action: :on_cell_tapped,
             arguments: { menu: "email" },
-            subviews: [icon_label('envelope-alt')],
+            subviews: [icon_label(0xe6af)],
             accessoryType: UITableViewCellAccessoryNone,
           },
         ]
@@ -133,13 +136,13 @@ class Settings::RootScreen < PM::GroupedTableScreen
     ]
   end
 
-  def icon_label(icon)
+  def icon_label(character)
     UILabel.new.tap do |l|
       l.frame = [[10, 13], [20, 20]]
       l.backgroundColor = UIColor.clearColor
-      l.text = FontAwesome.icon(icon)
+      l.text = character.chr(Encoding::UTF_8)
       l.textColor = rgb_color(0,0,0)
-      l.font = FontAwesome.fontWithSize(17.0)
+      l.font = UIFont.fontWithName("ionicons", size:17.0)
     end
   end
 

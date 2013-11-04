@@ -14,6 +14,7 @@ class Bookmarks::RootScreen < PM::TableScreen
     set_nav_bar_button :right, title: "Setting", action: :open_bookmark_settings
     set_nav_bar_button :left, system_item: :close, action: :on_close_button_tapped
     self.navigationController.setToolbarHidden(false, animated:false)
+    self.tableView.setSeparatorInset(UIEdgeInsetsMake(43, 55, 0, 2))
     @buttons ||= set_toolbar_buttons
     true
   end
@@ -61,17 +62,19 @@ class Bookmarks::RootScreen < PM::TableScreen
       cell_style: UITableViewCellStyleSubtitle,
       title: article.title,
       subtitle: "#{article.host} - #{article.since_post}",
-      indentationLevel: 2,
+      # indentationLevel: 2,
       selectionStyle: UITableViewCellSelectionStyleGray,
+      accessoryType: UITableViewCellAccessoryDisclosureIndicator,
       arguments: article,
       action: :on_cell_tapped,
       subviews: [button],
       textLabel: {
-        font: UIFont.systemFontOfSize(14.0)
+        font: UIFont.systemFontOfSize(13.0)
       },
       detailTextLabel: {
+        frame: CGRectMake(35, 32, 150, 12),
         textColor: BW.rgb_color(120,120,120),
-        font: UIFont.systemFontOfSize(11.0)
+        font: UIFont.systemFontOfSize(10.0)
       }
     }
   end
