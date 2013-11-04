@@ -10,6 +10,5 @@ Teacup::Stylesheet.new :main_navigation_bar do
     height: 16,
     width: 18,
     textAlignment: UITextAlignmentCenter,
-    font: FontAwesome.fontWithSize(10.0),
     titleColor: BW.rgb_color(255,255,255)
 end

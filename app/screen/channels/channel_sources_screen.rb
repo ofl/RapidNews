@@ -88,6 +88,9 @@ class Channels::ChannelSourcesScreen < PM::Screen
 end
 
 class SourcesTableScreen < PM::TableScreen
+
+  stylesheet :channel_sources_screen
+
   attr_accessor :category_id, :channel_id, :delegate
 
   def on_load
@@ -101,6 +104,11 @@ class SourcesTableScreen < PM::TableScreen
 
   def create_cell(news_source)
     registered = news_source.channels ? news_source.channels.include?(@channel_id) : false
+
+    button = UIButton.new
+    button.stylename = :disclosure_button
+    button.when(UIControlEventTouchUpInside) { toggle_checked_button(news_source.url) }
+
     {
       cell_identifier: "Cell",
       cell_style: UITableViewCellStyleSubtitle,
@@ -109,7 +117,7 @@ class SourcesTableScreen < PM::TableScreen
       subtitle: news_source.host,
       action: :on_cell_tapped,
       arguments: {id: news_source.id, link_url: news_source.url},
-      subviews: [status_view(registered)]
+      subviews: [status_view(registered),button],
     }
   end
 
@@ -125,6 +133,10 @@ class SourcesTableScreen < PM::TableScreen
     update_table_data
   end
 
+  def on_disclosure_button_tapped(url)
+    delegate.open_feeds(url)    
+  end
+
   def on_cell_tapped(args={})
     news_source = NewsSource.find(args[:id])
     if news_source.channels && news_source.channels.include?(@channel.id)
@@ -133,6 +145,5 @@ class SourcesTableScreen < PM::TableScreen
       @channel.regist(news_source)
     end
     update_table_data
-    # delegate.open_feeds(args[:link_url])
   end
 end

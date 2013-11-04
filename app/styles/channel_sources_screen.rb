@@ -23,4 +23,17 @@ Teacup::Stylesheet.new :channel_sources_screen do
     width: 70,
     height: 4,
     backgroundColor: BW.rgb_color(0, 255, 255)
+
+  style :button,
+    height: 42,
+    width: 50,
+    top: 1,
+    left: 0,
+    title: 0xe6c7.chr(Encoding::UTF_8),
+    font: UIFont.fontWithName("ionicons", size:20.0),
+    titleColor: BW.rgb_color(200,200,200)
+
+  style :disclosure_button, extends: :button,
+    titleColor: BW.rgb_color(0,150,255)
+
 end
