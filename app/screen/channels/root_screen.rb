@@ -86,8 +86,7 @@ class Channels::RootScreen < PM::TableScreen
     self.table_view.setEditing(editing, animated:true)
     if editing
       @editing = true
-      addButton = UIBarButtonItem.alloc.initWithBarButtonSystemItem(UIBarButtonSystemItemAdd, target:self, action:'add_row')
-      self.navigationItem.setLeftBarButtonItem(addButton, animated:true) 
+      self.navigationItem.setLeftBarButtonItem(nil, animated:true) 
     else 
       @editing = false
       set_nav_bar_button :left, system_item: :close, action: :on_close_button_tapped

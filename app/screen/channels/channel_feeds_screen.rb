@@ -1,6 +1,6 @@
 class Channels::ChannelFeedsScreen < PM::TableScreen
-  attr_accessor :link_url
-  title "BlankNews"
+  attr_accessor :link_url, :title
+
   refreshable callback: :on_refresh,
     pull_message: "Pull to refresh",
     refreshing: "Refreshing data..."
@@ -50,6 +50,7 @@ class Channels::ChannelFeedsScreen < PM::TableScreen
   end
 
   def will_appear
+    self.title = @title
     fetch_feed
   end
 

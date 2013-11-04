@@ -71,8 +71,4 @@ class Article
       return "#{day}d ago"
     end
   end
-
-  def company
-    NewsCompany.where(:cc).eq(self.cc).first
-  end  
 end

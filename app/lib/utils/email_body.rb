@@ -7,7 +7,7 @@ module RapidNews
       date = Time.now.strftime("%Y.%m.%d")
       bookmark_list = ''
       bookmarks.each do |bookmark|
-        host_name = bookmark.company.host_name
+        host_name = bookmark.host
         if bookmark.image_url
           image_tag = <<"EOI"
 <div style="max-height:110px;overflow:hidden;float:left">

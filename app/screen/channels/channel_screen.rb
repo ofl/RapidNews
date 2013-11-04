@@ -14,7 +14,8 @@ class Channels::ChannelScreen < PM::TableScreen
 
   def will_appear
     self.title = @channel.name
-    self.navigationItem.rightBarButtonItem = self.editButtonItem
+    addButton = UIBarButtonItem.alloc.initWithBarButtonSystemItem(UIBarButtonSystemItemAdd, target:self, action:'add_source')
+    self.navigationItem.rightBarButtonItem = addButton
   end
 
   def set_up_table_view
@@ -35,8 +36,7 @@ class Channels::ChannelScreen < PM::TableScreen
       title: news_source.name,
       action: :on_cell_tapped,
       accessoryType: UITableViewCellAccessoryDisclosureIndicator,
-      arguments: {id: news_source.id, link_url: news_source.url},
-      editing_style: :delete,
+      arguments: {id: news_source.id, link_url: news_source.url}
     }
   end
 
@@ -52,12 +52,6 @@ class Channels::ChannelScreen < PM::TableScreen
     false
   end
 
-  def on_cell_deleted(cell)
-    news_source = NewsSource.find(cell[:arguments][:id])
-    @channel.unregist(news_source)
-    true
-  end
-
   def on_cell_tapped(args={})
     open Channels::ChannelFeedsScreen.new({nav_bar: true, link_url: args[:link_url]})
   end
@@ -65,19 +59,6 @@ class Channels::ChannelScreen < PM::TableScreen
   def on_return(args = {})
     if args[:model_saved]
       update_table_data
-    end
-  end
-
-  def setEditing(editing, animated: animated)
-    super
-    self.table_view.setEditing(editing, animated:true)
-    if editing
-      @editing = true
-      addButton = UIBarButtonItem.alloc.initWithBarButtonSystemItem(UIBarButtonSystemItemAdd, target:self, action:'add_source')
-      self.navigationItem.setLeftBarButtonItem(addButton, animated:true) 
-    else 
-      @editing = false
-      self.navigationItem.setLeftBarButtonItem(nil, animated:true) 
     end
   end
 

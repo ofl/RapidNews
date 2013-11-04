@@ -22,7 +22,7 @@ class AppDelegate < PM::Delegate
 
   def load_data
     RN::Preference.load
-    [Channel, NewsCompany, NewsSource, Article].each do |klass|
+    [Channel, NewsSource, Article].each do |klass|
       klass.load_from_file
     end
   end
