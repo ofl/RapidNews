@@ -6,7 +6,6 @@ class Article
 
   columns :title        => :string,
           :summary      => :string,
-          :cc           => :int,
           :link_url     => :string,
           :host         => :string,
           :image_url    => :string,
@@ -25,7 +24,6 @@ class Article
       article = self.new({:link_url => item[:link][:text]})
       return nil if self.where(:link_url).eq(article.link_url).count > 0
 
-      article.cc            = source.cc
       article.title         = item[:title][:text]
       article.pub_at        = item[:pubDate][:text]
       article.summary       = item[:description][:text].split('<')[0]

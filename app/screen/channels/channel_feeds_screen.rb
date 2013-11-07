@@ -1,5 +1,5 @@
 class Channels::ChannelFeedsScreen < PM::TableScreen
-  attr_accessor :link_url, :title
+  attr_accessor :channel_id, :news_source_id
 
   refreshable callback: :on_refresh,
     pull_message: "Pull to refresh",
@@ -8,7 +8,7 @@ class Channels::ChannelFeedsScreen < PM::TableScreen
   stylesheet :channel_feeds_screen
 
   def fetch_feed
-    BW::HTTP.get(@link_url) do |res|
+    BW::HTTP.get(@news_source.url) do |res|
       items = []
       if res.ok?
         BW::RSSParser.new(res.body.to_str, true).parse do |item|
@@ -49,8 +49,15 @@ class Channels::ChannelFeedsScreen < PM::TableScreen
     }
   end
 
+  def open_feeds_detail
+    open Channels::ChannelFeedsDetailScreen.new(nav_bar: true, id: @news_source.id)    
+  end
+
   def will_appear
-    self.title = @title
+    @channel = Channel.find(@channel_id)
+    @news_source = NewsSource.find(@news_source_id)
+    self.title = @news_source.name
+    set_nav_bar_button :right, title: "Setting", action: :open_feeds_detail
     fetch_feed
   end
 

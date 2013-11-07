@@ -11,6 +11,12 @@ module RapidNews
       WORLD = 7
     end
 
+    module Country
+      USA = 'us'
+      UK = 'uk'
+      JAPAN = 'jp'
+    end
+
     module Speed
       FIXED = 0
       VARIABLE = 1
@@ -104,6 +110,12 @@ module RapidNews
       Const::Category::POLITICS => 'politics',
       Const::Category::SCIENCE => 'sience',
       Const::Category::WORLD => 'world'
+    }
+
+    COUNTRY = {
+      Const::Country::USA => 'usa',
+      Const::Country::UK => 'uk',
+      Const::Country::JAPAN => 'japan',
     }
 
     ARTICLES_SIZE = {
