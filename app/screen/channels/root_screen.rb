@@ -12,7 +12,7 @@ class Channels::RootScreen < PM::TableScreen
   end
 
   def will_appear
-    self.title = 'Edit Channels'
+    self.title = 'Channels'
     self.navigationItem.rightBarButtonItem = self.editButtonItem
     # set_nav_bar_button :right, system_item: :edit, action: :add_channel
     self.table_view.allowsSelectionDuringEditing = true
