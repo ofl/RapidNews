@@ -25,7 +25,7 @@ class Channels::ChannelScreen < PM::Screen
     subview(UIScrollView.new, :scroll_view, {contentSize: cf.size, delegate: self}) do |s|
       subview UIView.new, {frame: cf}
 
-      button(:scroll_button, { frame: CGRectMake(0, 0, 70, 44) }).tap do |b|
+      button(:registered_button, { frame: CGRectMake(0, 0, 70, 44) }).tap do |b|
         b.setTitle('registered', forState: UIControlStateNormal)
         b.when(UIControlEventTouchUpInside) {
           scroll_view_button_tapped(nil)
@@ -48,6 +48,7 @@ class Channels::ChannelScreen < PM::Screen
 
   def set_table_view
     @table_screen ||= SourcesTableScreen.new(channel_id: @channel_id)
+    @table_screen.tableView.setSeparatorInset(UIEdgeInsetsMake(43, 55, 0, 2))
     @table_screen.delegate = self
     subview @table_screen.view,
       frame: CGRectMake(0, 108, App.frame.size.width, Device.screen.height - 108)
@@ -72,8 +73,8 @@ class Channels::ChannelScreen < PM::Screen
     @table_screen.category_selected(id)
   end
 
-  def open_feeds(link_url)
-    open Channels::ChannelFeedsScreen.new({nav_bar: true, link_url: link_url})
+  def open_feeds(news_source_id)
+    open Channels::ChannelFeedsScreen.new({nav_bar: true, channel_id: @channel.id, news_source_id: news_source_id})
   end
 
   def on_close_button_tapped
@@ -114,26 +115,34 @@ class SourcesTableScreen < PM::TableScreen
     registered = news_source.channels ? news_source.channels.include?(@channel_id) : false
 
     button = UIButton.new
-    button.stylename = :disclosure_button
-    button.when(UIControlEventTouchUpInside) { toggle_checked_button(news_source.url) }
+    button.when(UIControlEventTouchUpInside) { toggle_checked_button(news_source) }
+    if registered
+      set_attributes button, {stylename: :checked_button}
+    else
+      set_attributes button, {stylename: :nochecked_button}
+    end
 
     {
       cell_identifier: "Cell",
+      cell_class: PM::TableViewCell,
       cell_style: UITableViewCellStyleSubtitle,
       # indentationLevel: 2,
       title: news_source.name,
       subtitle: news_source.host,
       action: :on_cell_tapped,
-      arguments: {id: news_source.id, link_url: news_source.url},
-      subviews: [status_view(registered),button],
+      selectionStyle: UITableViewCellSelectionStyleGray,
+      accessoryType: UITableViewCellAccessoryDisclosureIndicator,
+      arguments: {news_source_id: news_source.id},
+      subviews: [button],
+      textLabel: {
+        font: UIFont.systemFontOfSize(13.0)
+      },
+      detailTextLabel: {
+        frame: CGRectMake(35, 32, 150, 12),
+        textColor: BW.rgb_color(120,120,120),
+        font: UIFont.systemFontOfSize(10.0)
+      }
     }
-  end
-
-  def status_view(registered)
-    UIView.new.tap do |v|
-      v.frame = [[0, 0], [5, 44]]
-      v.backgroundColor = registered ? BW.rgb_color(0,255,255) : BW.rgb_color(200,200,200)
-    end
   end
 
   def category_selected(category_id)
@@ -141,17 +150,16 @@ class SourcesTableScreen < PM::TableScreen
     update_table_data
   end
 
-  def on_disclosure_button_tapped(url)
-    delegate.open_feeds(url)    
-  end
-
-  def on_cell_tapped(args={})
-    news_source = NewsSource.find(args[:id])
+  def toggle_checked_button(news_source)
     if news_source.channels && news_source.channels.include?(@channel.id)
       @channel.unregist(news_source)
     else
       @channel.regist(news_source)
     end
-    update_table_data
+    update_table_data    
+  end
+
+  def on_cell_tapped(args={})
+    delegate.open_feeds(args[:news_source_id])    
   end
 end
