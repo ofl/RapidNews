@@ -7,7 +7,6 @@ class NewsSource
   columns :name        => :string,
     :category    => :int,
     :country     => :string,
-    :cc          => :int,
     :url         => :string,
     :host        => :string,
     :fetched_at  => :date,

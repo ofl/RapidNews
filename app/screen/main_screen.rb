@@ -233,7 +233,7 @@ class MainScreen < PM::Screen
   def on_toolbar_action_button_tapped
     article = @article_manager.displaying
     if article
-      text = article.title + " (#{article.host_name})"
+      text = article.title + " (#{article.host})"
       url = NSURL.URLWithString(article.link_url)
 
       activityView = URLActivityViewController.alloc.initWithDefaultActivities([text, url])

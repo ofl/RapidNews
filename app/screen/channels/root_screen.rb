@@ -65,7 +65,7 @@ class Channels::RootScreen < PM::TableScreen
     if @editing
       open Channels::EditScreen.new(nav_bar: true, id: args[:id])
     else
-      open Channels::ChannelScreen.new(nav_bar: true, channel_id: args[:id])
+      open Channels::ChannelScreen.new(nav_bar: true, channel_id: args[:id]) 
     end
   end
 

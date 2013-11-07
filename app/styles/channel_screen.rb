@@ -1,4 +1,4 @@
-Teacup::Stylesheet.new :channel_sources_screen do
+Teacup::Stylesheet.new :channel_screen do
   style :base_view,
     # backgroundColor: UIColor.whiteColor
     backgroundColor: UIColor.whiteColor
