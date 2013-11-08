@@ -1,4 +1,4 @@
-class Channels::ChannelFeedsDetailSelectScreen < PM::GroupedTableScreen
+class Channels::NewsSourceSelectScreen < PM::GroupedTableScreen
   attr_accessor :id, :property, :constant, :constant_names
 
   def self.get_indexable

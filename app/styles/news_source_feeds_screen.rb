@@ -1,4 +1,4 @@
-Teacup::Stylesheet.new :channel_feeds_screen do
+Teacup::Stylesheet.new :news_source_feeds_screen do
   style UILabel,
     top: 10,
     left: 10,

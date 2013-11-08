@@ -1,4 +1,4 @@
-class Channels::ChannelFeedsDetailScreen < PM::GroupedTableScreen
+class Channels::NewsSourceScreen < PM::GroupedTableScreen
   attr_accessor :id
 
   def self.get_indexable
@@ -32,6 +32,11 @@ class Channels::ChannelFeedsDetailScreen < PM::GroupedTableScreen
             selectionStyle: UITableViewCellSelectionStyleNone,
             accessory: { view: create_text_field('url', 'http://example.com/rss', 1) },
           },
+          {
+            title: 'Preview',
+            action: :open_news_source_feeds,
+            accessoryType: UITableViewCellAccessoryDisclosureIndicator,
+          },
         ]
       },
       {
@@ -63,13 +68,17 @@ class Channels::ChannelFeedsDetailScreen < PM::GroupedTableScreen
 
   def on_cell_tapped(args = {})
     property = args[:menu]
-    open Channels::ChannelFeedsDetailSelectScreen.new(
+    open Channels::NewsSourceSelectScreen.new(
       nav_bar: true,
       id: @news_source.id,
       property: property,
       constant: property.to_s.camelize,
       constant_names: RN::Titles.const_get(property.to_s.upcase)
     )    
+  end
+
+  def open_news_source_feeds
+    open Channels::NewsSourceFeedsScreen.new(nav_bar: true, id: @news_source.id)        
   end
 
   def on_return(args = {})
