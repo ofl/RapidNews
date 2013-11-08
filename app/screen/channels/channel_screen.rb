@@ -74,7 +74,7 @@ class Channels::ChannelScreen < PM::Screen
   end
 
   def open_feeds(news_source_id)
-    open Channels::ChannelFeedsScreen.new({nav_bar: true, channel_id: @channel.id, news_source_id: news_source_id})
+    open Channels::NewsSourceScreen.new({nav_bar: true, id: news_source_id})
   end
 
   def on_close_button_tapped
