@@ -1,7 +1,7 @@
 class Channels::EditScreen < PM::GroupedTableScreen
   stylesheet :channels_edit_screen
 
-  attr_accessor :id
+  attr_accessor :channel
 
   def self.get_indexable
   end
@@ -52,7 +52,6 @@ class Channels::EditScreen < PM::GroupedTableScreen
   end
 
   def table_data
-    @channel = Channel.find(@id)
     @data ||= settiing
   end
 

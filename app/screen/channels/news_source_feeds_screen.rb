@@ -1,5 +1,5 @@
 class Channels::NewsSourceFeedsScreen < PM::TableScreen
-  attr_accessor :id
+  attr_accessor :news_source
 
   refreshable callback: :on_refresh,
     pull_message: "Pull to refresh",
@@ -51,7 +51,6 @@ class Channels::NewsSourceFeedsScreen < PM::TableScreen
 
 
   def will_appear
-    @news_source = NewsSource.find(@id)
     self.title = @news_source.name
     fetch_feed
   end

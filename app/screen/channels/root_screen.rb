@@ -32,7 +32,7 @@ class Channels::RootScreen < PM::TableScreen
       text_color: channel.is_checked ? BW.rgb_color(0, 0, 0) : BW.rgb_color(200, 200, 200),
       # accessoryType: channel.is_checked ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone,
       accessoryType: UITableViewCellAccessoryDisclosureIndicator,
-      arguments: {id: channel.id}
+      arguments: {channel: channel}
     }
   end
 
@@ -63,16 +63,10 @@ class Channels::RootScreen < PM::TableScreen
 
   def on_cell_tapped(args)
     if @editing
-      open Channels::EditScreen.new(nav_bar: true, id: args[:id])
+      open Channels::EditScreen.new(nav_bar: true, channel: args[:channel])
     else
-      open Channels::ChannelScreen.new(nav_bar: true, channel_id: args[:id]) 
+      open Channels::ChannelScreen.new(nav_bar: true, channel: args[:channel]) 
     end
-  end
-
-  def on_cell_deleted(cell)
-    news_source = NewsSource.find(cell[:arguments][:id])
-    @channel.unregist(news_source)
-    true
   end
 
   def on_return(args = {})
