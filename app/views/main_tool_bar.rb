@@ -23,7 +23,7 @@ class MainToolBar < TransparentToolbar
                                                                target: nil,
                                                                action: nil)
 
-    action_button = UIBarButtonItem.alloc.initWithBarButtonSystemItem(UIBarButtonSystemItemAction,
+    @action_button = UIBarButtonItem.alloc.initWithBarButtonSystemItem(UIBarButtonSystemItemAction,
                                                                       target: self,
                                                                       action: "on_action_button_tapped")
 
@@ -35,17 +35,17 @@ class MainToolBar < TransparentToolbar
                                                                      target: self,
                                                                      action: "on_start_button_tapped")
 
-    add_button = UIBarButtonItem.alloc.initWithBarButtonSystemItem(UIBarButtonSystemItemAdd,
+    @add_button = UIBarButtonItem.alloc.initWithBarButtonSystemItem(UIBarButtonSystemItemAdd,
                                                                    target: self,
                                                                    action: "on_add_button_tapped")
 
-    preview_button = UIBarButtonItem.alloc.initWithImage(UIImage.imageNamed('images/right2.png'),
+    @preview_button = UIBarButtonItem.alloc.initWithImage(UIImage.imageNamed('images/right2.png'),
                                                          style: UIBarButtonItemStylePlain,
                                                          target: self,
                                                          action: "on_preview_button_tapped")
 
-    @playing_buttons = [add_button, spacer, pause_button, spacer, action_button, spacer, preview_button]
-    @pausing_buttons = [add_button, spacer, start_button, spacer, action_button, spacer, preview_button]
+    @playing_buttons = [@add_button, spacer, pause_button, spacer, @action_button, spacer, @preview_button]
+    @pausing_buttons = [@add_button, spacer, start_button, spacer, @action_button, spacer, @preview_button]
 
 
     @transparent_toolbar = subview(TransparentToolbar, :clear_toolbar).tap do |t|
@@ -70,12 +70,15 @@ class MainToolBar < TransparentToolbar
 
   def refresh_view
     if @article_manager.count > 0
+      enable_buttons
+      @add_button.enabled = @article_manager.displaying.is_bookmarked ? false : true
       @slider.minimumValue = 1.0
       @slider.maximumValue = @article_manager.count.to_f
       @slider.value = @article_manager.index.to_f + 1.0
       @slider.alpha = 1.0
       @slider.userInteractionEnabled = true
     else
+      disaable_buttons      
       @slider.minimumValue = 0
       @slider.maximumValue = 0
       @slider.value = 0
@@ -86,6 +89,17 @@ class MainToolBar < TransparentToolbar
   end
 
   private
+
+  def enable_buttons
+    @action_button.enabled = true
+    @preview_button.enabled = true
+  end
+
+  def disaable_buttons
+    @add_button.enabled = false
+    @action_button.enabled = false
+    @preview_button.enabled = false    
+  end
 
   def add_observers
     observe(@article_manager, "index") do |old_value, new_value|
@@ -128,6 +142,7 @@ class MainToolBar < TransparentToolbar
   end
 
   def on_add_button_tapped
+    @add_button.enabled = false
     self.delegate.on_toolbar_add_button_tapped
   end
 

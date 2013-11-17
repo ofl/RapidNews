@@ -1,5 +1,4 @@
-- cc: 10011
-  name: Telegraph UK News
+- name: Telegraph UK News
   category: 0
   country: uk
   url: http://www.telegraph.co.uk/news/uknews/rss
@@ -7,8 +6,7 @@
   image_path: enclosure.url
   host: www.telegraph.co.uk
 
-- cc: 10011
-  name: Telegraph World News
+- name: Telegraph World News
   category: 7
   country: uk
   url: http://www.telegraph.co.uk/news/worldnews/rss
@@ -16,8 +14,7 @@
   image_path: enclosure.url
   host: www.telegraph.co.uk
 
-- cc: 10011
-  name: Telegraph Politics
+- name: Telegraph Politics
   category: 5
   country: uk
   url: http://www.telegraph.co.uk/news/politics/rss

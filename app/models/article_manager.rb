@@ -153,10 +153,10 @@ class ArticleManager
   end
 
   def displaying
-    find_by_index(@index)
+    find_article_by_index(@index)
   end
 
-  def find_by_index(idx)
+  def find_article_by_index(idx)
     d = @cache[@ids[idx]]
     return d if d
     return Article.find(@ids[idx])
