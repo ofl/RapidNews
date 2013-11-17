@@ -26,7 +26,7 @@ class MainArticleView < UIView
   end
 
   def update_article(index)
-    article = @article_manager.find_by_index(index) if @article_manager.ids[index]
+    article = @article_manager.find_article_by_index(index) if @article_manager.ids[index]
     return unless article
 
     @index = index
