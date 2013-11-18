@@ -12,6 +12,7 @@ class MainScreen < PM::Screen
     @article_manager = ArticleManager.instance
     @interval = 3.0
     @timer = nil
+    @speed_control_timer = nil
     add_observers
   end
 
@@ -166,7 +167,7 @@ class MainScreen < PM::Screen
         source = NewsSource.find(id)
         source.crawl_articles if source
       end
-      SVProgressHUD.showWithStatus("Loading...")
+      SVProgressHUD.showWithStatus("Loading...", maskType: SVProgressHUDMaskTypeBlack)
     else
       App.alert("No source is selected.")
     end    
@@ -174,6 +175,11 @@ class MainScreen < PM::Screen
 
   def dismiss_channel_view
     self.navigation_controller.dismissSemiModalView
+  end
+
+  def hide_speed_status
+    SVProgressHUD.dismiss
+    @speed_control_timer = nil
   end
 
 
@@ -226,6 +232,18 @@ class MainScreen < PM::Screen
     add_to_bookmark
   end
 
+  def on_toolbar_start_button_tapped
+    if @article_manager.is_reading
+      @article_manager.is_reading = false
+    else
+      if @article_manager.can_go_forward
+        @article_manager.is_reading = true
+      else
+        open_channel_modal_view
+      end
+    end
+  end
+
   def on_toolbar_preview_button_tapped
     open_preview_screen
   end
@@ -241,6 +259,24 @@ class MainScreen < PM::Screen
     else
       App.alert("No article is selected.")
     end
+  end
+
+  def on_segmented_control_tapped(index)
+    @speed_control_timer.invalidate unless @speed_control_timer.nil?
+    case index
+    when 0
+      interval = [@article_manager.interval * 1.2, 30.0].min
+    when 1
+      interval = [@article_manager.interval * 0.8, 0.3].max
+    end
+    @article_manager.interval = interval
+    App::Persistence[:interval] = interval
+    SVProgressHUD.showProgress(interval/30, status: "Slide Interval: #{sprintf("%2.2f", interval.to_s)}")
+    @speed_control_timer = NSTimer.scheduledTimerWithTimeInterval(2.0, 
+                                                                  target: self, 
+                                                                  selector: 'hide_speed_status', 
+                                                                  userInfo: nil, 
+                                                                  repeats: false)    
   end
 
   def on_navbar_settings_button_tapped
@@ -261,7 +297,7 @@ class MainScreen < PM::Screen
 
   def on_return(args = {})
     if @article_manager.crawling_urls_count > 0
-      SVProgressHUD.showWithStatus("Loading...")
+      SVProgressHUD.showWithStatus("Loading...", maskType: SVProgressHUDMaskTypeBlack)
     end
     # if args[:model_saved]
     # end
