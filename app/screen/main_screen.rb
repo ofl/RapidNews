@@ -144,7 +144,7 @@ class MainScreen < PM::Screen
     open_modal Preview::RootScreen.new(
       nav_bar: true,
       is_modal: true,
-      article: @article_manager.displaying,
+      article: @article_manager.current_article,
       modalTransitionStyle: UIModalTransitionStyleCrossDissolve
     )
   end
@@ -249,7 +249,7 @@ class MainScreen < PM::Screen
   end
 
   def on_toolbar_action_button_tapped
-    article = @article_manager.displaying
+    article = @article_manager.current_article
     if article
       text = article.title + " (#{article.host})"
       url = NSURL.URLWithString(article.link_url)
@@ -314,7 +314,7 @@ class MainScreen < PM::Screen
     when RN::Const::SwipeLeft::BOOKMARK, RN::Const::SwipeRight::BOOKMARK
       add_to_bookmark
     when RN::Const::SwipeLeft::SAFARI, RN::Const::SwipeRight::SAFARI
-      UIApplication.sharedApplication.openURL(NSURL.URLWithString(@article_manager.displaying.link_url))
+      UIApplication.sharedApplication.openURL(NSURL.URLWithString(@article_manager.current_article.link_url))
     when RN::Const::SwipeLeft::CHROME, RN::Const::SwipeRight::CHROME
       # sdk, urlscheme,  x-callback-url
     when RN::Const::SwipeLeft::TWEET, RN::Const::SwipeRight::TWEET
