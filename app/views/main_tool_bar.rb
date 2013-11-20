@@ -63,7 +63,7 @@ class MainToolBar < TransparentToolbar
 
     @counter_label = subview VerticallyAlignedLabel.new, :counter_label
 
-    segmented_control = subview UISegmentedControl.alloc.initWithItems(['-', '+']), :segmented_control
+    segmented_control = subview UISegmentedControl.alloc.initWithItems(['+', '-']), :segmented_control
     segmented_control.addTarget(self, action: 'on_segmented_control_tapped:', forControlEvents: UIControlEventValueChanged)
     true
   end
@@ -71,7 +71,7 @@ class MainToolBar < TransparentToolbar
   def refresh_view
     if @article_manager.count > 0
       enable_buttons
-      @add_button.enabled = @article_manager.displaying.is_bookmarked ? false : true
+      @add_button.enabled = @article_manager.current_article.is_bookmarked ? false : true
       @slider.minimumValue = 1.0
       @slider.maximumValue = @article_manager.count.to_f
       @slider.value = @article_manager.index.to_f + 1.0
