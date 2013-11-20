@@ -10,7 +10,11 @@ module RapidNews
       App::Persistence['swipe_right'] ||= RN::Const::SwipeRight::BOOKMARK
       App::Persistence['lang']       ||= ['en_US', 'en_GB', 'ja_JP']
       App::Persistence['index']      ||= 0
-      App::Persistence['bookmark_readers'] ||= [RN::Const::BookmarkReader::EMAIL, RN::Const::BookmarkReader::POCKET]
+      App::Persistence['bookmark_readers'] ||= [
+        RN::Const::BookmarkReader::EMAIL, 
+        RN::Const::BookmarkReader::POCKET, 
+        RN::Const::BookmarkReader::SAFARI
+      ]
       App::Persistence['bookmark_desolve_after'] ||= []
       App::Persistence['bookmark_all_send'] ||= []
       App::Persistence['default_channel_id'] ||= 1

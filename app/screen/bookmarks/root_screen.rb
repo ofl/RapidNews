@@ -25,12 +25,6 @@ class Bookmarks::RootScreen < PM::TableScreen
                                                                target: nil,
                                                                action: nil)
     toolbar_items.push(spacer)
-    @all_button = UIBarButtonItem.alloc.initWithTitle("All",
-                                                        style: UIBarButtonItemStylePlain,
-                                                        target: self,
-                                                        action: "on_all_button_tapped")
-    toolbar_items.push(@all_button)
-    toolbar_items.push(spacer)
     @trash_button = UIBarButtonItem.alloc.initWithBarButtonSystemItem(UIBarButtonSystemItemTrash,
                                                                         target: self,
                                                                         action: "on_trash_button_tapped")
@@ -108,14 +102,6 @@ class Bookmarks::RootScreen < PM::TableScreen
     end
     # action_sheet.showInView(self.window)
     action_sheet.showInView(self.view)
-  end
-
-  def on_all_button_tapped
-    @bookmarks.each do |bookmark|
-      bookmark.is_checked = true
-      bookmark.save
-    end
-    update_table_data
   end
 
   def on_close_button_tapped

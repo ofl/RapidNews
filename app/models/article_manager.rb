@@ -3,7 +3,7 @@
 class ArticleManager
   
   include BW::KVO
-  attr_accessor :index, :current_article, :is_reading, :count, :ids, :crawling_urls_count, 
+  attr_accessor :index, :is_reading, :count, :ids, :crawling_urls_count, 
                 :interval, :bookmarks_count, :can_load_image
 
   def self.instance
@@ -31,6 +31,10 @@ class ArticleManager
   end
 
   # status
+
+  def current_article
+    find_article_by_index(@index)    
+  end
 
   def can_go_forward
     @index < @ids.length - 1
@@ -77,7 +81,6 @@ class ArticleManager
       @ids.push(article.id)
     end
     @index = App::Persistence['index']
-    @current_article = find_article_by_index(@index)
     cut_over
   end
 
@@ -134,9 +137,9 @@ class ArticleManager
   end
 
   def add_to_bookmarks
-    if @current_article
-      @current_article.is_bookmarked = true
-      @current_article.save
+    if self.current_article
+      self.current_article.is_bookmarked = true
+      self.current_article.save
       update_bookmarks_count
       Article.save_to_file
       return true
@@ -221,7 +224,6 @@ class ArticleManager
   def add_observers
     observe(self, "index") do |old_value, new_value|
       App::Persistence['index'] = new_value
-      @current_article = find_article_by_index(@index)
       remove_from_cache
       add_to_cache
     end
