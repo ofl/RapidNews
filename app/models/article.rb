@@ -29,7 +29,7 @@ class Article
       article.summary       = item[:description][:text].split('<')[0]
       article.link_url      = item[:link][:text]
       article.host          = source.host
-      article.is_checked    = false
+      article.is_checked    = true
       article.is_bookmarked = false
       article.image_url     = search_image_url(item, source.image_path)
       article.save
