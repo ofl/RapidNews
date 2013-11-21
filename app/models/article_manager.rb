@@ -3,7 +3,7 @@
 class ArticleManager
   
   include BW::KVO
-  attr_accessor :index, :is_reading, :count, :ids, :crawling_urls_count, 
+  attr_accessor :index, :is_reading, :count, :ids, :crawling_url_list_count, 
                 :interval, :bookmarks_count, :can_load_image
 
   def self.instance
@@ -19,8 +19,8 @@ class ArticleManager
       @count = 0
       @index = 0
       @cache = {}
-      @crawling_urls = {}
-      @crawling_urls_count = 0
+      @crawling_url_list = {}
+      @crawling_url_list_count = 0
       @is_reading = false
       @interval = App::Persistence[:interval]
       @can_load_image = true
@@ -66,7 +66,7 @@ class ArticleManager
     end
   end
 
-  def is_reach_max_article_size
+  def is_over_max_article_size
     @index < 1 && @ids.length > @max_article_size - 1
   end
 
@@ -85,55 +85,56 @@ class ArticleManager
   end
 
   def crawl(source)
-    return if is_reach_max_article_size
+    return if is_over_max_article_size
     update_max_articles_size
-    add_to_crawling_urls(source)
+    add_to_crawling_url_list(source)
     NSLog("Request: #{source.url}")
 
     req = NSURLRequest.alloc.initWithURL(NSURL.URLWithString(source.url))
     AFXMLRequestOperation.addAcceptableContentTypes(NSSet.setWithObject("application/rss+xml"))
 
     op = AFXMLRequestOperation.alloc.initWithRequest(req)
-    op.setCompletionBlockWithSuccess(method(:success_crawl).to_proc, 
-                                     failure: method(:failure_crawl).to_proc)
+    op.setCompletionBlockWithSuccess(method(:on_success_crawl).to_proc, 
+                                     failure: method(:on_failure_crawl).to_proc)
     op.start
   end
 
-  def success_crawl(operation, responseObject)
+  def on_success_crawl(operation, responseObject)
     err = Pointer.new(:object)
     dict = XMLReader.dictionaryForXMLString(operation.responseString, error: err)
     return unless dict.is_a?(Hash)
 
     Dispatch::Queue.concurrent.async do
-      parse_rss(dict, @crawling_urls[operation.request.URL.absoluteString])
+      parse_rss(dict, @crawling_url_list[operation.request.URL.absoluteString])
       cut_over
-      remove_from_crawling_urls(operation.request.URL.absoluteString)
+      remove_from_crawling_url_list(operation.request.URL.absoluteString)
     end
   end
 
-  def failure_crawl(operation, error)
-    remove_from_crawling_urls(operation.request.URL.absoluteString)
+  def on_failure_crawl(operation, error)
+    remove_from_crawling_url_list(operation.request.URL.absoluteString)
     NSLog(error.localizedDescription)
   end
 
   def parse_rss(dict, source)
-    if dict.valueForKeyPath('rss.xmlns:atom')
-      entries_path = 'rss.channel.atom'
-    else
-      entries_path = 'rss.channel.item'
-    end
+    entries_path = dict.valueForKeyPath('rss.xmlns:atom') ? 'rss.channel.atom' : 'rss.channel.item' 
     dict.valueForKeyPath(entries_path).each do |item|
-      break if is_reach_max_article_size
-      next if Article.where(:link_url).eq(item[:link][:text]).count > 0
-      obj = Article.create_unique_article(source, item)
-      @ids.push(obj.id) if obj
+      break if is_over_max_article_size
+      next  if item['rel'] == 'self' # for atom info item
+      next if Article.where(:link_url).eq(item[:link][:text].dup).count > 0
+
+      article = Article.build(source, item)
+      if article
+        article.save
+        @ids.push(article.id) 
+      end
     end
     Article.save_to_file
   end
 
-  def add_to_crawling_urls(source)
-    @crawling_urls[source.url] = source
-    @crawling_urls_count = @crawling_urls.count
+  def add_to_crawling_url_list(source)
+    @crawling_url_list[source.url] = source
+    @crawling_url_list_count = @crawling_url_list.count
   end
 
   def add_to_bookmarks
@@ -152,9 +153,9 @@ class ArticleManager
     self.bookmarks_count = Article.where(:is_bookmarked).eq(true).count    
   end
 
-  def remove_from_crawling_urls(url)
-    @crawling_urls.delete(url)
-    self.crawling_urls_count = @crawling_urls.count
+  def remove_from_crawling_url_list(url)
+    @crawling_url_list.delete(url)
+    self.crawling_url_list_count = @crawling_url_list.count
   end
 
   def find_article_by_index(idx)

@@ -16,24 +16,18 @@ class Article
   attr_accessor :is_checked
 
   class << self
-    def create_unique_article(source, item)
-      # for atom info item
-      return nil if item['rel'] == 'self' 
-
-      # for .eq(item[:link][:text]) not found bug
-      article = self.new({:link_url => item[:link][:text]})
-      return nil if self.where(:link_url).eq(article.link_url).count > 0
-
-      article.title         = item[:title][:text]
-      article.pub_at        = item[:pubDate][:text]
-      article.summary       = item[:description][:text].split('<')[0]
-      article.link_url      = item[:link][:text]
-      article.host          = source.host
-      article.is_checked    = true
-      article.is_bookmarked = false
-      article.image_url     = search_image_url(item, source.image_path)
-      article.save
-      article
+    def build(source, item)
+      self.new({
+        link_url:      item[:link][:text],
+        title:         item[:title][:text],
+        pub_at:        item[:pubDate][:text],
+        summary:       item[:description][:text].split('<')[0],
+        link_url:      item[:link][:text],
+        host:          source.host,
+        is_checked:    true,
+        is_bookmarked: false,
+        image_url:     search_image_url(item, source.image_path),
+      })
     end
 
     def search_image_url(item, path)
