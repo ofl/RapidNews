@@ -8,44 +8,57 @@ class Channels::NewsSourceFeedsScreen < PM::TableScreen
   stylesheet :news_source_feeds_screen
 
   def fetch_feed
-    BW::HTTP.get(@news_source.url) do |res|
-      items = []
-      if res.ok?
-        BW::RSSParser.new(res.body.to_str, true).parse do |item|
-          items.push(item)
-        end
-      else
-        App.alert(res.error_message)
-      end
+    req = NSURLRequest.alloc.initWithURL(NSURL.URLWithString(@news_source.url))
+    AFXMLRequestOperation.addAcceptableContentTypes(NSSet.setWithObject("application/rss+xml"))
 
-      @items = [{cells: items.map{ |item| create_cell item }}]
-      end_refreshing
-      update_table_data
+    op = AFXMLRequestOperation.alloc.initWithRequest(req)
+    op.setCompletionBlockWithSuccess(method(:success_crawl).to_proc, 
+                                     failure: method(:failure_crawl).to_proc)
+    op.start
+  end
+
+  def success_crawl(operation, responseObject)
+    err = Pointer.new(:object)
+    dict = XMLReader.dictionaryForXMLString(operation.responseString, error: err)
+    return unless dict.is_a?(Hash)
+
+    Dispatch::Queue.concurrent.async do
+      parse_rss(dict)
     end
   end
 
-  def create_cell(item)
-    # p item
-    titleLabel = UILabel.new.tap do |l|
-      l.stylename = :titleLabel
-      l.text = item.title
+  def failure_crawl(operation, error)
+    NSLog(error.localizedDescription)
+  end
+
+  def parse_rss(dict)
+    entries_path = dict.valueForKeyPath('rss.xmlns:atom') ? 'rss.channel.atom' : 'rss.channel.item' 
+    cells = []
+    dict.valueForKeyPath(entries_path).each do |item|
+      article = Article.build(@news_source, item)
+      cells.push create_cell(article)
     end
+    @items = [{cells: cells}]
+    end_refreshing
+    update_table_data
+  end
+
+  def create_cell(item)
     {
       cell_identifier: "Cell",
       cell_style: UITableViewCellStyleSubtitle,
       height: 60,
-      # title: item.title,
-      # subtitle: item.pubDate,
+      title: item.title,
+      subtitle: item.summary,
       action: :tapped_item,
       arguments: item,
-      # remote_image: {
-      #   # url: item.content["url"],
-      #   url: item.content[:url],
-      #   placeholder: '77x50.png',
-      #   height: 50,
-      #   width: 77,
-      # },
-      subviews: [titleLabel]
+      remote_image: {
+        # url: item.content["url"],
+        url: item.image_url,
+        placeholder: '77x50.png',
+        height: 50,
+        width: 77,
+      },
     }
   end
 

@@ -190,7 +190,7 @@ class MainScreen < PM::Screen
       @article_manager.set_online_status FXReachability.sharedInstance.status
     end
 
-    observe(@article_manager, "crawling_urls_count") do |old_value, new_value|
+    observe(@article_manager, "crawling_url_list_count") do |old_value, new_value|
       if old_value > new_value && new_value == 0
         Dispatch::Queue.main.async{
           new_article_size = @article_manager.count - @article_manager.index - 1
@@ -296,7 +296,7 @@ class MainScreen < PM::Screen
   end
 
   def on_return(args = {})
-    if @article_manager.crawling_urls_count > 0
+    if @article_manager.crawling_url_list_count > 0
       SVProgressHUD.showWithStatus("Loading...", maskType: SVProgressHUDMaskTypeBlack)
     end
     # if args[:model_saved]
