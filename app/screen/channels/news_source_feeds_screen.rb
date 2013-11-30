@@ -7,6 +7,20 @@ class Channels::NewsSourceFeedsScreen < PM::TableScreen
 
   stylesheet :news_source_feeds_screen
 
+  def will_appear
+    self.title = @news_source.name
+    @feed_hash = {}
+    fetch_feed
+  end
+
+  def on_refresh
+    fetch_feed
+  end
+
+  def table_data
+    @items ||= []
+  end
+
   def fetch_feed
     req = NSURLRequest.alloc.initWithURL(NSURL.URLWithString(@news_source.url))
     AFXMLRequestOperation.addAcceptableContentTypes(NSSet.setWithObject("application/rss+xml"))
@@ -19,11 +33,11 @@ class Channels::NewsSourceFeedsScreen < PM::TableScreen
 
   def success_crawl(operation, responseObject)
     err = Pointer.new(:object)
-    dict = XMLReader.dictionaryForXMLString(operation.responseString, error: err)
-    return unless dict.is_a?(Hash)
-
-    Dispatch::Queue.concurrent.async do
-      parse_rss(dict)
+    @feed_hash = XMLReader.dictionaryForXMLString(operation.responseString, error: err)
+    if @feed_hash.is_a?(Hash)
+      Dispatch::Queue.main.async{ parse_rss }
+    else
+      @feed_hash = {}
     end
   end
 
@@ -31,52 +45,39 @@ class Channels::NewsSourceFeedsScreen < PM::TableScreen
     NSLog(error.localizedDescription)
   end
 
-  def parse_rss(dict)
-    entries_path = dict.valueForKeyPath('rss.xmlns:atom') ? 'rss.channel.atom' : 'rss.channel.item' 
+  def parse_rss
+    entries_path = @feed_hash.valueForKeyPath('rss.xmlns:atom') ? 'rss.channel.atom' : 'rss.channel.item' 
     cells = []
-    dict.valueForKeyPath(entries_path).each do |item|
+    @feed_hash.valueForKeyPath(entries_path).each do |item|
+      next  if item['rel'] == 'self' # for atom info item
       article = Article.build(@news_source, item)
-      cells.push create_cell(article)
+      cells.push create_cell(article, item)
     end
     @items = [{cells: cells}]
     end_refreshing
     update_table_data
   end
 
-  def create_cell(item)
+  def create_cell(article, item)
     {
       cell_identifier: "Cell",
       cell_style: UITableViewCellStyleSubtitle,
-      height: 60,
-      title: item.title,
-      subtitle: item.summary,
+      height: 44,
+      title: article.title,
+      subtitle: article.summary,
       action: :tapped_item,
       arguments: item,
       remote_image: {
-        # url: item.content["url"],
-        url: item.image_url,
-        placeholder: '77x50.png',
-        height: 50,
-        width: 77,
+        url: article.image_url,
+        placeholder: 'images/77x50.png',
       },
     }
   end
 
-
-  def will_appear
-    self.title = @news_source.name
-    fetch_feed
-  end
-
-  def on_refresh
-    fetch_feed
-  end
-
-  def table_data
-    @items ||= []
-  end
-
   def tapped_item(item)
-    open WebScreen.new(url: item.link, title: item.title)
+    # p item.dup
+    # p flatten(item.dup)
+    # stringify_keys(item.dup)
+    # open WebScreen.new(url: item.link, title: item.title)
   end
 end
