@@ -117,7 +117,7 @@ class ArticleManager
   end
 
   def parse_rss(dict, source)
-    entries_path = dict.valueForKeyPath('rss.xmlns:atom') ? 'rss.channel.atom' : 'rss.channel.item' 
+    entries_path = @feed_hash.valueForKeyPath('rss.channel.atom') ? 'rss.channel.atom' : 'rss.channel.item' 
     dict.valueForKeyPath(entries_path).each do |item|
       break if is_over_max_article_size
       next  if item['rel'] == 'self' # for atom info item

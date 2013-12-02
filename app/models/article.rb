@@ -32,7 +32,7 @@ class Article
 
     def search_image_url(item, path)
       return nil unless path
-      result = item.valueForKeyPath(path)
+      result = item.ValueForKeyPathWithIndexes(path)
       return nil unless result
       if result.is_a?(Array)
         return result[0]

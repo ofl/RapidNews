@@ -1,9 +1,9 @@
 pocket:
-  consumer_key: 
+  consumer_key: YOUR_POCKET_CONSUMER_KEY
 
 hatena:
-  consumer_key:
-  consumer_secret:
+  consumer_key: YOUR_HATENA_CONSUMER_KEY
+  consumer_secret: YOUR_HATENA_CONSUMER_SCECRET
 
 readability:
-  api_token:
+  api_token:  YOUR_READERBILITY_API_TOKEN
