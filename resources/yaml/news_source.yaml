@@ -21,3 +21,83 @@
   fetched_at: 2013-01-01 11:00:00
   image_path: enclosure.url
   host: www.telegraph.co.uk
+
+- name: BBC Top Stories
+  category: 0
+  country: uk
+  url: http://feeds.bbci.co.uk/news/rss.xml
+  fetched_at: 2013-01-01 11:00:00
+  image_path: media:thumbnail[1].url
+  host: www.bbc.co.uk
+
+- name: BBC World
+  category: 7
+  country: uk
+  url: http://feeds.bbci.co.uk/news/world/rss.xml
+  fetched_at: 2013-01-01 11:00:00
+  image_path: media:thumbnail[1].url
+  host: www.bbc.co.uk
+
+- name: BBC UK
+  category: 0
+  country: uk
+  url: http://feeds.bbci.co.uk/news/uk/rss.xml
+  fetched_at: 2013-01-01 11:00:00
+  image_path: media:thumbnail[1].url
+  host: www.bbc.co.uk
+
+- name: BBC Business
+  category: 1
+  country: uk
+  url: http://feeds.bbci.co.uk/news/business/rss.xml
+  fetched_at: 2013-01-01 11:00:00
+  image_path: media:thumbnail[1].url
+  host: www.bbc.co.uk
+
+- name: BBC Politics
+  category: 5
+  country: uk
+  url: http://feeds.bbci.co.uk/news/politics/rss.xml
+  fetched_at: 2013-01-01 11:00:00
+  image_path: media:thumbnail[1].url
+  host: www.bbc.co.uk
+
+- name: BBC Health
+  category: 5
+  country: uk
+  url: http://feeds.bbci.co.uk/news/health/rss.xml
+  fetched_at: 2013-01-01 11:00:00
+  image_path: media:thumbnail[1].url
+  host: www.bbc.co.uk
+
+- name: BBC Education & Family
+  category: 1
+  country: uk
+  url: http://feeds.bbci.co.uk/news/education/rss.xml
+  fetched_at: 2013-01-01 11:00:00
+  image_path: media:thumbnail[1].url
+  host: www.bbc.co.uk
+
+- name: BBC Science & Environment
+  category: 6
+  country: uk
+  url: http://feeds.bbci.co.uk/news/science_and_environment/rss.xml
+  fetched_at: 2013-01-01 11:00:00
+  image_path: media:thumbnail[1].url
+  host: www.bbc.co.uk
+
+- name: BBC Technology
+  category: 6
+  country: uk
+  url: http://feeds.bbci.co.uk/news/technology/rss.xml
+  fetched_at: 2013-01-01 11:00:00
+  image_path: media:thumbnail[1].url
+  host: www.bbc.co.uk
+
+- name: Entertainment & Arts
+  category: 1
+  country: uk
+  url: http://feeds.bbci.co.uk/news/entertainment_and_arts/rss.xml
+  fetched_at: 2013-01-01 11:00:00
+  image_path: media:thumbnail[1].url
+  host: www.bbc.co.uk

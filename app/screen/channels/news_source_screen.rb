@@ -57,11 +57,6 @@ class Channels::NewsSourceScreen < PM::GroupedTableScreen
             selectionStyle: UITableViewCellSelectionStyleNone,
             accessory: { view: url_field },
           },
-          {
-            title: 'Preview',
-            action: :open_news_source_feeds,
-            accessoryType: UITableViewCellAccessoryDisclosureIndicator,
-          },
         ]
       },
       {
@@ -83,8 +78,26 @@ class Channels::NewsSourceScreen < PM::GroupedTableScreen
             accessoryType: UITableViewCellAccessoryDisclosureIndicator,
             cell_style: UITableViewCellStyleValue1,
           },
+          {
+            title: "Image Path",
+            subtitle: @news_source.image_path,
+            action: :on_image_path_cell_tapped,
+            arguments: { menu: :image_path },
+            accessoryType: UITableViewCellAccessoryDisclosureIndicator,
+            cell_style: UITableViewCellStyleValue1,
+          },
         ]
-      }
+      },
+      {
+        title: '',
+        cells: [
+          {
+            title: 'Preview',
+            action: :open_news_source_feeds,
+            accessoryType: UITableViewCellAccessoryDisclosureIndicator,
+          },
+        ]
+      },
     ]
   end
 
@@ -101,6 +114,14 @@ class Channels::NewsSourceScreen < PM::GroupedTableScreen
       property: property,
       constant: property.to_s.camelize,
       constant_names: RN::Titles.const_get(property.to_s.upcase)
+    )    
+  end
+
+  def on_image_path_cell_tapped(args = {})
+    property = args[:menu]
+    open Channels::NewsSourceSelectImagePathScreen.new(
+      nav_bar: true,
+      news_source: @news_source,
     )    
   end
 

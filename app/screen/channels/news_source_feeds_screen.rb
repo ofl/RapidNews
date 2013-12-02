@@ -46,7 +46,7 @@ class Channels::NewsSourceFeedsScreen < PM::TableScreen
   end
 
   def parse_rss
-    entries_path = @feed_hash.valueForKeyPath('rss.xmlns:atom') ? 'rss.channel.atom' : 'rss.channel.item' 
+    entries_path = @feed_hash.valueForKeyPath('rss.channel.atom') ? 'rss.channel.atom' : 'rss.channel.item' 
     cells = []
     @feed_hash.valueForKeyPath(entries_path).each do |item|
       next  if item['rel'] == 'self' # for atom info item
