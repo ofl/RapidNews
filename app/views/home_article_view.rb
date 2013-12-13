@@ -1,11 +1,11 @@
-class MainArticleView < UIView
+class HomeArticleView < UIView
 
   attr_accessor :index
 
   def initWithFrame(frame)
     @index = 0
     super.tap do
-      self.stylesheet = :main_article_view
+      self.stylesheet = :home_article_view
       self.stylename = :base_view
       subview UIView, :title_background
 

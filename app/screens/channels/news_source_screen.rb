@@ -2,9 +2,6 @@ class Channels::NewsSourceScreen < PM::GroupedTableScreen
   attr_accessor :id, :is_changed
   include BW::KVO
 
-  def self.get_indexable
-  end
-
   def on_load
     @news_source = NewsSource.find(@id)
     @is_saved = false

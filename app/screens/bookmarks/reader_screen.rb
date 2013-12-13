@@ -1,7 +1,5 @@
 class Bookmarks::ReaderScreen < PM::GroupedTableScreen
 
-  def self.get_indexable; end
-
   def will_appear
   end
 

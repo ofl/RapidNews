@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-class MainScreen < PM::Screen
+class HomeScreen < PM::Screen
 
   include BW::KVO
-  stylesheet :main_screen
+  stylesheet :home_screen
 
   THRESHOLD = 1.0
 
@@ -23,9 +23,9 @@ class MainScreen < PM::Screen
   def set_up_view
     layout(self.view, :base_view) do # from rubymotion/TeaCup
       self.navigation_controller.navigationBarHidden = true
-      @slide_view = subview MainSlideView.new, {frame: self.view.bounds, delegate: self}
-      @nav_bar = subview MainNavigationBar.new, delegate: self
-      @tool_bar = subview MainToolBar.new, delegate: self
+      @slide_view = subview HomeSlideView.new, {frame: self.view.bounds, delegate: self}
+      @nav_bar = subview HomeNavigationBar.new, delegate: self
+      @tool_bar = subview HomeToolBar.new, delegate: self
     end
 
     @article_manager.load_data

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-class MainSlideView < UIView
+class HomeSlideView < UIView
 
   attr_accessor :delegate
 
@@ -106,7 +106,7 @@ class MainSlideView < UIView
 
   def shift_article(index)
     frame = index < @article_manager.index ? UPPER_FRAME : ORIGINAL_FRAME
-    view = MainArticleView.alloc.initWithFrame(frame)
+    view = HomeArticleView.alloc.initWithFrame(frame)
     view.update_article(index)
     addSubview(view)
     @view_stack.insertObject view, atIndex: 0
@@ -114,7 +114,7 @@ class MainSlideView < UIView
   end
 
   def push_article(index)
-    view = MainArticleView.alloc.initWithFrame(ORIGINAL_FRAME)
+    view = HomeArticleView.alloc.initWithFrame(ORIGINAL_FRAME)
     view.update_article(index)
     insertSubview view, atIndex: 0
     @view_stack.addObject(view)

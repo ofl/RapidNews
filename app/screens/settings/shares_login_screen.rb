@@ -1,9 +1,6 @@
 class Settings::SharesLoginScreen < PM::GroupedTableScreen
   attr_accessor :service
 
-  def self.get_indexable
-  end
-
   def will_appear
     @is_saved = false
     self.title = RN::Titles::SHARE_SERVICE[@service]

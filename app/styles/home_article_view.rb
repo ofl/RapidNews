@@ -1,4 +1,4 @@
-Teacup::Stylesheet.new :main_article_view do
+Teacup::Stylesheet.new :home_article_view do
   style :base_view,
     backgroundColor: BW.rgb_color(60, 60, 60)
  

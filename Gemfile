@@ -3,10 +3,10 @@ source 'https://rubygems.org'
 gem 'rake'
 gem 'motion-cocoapods'
 
-gem 'bubble-wrap', :require => ['bubble-wrap', 'bubble-wrap/rss_parser']
+gem 'bubble-wrap', "~> 1.3.0"
 gem "teacup"
 gem "motion-yaml"
 gem 'motion-my_env', :git => 'git@github.com:Watson1978/motion-my_env.git'
 
-gem "ProMotion", "~> 1.0.3" 
-gem "motion_model", "0.4.4"
+gem "ProMotion", "~> 1.1.0" 
+gem "motion_model", :git => "git@github.com:sxross/MotionModel.git"

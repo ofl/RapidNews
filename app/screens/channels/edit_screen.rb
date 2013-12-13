@@ -3,9 +3,6 @@ class Channels::EditScreen < PM::GroupedTableScreen
 
   attr_accessor :channel
 
-  def self.get_indexable
-  end
-
   def will_appear
     @is_saved = false
     self.title = @channel.name

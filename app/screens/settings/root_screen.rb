@@ -2,8 +2,6 @@ class Settings::RootScreen < PM::GroupedTableScreen
 
   title "Settings"
 
-  def self.get_indexable; end # bug?
-
   def will_appear
     @view_is_set_up ||= set_up_view
   end
