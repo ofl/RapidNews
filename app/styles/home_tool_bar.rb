@@ -1,4 +1,4 @@
-Teacup::Stylesheet.new :main_tool_bar do
+Teacup::Stylesheet.new :home_tool_bar do
   style :base_view,
     frame: [[0, '100% -90'], ['100%', 90]],
     # translucent: true,
@@ -9,7 +9,7 @@ Teacup::Stylesheet.new :main_tool_bar do
 
   style :slider,
     tag: 4,
-    top: 48,
+    top: 56,
     left: 75,
     height: 15,
     width: 180,

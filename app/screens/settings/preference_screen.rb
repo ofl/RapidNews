@@ -1,9 +1,6 @@
 class Settings::PreferenceScreen < PM::GroupedTableScreen
   attr_accessor :property, :constant, :constant_names
 
-  def self.get_indexable
-  end
-
   def will_present
     @is_saved = false
   end

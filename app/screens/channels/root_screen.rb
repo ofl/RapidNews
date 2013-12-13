@@ -1,7 +1,5 @@
 # class EditChannelsScreen < PM::GroupedTableScreen
 class Channels::RootScreen < PM::TableScreen
-  def self.get_indexable
-  end
 
   def on_load
     @editing = false    

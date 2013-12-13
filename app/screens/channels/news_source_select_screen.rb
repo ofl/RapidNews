@@ -1,9 +1,6 @@
 class Channels::NewsSourceSelectScreen < PM::GroupedTableScreen
   attr_accessor :news_source, :property, :constant, :constant_names
 
-  def self.get_indexable
-  end
-
   def on_load
     @current_choice = @news_source.send(@property)   
   end

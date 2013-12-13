@@ -1,4 +1,4 @@
-class MainNavigationBar < UINavigationBar
+class HomeNavigationBar < UINavigationBar
 
   include BW::KVO
 
@@ -10,7 +10,7 @@ class MainNavigationBar < UINavigationBar
     super.tap do
       @article_manager = ArticleManager.instance
 
-      self.stylesheet = :main_navigation_bar
+      self.stylesheet = :home_navigation_bar
       self.stylename = :base_view
       self.barStyle = UIBarStyleBlack
 

@@ -1,9 +1,6 @@
 class Channels::NewsSourceSelectImagePathScreen < PM::GroupedTableScreen
   attr_accessor :news_source
 
-  def self.get_indexable
-  end
-
   def on_load
     @current_choice = @news_source.image_path
   end

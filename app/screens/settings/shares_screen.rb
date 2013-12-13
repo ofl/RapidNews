@@ -1,10 +1,6 @@
 class Settings::SharesScreen < PM::GroupedTableScreen
   title "Share Services"
 
-  # bug
-  def self.get_indexable
-  end
-
   def will_appear
     @view_is_set_up ||= set_up_view
   end

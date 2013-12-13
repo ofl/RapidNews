@@ -1,9 +1,6 @@
 class Bookmarks::SettingsScreen < PM::GroupedTableScreen
   title "Settings"
 
-  # bug
-  def self.get_indexable; end
-
   def set_up_table_view
     @readers = []
     RN::Titles::BOOKMARK_READER.each do |k, v|

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-class MainToolBar < TransparentToolbar
+class HomeToolBar < TransparentToolbar
 
   include BW::KVO
 
@@ -15,7 +15,7 @@ class MainToolBar < TransparentToolbar
   end
 
   def set_up_view
-    self.stylesheet = :main_tool_bar
+    self.stylesheet = :home_tool_bar
     # self.barStyle = UIBarStyleBlack
     self.stylename = :base_view
 
