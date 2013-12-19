@@ -11,10 +11,18 @@ RubyMotionが必要です。
 最新の2.18ではエラーが出てコンパイルできません。
 
 ## スクリーンショット
+|Home Screen|Home Screen(hide tool bar)|
+|---|---|
 |![Home Screen](https://github.com/ofl/RapidNews/blob/master/Marketing/scrennshots/sc1_.jpg?raw=true)|![Home Screen(hide tool bar)](https://github.com/ofl/RapidNews/blob/master/Marketing/scrennshots/sc5_.jpg?raw=true)|
+
+|Channels|Preview|
+|---|---|
 |![Channels](https://github.com/ofl/RapidNews/blob/master/Marketing/scrennshots/sc2_.jpg?raw=true)|![Preview](https://github.com/ofl/RapidNews/blob/master/Marketing/scrennshots/sc3_.jpg?raw=true)|
-|![Bookmarks](https://github.com/ofl/RapidNews/blob/master/Marketing/scrennshots/sc4_.jpg?raw=true)|
+
+|Bookmarks||
+|---|---|
+|![Bookmarks](https://github.com/ofl/RapidNews/blob/master/Marketing/scrennshots/sc4_.jpg?raw=true)||
 
 
 ## 今後の予定
-Issuesの消化次第。
+[Issues](https://github.com/ofl/RapidNews/issues?state=open)の消化次第。
