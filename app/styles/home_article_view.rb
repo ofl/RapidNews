@@ -1,10 +1,10 @@
-Teacup::Stylesheet.new :home_article_view do
+    Teacup::Stylesheet.new :home_article_view do
   style :base_view,
     backgroundColor: BW.rgb_color(60, 60, 60)
  
   style :title_background,
-    backgroundColor: BW.rgb_color(30, 30, 30),
-    height: 160,
+    backgroundColor: BW.rgb_color(50, 50, 50),
+    height: 200,
     width: App.frame.size.width,
     top: 0,
     left: 0
@@ -15,10 +15,10 @@ Teacup::Stylesheet.new :home_article_view do
     text: "Welcome to RapidNews!",
     textColor: UIColor.whiteColor,
     numberOfLines: 3,
-    font: UIFont.boldSystemFontOfSize(15.0),
-    height: 95,
+    font: UIFont.systemFontOfSize(17.0),
+    height: 105,
     width: 213,
-    top: 55,
+    top: 65,
     left: 10
  
   style :summary_label,
@@ -30,7 +30,7 @@ Teacup::Stylesheet.new :home_article_view do
     font: UIFont.systemFontOfSize(17.0),
     height: 220,
     width: 300,
-    top: 170,
+    top: 210,
     left: 10
  
   style :date_label,
@@ -53,6 +53,22 @@ Teacup::Stylesheet.new :home_article_view do
   style :image_view,
     height: 90,
     width: 90,
-    top: 0,
+    top: 110,
     left: 230
+ 
+  style :favicon_image_view,
+    height: 15,
+    width: 15,
+    top: 177,
+    left: 10
+ 
+  style :host_label,
+    height: 17,
+    width: 180,
+    top: 176,
+    left: 30,
+    backgroundColor: UIColor.clearColor,
+    textColor: BW.rgb_color(200, 200, 200),
+    numberOfLines: 0,
+    font: UIFont.italicSystemFontOfSize(12.0)
 end

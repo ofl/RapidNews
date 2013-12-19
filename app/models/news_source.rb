@@ -26,7 +26,6 @@ class NewsSource
   end
 
   def before_save(sender)
-    p 99999
     true
     # return false if sender.find(:privilege_level).eq('admin').count < 2
   end

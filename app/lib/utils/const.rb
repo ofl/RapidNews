@@ -119,8 +119,7 @@ module RapidNews
     }
 
     ARTICLES_SIZE = {
-      # Const::ArticlesSize::SMALL       => "250",
-      Const::ArticlesSize::SMALL       => "20",
+      Const::ArticlesSize::SMALL       => "250",
       Const::ArticlesSize::MEDIUM      => "500",
       Const::ArticlesSize::LARGE       => "1000",
     }
