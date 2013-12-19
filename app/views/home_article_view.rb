@@ -14,6 +14,8 @@ class HomeArticleView < UIView
       @image_view = subview UIImageView.alloc.initWithImage(@default_image), :image_view
       @title_label = subview VerticallyAlignedLabel.new, :title_label
       @summary_label = subview VerticallyAlignedLabel.new, :summary_label
+      @favicon_image_view = subview UIImageView.alloc.initWithImage(@default_image), :favicon_image_view
+      @host_label = subview UILabel.new, :host_label
     end
   end
 
@@ -40,6 +42,12 @@ class HomeArticleView < UIView
     else
       @image_view.hidden = true
     end
+
+    url = NSURL.URLWithString("http://www.google.com/s2/favicons?domain=#{article.host}")
+    data = NSData.dataWithContentsOfURL(url)
+    remote = UIImage.imageWithData(data)
+    @favicon_image_view.image = remote
+    @host_label.text = "#{article.host} #{article.since_post}"
   end
 
   def fade_in

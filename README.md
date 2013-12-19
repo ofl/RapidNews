@@ -1,4 +1,16 @@
 RapidNews
 =========
 
-Rss news reader for iPhone
+## アプリの説明
+RapidNews(仮)はRSSフィードを高速に閲覧して気になる記事は他の読みやすいアプリやPCに送るためのものです。
+
+開発はRubyMotion + ProMotionで行っています。
+
+## インストールの方法
+RubyMotionが必要です。
+最新の2.18ではエラーが出てコンパイルできません。
+
+## スクリーンショット
+
+## 今後の予定
+Issuesの消化次第。

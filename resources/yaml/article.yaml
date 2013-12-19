@@ -1,0 +1,27 @@
+- title: RapidNewsにようこそ 1
+  summary: RapidNewsはRSSフィードを高速でチェックするためのアプリです。記事の詳細は右下のプレビューボタンから確認できます。次に進む場合は画面を上にスライドするかPlayボタンを押してください。
+  link_url: https://github.com/ofl/RapidNews
+  host: www.covered.jp
+  image_url: null
+  pub_at: 2013-01-01 11:00:00
+  is_bookmarked: false
+  created_at: 2013-01-01 11:00:00
+
+- title: RapidNewsにようこそ 2
+  summary: 気になる記事は＋ボタンを押すとブックマークに登録されます。SafariのリーディングリストやPocketへの登録、メールで送信など一括して処理することができます。
+  link_url: https://github.com/ofl/RapidNews
+  host: www.covered.jp
+  image_url: null
+  pub_at: 2013-01-01 11:00:00
+  is_bookmarked: false
+  created_at: 2013-01-01 11:00:00
+
+- title: RapidNewsにようこそ 3
+  summary: 記事の最後に来るかPLAYボタンを長押しするとチャンネル読み込み画面が表示されます。チャンネルの内容は上のチャンネルボタンから編集してください。
+  link_url: https://github.com/ofl/RapidNews
+  host: www.covered.jp
+  image_url: null
+  pub_at: 2013-01-01 11:00:00
+  is_bookmarked: false
+  created_at: 2013-01-01 11:00:00
+
