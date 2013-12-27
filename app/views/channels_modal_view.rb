@@ -25,9 +25,11 @@ class ChannelsModalView < UIView
       subview UIView.new, {frame: cf}
       channels.each_with_index do |channel, i|
         left = 74 * i + 6
-
         button(:channel_button, { frame: CGRectMake(left, 21, 60, 60)}).tap do |b|
+          img = UIImage.imageNamed("images/60x60.png")
+          b.setBackgroundImage(img, forState:UIControlStateNormal)
           b.layer.cornerRadius = 10
+          b.layer.setMasksToBounds(true)
           b.when(UIControlEventTouchUpInside) {
             p channel.id
             self.delegate.load_channel_articles(channel.id)

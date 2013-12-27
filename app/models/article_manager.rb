@@ -18,7 +18,6 @@ class ArticleManager
       @ids = []
       @count = 0
       @index = 0
-      @cache = {}
       @crawling_url_list = {}
       @crawling_url_list_count = 0
       @is_reading = false
@@ -159,38 +158,24 @@ class ArticleManager
   end
 
   def find_article_by_index(idx)
-    d = @cache[@ids[idx]]
-    return d if d
-    return Article.find(@ids[idx])
+    if @ids[idx]
+      Article.find(@ids[idx])
+    else
+      nil
+    end
   end
 
   def add_to_cache
-    next_id = @ids[@index + 1]
-    if next_id
-      unless @cache[next_id]
-        @cache[next_id] =  Article.find(next_id)
-        if @cache[next_id]
-          url = NSURL.URLWithString(@cache[next_id].image_url)
-          UIImageView.cacheImageWithURL(url)
-        end
-      end
-    end
-    next_next_id = @ids[@index + 2]
-    if next_next_id
-      unless @cache[next_next_id]
-        @cache[next_next_id] =  Article.find(next_next_id)
-        if @cache[next_id]
-          url = NSURL.URLWithString(@cache[next_id].image_url)
-          UIImageView.cacheImageWithURL(url)
-        end
-      end
-    end
-  end
-
-  def remove_from_cache
-    @cache.each do |k, v|
-      if k > @ids[@index] + 2 || k < @ids[@index] - 2
-        @cache.delete(k)
+    preload_id = @ids[@index + 2]
+    if preload_id
+      article =  Article.find(preload_id)
+      if article && article.image_url && article.image_url.include?('http')
+        url = NSURL.URLWithString(article.image_url)
+        SDWebImageDownloader.sharedDownloader.downloadImageWithURL(url,
+                                                                   options: 0,
+                                                                   progress: lambda { |receivedSize, expectedSize| },
+                                                                   completed: lambda { |image, data, error, finished| }
+                                                                  )
       end
     end
   end
@@ -225,7 +210,6 @@ class ArticleManager
   def add_observers
     observe(self, "index") do |old_value, new_value|
       App::Persistence['index'] = new_value
-      remove_from_cache
       add_to_cache
     end
 
