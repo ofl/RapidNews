@@ -4,9 +4,10 @@ class Channel
   include MotionModel::ArrayModelAdapter
   include RapidNews::Model
 
-  columns :name      => :string,
-    :is_checked    => :bool,
-    :position  => :int
+  columns :name => :string,
+    :is_checked => :bool,
+    :image_url  => :string,
+    :position   => :int
 
   def move_position_to(old_pos, new_pos)
     if new_pos > old_pos

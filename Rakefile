@@ -22,7 +22,7 @@ Motion::Project::App.setup do |app|
   app.fonts = ["ionicons.ttf"]  
 
   app.libs += ['/usr/lib/libsqlite3.dylib']
-  app.frameworks += %w(Security SafariServices MessageUI MapKit QuartzCore)
+  app.frameworks += %w(Security SafariServices MessageUI MapKit QuartzCore ImageIO)
  
   # app.files_dependencies 'app/models/channel.rb' => 'app/lib/util/model.rb'
 
@@ -36,6 +36,7 @@ Motion::Project::App.setup do |app|
     pod 'SVProgressHUD'
     pod 'FXReachability'
     pod 'KNSemiModalViewController'
+    pod 'SDWebImage'
   end
 
   app.entitlements['keychain-access-groups'] = [app.seed_id + '.' + app.identifier]  
