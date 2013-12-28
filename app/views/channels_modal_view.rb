@@ -20,14 +20,18 @@ class ChannelsModalView < UIView
     channels = Channel.where(:is_checked).eq(true).order(:position).all
     width = 74 * channels.count + 16
     cf = CGRectMake( 0,  0, width, 100)
+    img = UIImage.imageNamed("images/60x60.png")
 
     subview(UIScrollView.new, :scroll_view, {contentSize: cf.size, delegate: self}) do |s|
       subview UIView.new, {frame: cf}
       channels.each_with_index do |channel, i|
         left = 74 * i + 6
         button(:channel_button, { frame: CGRectMake(left, 21, 60, 60)}).tap do |b|
-          img = UIImage.imageNamed("images/60x60.png")
-          b.setBackgroundImage(img, forState:UIControlStateNormal)
+          if channel.image_url
+            b.setImageWithURL(channel.image_url, forState: UIControlStateNormal, placeholderImage: img)
+          else
+            b.setImage(img, forState: UIControlStateNormal)
+          end
           b.layer.cornerRadius = 10
           b.layer.setMasksToBounds(true)
           b.when(UIControlEventTouchUpInside) {
