@@ -52,4 +52,14 @@ class Channel
     news_source.save
     NewsSource.save_to_file
   end
+
+  def update_image_url
+    article = Article.last
+    if article && article.image_url && article.image_url.include?('http')
+      self.image_url = article.image_url
+      self.class.save_to_file
+      url = NSURL.URLWithString(self.image_url)
+      SDWebImagePrefetcher.sharedImagePrefetcher.prefetchURLs([url])
+    end
+  end
 end

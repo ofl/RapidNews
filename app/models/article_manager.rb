@@ -119,7 +119,8 @@ class ArticleManager
     entries_path = @feed_hash.valueForKeyPath('rss.channel.atom') ? 'rss.channel.atom' : 'rss.channel.item' 
     dict.valueForKeyPath(entries_path).each do |item|
       break if is_over_max_article_size
-      next  if item['rel'] == 'self' # for atom info item
+      next unless item
+      next if item['rel'] == 'self' # for atom info item
       next if Article.where(:link_url).eq(item[:link][:text].dup).count > 0
 
       article = Article.build(source, item)
@@ -165,17 +166,13 @@ class ArticleManager
     end
   end
 
-  def add_to_cache
-    preload_id = @ids[@index + 2]
-    if preload_id
-      article =  Article.find(preload_id)
+  def prefetch_image
+    prefetch_id = @ids[@index + 2]
+    if prefetch_id
+      article =  Article.find(prefetch_id)
       if article && article.image_url && article.image_url.include?('http')
         url = NSURL.URLWithString(article.image_url)
-        SDWebImageDownloader.sharedDownloader.downloadImageWithURL(url,
-                                                                   options: 0,
-                                                                   progress: lambda { |receivedSize, expectedSize| },
-                                                                   completed: lambda { |image, data, error, finished| }
-                                                                  )
+        SDWebImagePrefetcher.sharedImagePrefetcher.prefetchURLs([url])
       end
     end
   end
@@ -210,7 +207,7 @@ class ArticleManager
   def add_observers
     observe(self, "index") do |old_value, new_value|
       App::Persistence['index'] = new_value
-      add_to_cache
+      prefetch_image
     end
 
     observe(self, "is_reading") do |old_value, new_value|

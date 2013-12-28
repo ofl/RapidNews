@@ -200,6 +200,7 @@ class HomeScreen < PM::Screen
             SVProgressHUD.showErrorWithStatus("No new articles found.")
           end
         }
+        @channel.update_image_url
       end
     end
 

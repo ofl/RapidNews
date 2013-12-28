@@ -22,10 +22,6 @@ class HomeArticleView < UIView
   def update_image_view(image_url)
     @image_view.hidden = false
     @image_view.setImageWithURL(image_url, placeholderImage:nil, options:SDWebImageCacheMemoryOnly)
-    # @image_view.setImageWithURLRequest( NSURLRequest.alloc.initWithURL(NSURL.URLWithString(image_url)),
-    #                                     placeholderImage: @default_image,
-    #                                     success: -> (req, res, image) { @image_view.image = image },
-    #                                     failure: -> (req, res, error) { @image_view.image = @default_image })    
   end
 
   def update_article(index)

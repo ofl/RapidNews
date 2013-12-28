@@ -15,7 +15,11 @@ class NSObject
       else
         arrayKey = part.substringToIndex(range1.location)
         index = part.substringToIndex(part.length-1).substringFromIndex(range1.location+1).intValue
-        currentObj = currentObj.valueForKey(arrayKey).objectAtIndex(index)
+        if currentObj.valueForKey(arrayKey).nil?
+          nil
+        else
+          currentObj = currentObj.valueForKey(arrayKey).objectAtIndex(index)
+        end
       end
     end
     return currentObj
