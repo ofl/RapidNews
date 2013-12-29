@@ -16,12 +16,19 @@ class HomeArticleView < UIView
       @summary_label = subview VerticallyAlignedLabel.new, :summary_label
       @favicon_image_view = subview UIImageView.alloc.initWithImage(@default_image), :favicon_image_view
       @host_label = subview UILabel.new, :host_label
+      @host_label.font = italic_font
     end
   end
 
   def update_image_view(image_url)
     @image_view.hidden = false
     @image_view.setImageWithURL(image_url, placeholderImage:nil, options:SDWebImageCacheMemoryOnly)
+  end
+
+  def italic_font
+    fontDescriptor = UIFontDescriptor.preferredFontDescriptorWithTextStyle(UIFontTextStyleCaption1)
+    italicFontDescriptor = fontDescriptor.fontDescriptorWithSymbolicTraits(UIFontDescriptorTraitItalic)
+    UIFont.fontWithDescriptor(italicFontDescriptor, size:0.0)
   end
 
   def update_article(index)
