@@ -11,44 +11,27 @@
  
   style :title_label,
     verticalAlignment: VerticalAlignmentBottom,
+    setLineBreakMode: UILineBreakModeWordWrap,
     backgroundColor: UIColor.clearColor,
-    text: "Welcome to RapidNews!",
     textColor: UIColor.whiteColor,
-    numberOfLines: 3,
-    font: UIFont.systemFontOfSize(17.0),
-    height: 105,
+    numberOfLines: 0,
+    font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline),
+    height: 145,
     width: 213,
-    top: 65,
+    top: 25,
     left: 10
  
   style :summary_label,
     verticalAlignment: VerticalAlignmentTop,
+    setLineBreakMode: UILineBreakModeWordWrap,
     backgroundColor: UIColor.clearColor,
-    text: "Welcome to RapidNews!",
     textColor: UIColor.whiteColor,
     numberOfLines: 0,
-    font: UIFont.systemFontOfSize(17.0),
-    height: 220,
+    font: UIFont.preferredFontForTextStyle(UIFontTextStyleBody),
+    height: 270,
     width: 300,
     top: 210,
     left: 10
- 
-  style :date_label,
-    backgroundColor: UIColor.clearColor,
-    text: "Welcome to RapidNews!",
-    textColor: UIColor.blackColor,
-    numberOfLines: 0,
-    textAlignment: UITextAlignmentCenter,
-    font: UIFont.boldSystemFontOfSize(18.0)
- 
-  style :source_label,
-    backgroundColor: UIColor.clearColor,
-    text: "Welcome to RapidNews!",
-    textColor: UIColor.whiteColor,
-    shadowColor: UIColor.blackColor,
-    numberOfLines: 0,
-    textAlignment: UITextAlignmentCenter,
-    font: UIFont.boldSystemFontOfSize(18.0)
  
   style :image_view,
     height: 90,
@@ -69,6 +52,5 @@
     left: 30,
     backgroundColor: UIColor.clearColor,
     textColor: BW.rgb_color(200, 200, 200),
-    numberOfLines: 0,
-    font: UIFont.italicSystemFontOfSize(12.0)
+    numberOfLines: 0
 end
