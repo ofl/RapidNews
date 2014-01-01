@@ -23,6 +23,10 @@ class HomeArticleView < UIView
   def update_image_view(image_url)
     @image_view.hidden = false
     @image_view.setImageWithURL(image_url, placeholderImage:nil, options:SDWebImageCacheMemoryOnly)
+    gradient = CAGradientLayer.layer
+    gradient.frame = @image_view.bounds
+    gradient.colors = [BW.rgba_color(0,0,0, 1.0).CGColor, BW.rgba_color(0,0,0, 0.3).CGColor]
+    @image_view.layer.mask = gradient
   end
 
   def italic_font
@@ -38,6 +42,7 @@ class HomeArticleView < UIView
     @index = index
     @title_label.text = article.title
     @summary_label.text = article.summary
+    @summary_label.sizeToFit
 
     if !article.image_url
       @image_view.hidden = true
@@ -52,6 +57,9 @@ class HomeArticleView < UIView
     remote = UIImage.imageWithData(data)
     @favicon_image_view.image = remote
     @host_label.text = "#{article.host} #{article.since_post}"
+    top = @summary_label.frame.size.height + 240
+    @host_label.frame = [[30, top - 3], [280, 17]]
+    @favicon_image_view.frame = [[10, top], [15, 15]]
   end
 
   def fade_in

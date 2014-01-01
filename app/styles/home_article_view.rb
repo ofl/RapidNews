@@ -1,12 +1,12 @@
     Teacup::Stylesheet.new :home_article_view do
   style :base_view,
-    backgroundColor: BW.rgb_color(60, 60, 60)
+    backgroundColor: BW.rgb_color(225, 225, 225)
  
   style :title_background,
     backgroundColor: BW.rgb_color(50, 50, 50),
     height: 200,
     width: App.frame.size.width,
-    top: 0,
+    top: 20,
     left: 0
  
   style :title_label,
@@ -16,8 +16,8 @@
     textColor: UIColor.whiteColor,
     numberOfLines: 0,
     font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline),
-    height: 145,
-    width: 213,
+    height: 185,
+    width: 300,
     top: 25,
     left: 10
  
@@ -25,19 +25,19 @@
     verticalAlignment: VerticalAlignmentTop,
     setLineBreakMode: UILineBreakModeWordWrap,
     backgroundColor: UIColor.clearColor,
-    textColor: UIColor.whiteColor,
+    textColor: BW.rgb_color(100, 100, 100),
     numberOfLines: 0,
     font: UIFont.preferredFontForTextStyle(UIFontTextStyleBody),
     height: 270,
     width: 300,
-    top: 210,
+    top: 230,
     left: 10
  
   style :image_view,
-    height: 90,
-    width: 90,
-    top: 110,
-    left: 230
+    height: 200,
+    width: 320,
+    top: 20,
+    left: 0
  
   style :favicon_image_view,
     height: 15,
@@ -47,10 +47,10 @@
  
   style :host_label,
     height: 17,
-    width: 180,
+    width: 280,
     top: 176,
     left: 30,
     backgroundColor: UIColor.clearColor,
-    textColor: BW.rgb_color(200, 200, 200),
+    textColor: BW.rgb_color(150, 150, 150),
     numberOfLines: 0
 end
