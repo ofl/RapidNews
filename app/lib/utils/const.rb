@@ -17,25 +17,9 @@ module RapidNews
       JAPAN = 'jp'
     end
 
-    module Speed
-      FIXED = 0
-      VARIABLE = 1
-    end
-
-    module Accelerate
-      YES = 0
-      NO = 1
-    end
-
     module Design
       BLACK = 0
       WHITE = 1
-    end
-
-    module FontSize
-      SMALL = 0
-      MEDIUM = 1
-      LARGE = 2
     end
 
     module ArticlesSize
@@ -124,25 +108,9 @@ module RapidNews
       Const::ArticlesSize::LARGE       => "1000",
     }
 
-    SPEED = {
-      Const::Speed::FIXED       => 'fixed',
-      Const::Speed::VARIABLE    => 'variable',
-    }
-
-    ACCELERATE = {
-      Const::Accelerate::YES    => 'yes',
-      Const::Accelerate::NO     => 'no',
-    }
-
     DESIGN = {
       Const::Design::BLACK      => 'black',
       Const::Design::WHITE      => 'white',
-    }
-
-    FONT_SIZE = {
-      Const::FontSize::SMALL    => 'small',
-      Const::FontSize::MEDIUM   => 'medium',
-      Const::FontSize::LARGE    => 'large',
     }
 
     SWIPE_RIGHT = {

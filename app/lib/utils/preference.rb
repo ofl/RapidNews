@@ -2,9 +2,6 @@ module RapidNews
   module Preference
     def load
       App::Persistence['articles_size'] ||= RN::Const::ArticlesSize::SMALL
-      App::Persistence['speed']      ||= RN::Const::Speed::FIXED
-      App::Persistence['accelerate'] ||= RN::Const::Accelerate::YES
-      App::Persistence['font_size']  ||= RN::Const::FontSize::MEDIUM
       App::Persistence['design']     ||= RN::Const::Design::BLACK
       App::Persistence['swipe_left'] ||= RN::Const::SwipeLeft::PREVIEW
       App::Persistence['swipe_right'] ||= RN::Const::SwipeRight::BOOKMARK
