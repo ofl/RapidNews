@@ -19,53 +19,14 @@ class Settings::RootScreen < PM::GroupedTableScreen
         cells: [
           {
             title: "Article Size",
-            indentationLevel: 2,
             subtitle: RN::Titles::ARTICLES_SIZE[App::Persistence['articles_size']],
             action: :on_cell_tapped,
             arguments: { menu: :articles_size },
-            accessoryType: UITableViewCellAccessoryDisclosureIndicator,
-            subviews: [icon_label(0xe6ef)],
-            cell_style: UITableViewCellStyleValue1,
-          },
-        ]
-      },{
-        title: 'Speed',
-        cells: [
-          {
-            title: "Speed",
-            indentationLevel: 2,
-            subtitle: RN::Titles::SPEED[App::Persistence['speed']],
-            action: :on_cell_tapped,
-            arguments: { menu: :speed },
-            accessoryType: UITableViewCellAccessoryDisclosureIndicator,
-            subviews: [icon_label(0xe64d)],
-            cell_style: UITableViewCellStyleValue1,
-          },
-          {
-            title: "Accelerate",
-            indentationLevel: 2,
-            subtitle: RN::Titles::ACCELERATE[App::Persistence['accelerate']],
-            action: :on_cell_tapped,
-            arguments: { menu: :accelerate },
-            accessoryType: UITableViewCellAccessoryDisclosureIndicator,
-            cell_style: UITableViewCellStyleValue1,
-          }
-        ]
-      },{
-        title: 'Appearence',
-        cells: [
-          {
-            title: "Font Size",
-            indentationLevel: 2,
-            subtitle: RN::Titles::FONT_SIZE[App::Persistence['font_size']],
-            action: :on_cell_tapped,
-            arguments: { menu: :font_size },
             accessoryType: UITableViewCellAccessoryDisclosureIndicator,
             cell_style: UITableViewCellStyleValue1,
           },
           {
             title: "Design",
-            indentationLevel: 2,
             subtitle: RN::Titles::DESIGN[App::Persistence['design']],
             action: :on_cell_tapped,
             arguments: { menu: :design },
@@ -78,11 +39,9 @@ class Settings::RootScreen < PM::GroupedTableScreen
         cells: [
           {
             title: "Services",
-            indentationLevel: 2,
             action: :on_share_cell_tapped,
             arguments: { menu: :share },
             accessoryType: UITableViewCellAccessoryDisclosureIndicator,
-            subviews: [icon_label(0xe6ef)],
             cell_style: UITableViewCellStyleValue1,
           }
         ]
@@ -91,57 +50,44 @@ class Settings::RootScreen < PM::GroupedTableScreen
         cells: [
           {
             title: "Swipe Left",
-            indentationLevel: 2,
             subtitle: RN::Titles::SWIPE_LEFT[App::Persistence['swipe_left']],
             action: :on_cell_tapped,
             arguments: { menu: "swipe_left" },
             accessoryType: UITableViewCellAccessoryDisclosureIndicator,
-            subviews: [icon_label(0xe6e7)],
             cell_style: UITableViewCellStyleValue1,
           },
           {
             title: "Swipe Right",
-            indentationLevel: 2,
             subtitle: RN::Titles::SWIPE_RIGHT[App::Persistence['swipe_right']],
             action: :on_cell_tapped,
             arguments: { menu: "swipe_right" },
             accessoryType: UITableViewCellAccessoryDisclosureIndicator,
-            subviews: [icon_label(0xe6e6)],
             cell_style: UITableViewCellStyleValue1,
           }
         ]
       },{
-        title: 'Contact',
+        title: 'About',
         cells: [
           {
+            title: "Credit",
+            action: :on_credit_cell_tapped,
+            accessoryType: UITableViewCellAccessoryDisclosureIndicator,
+          },
+          {
             title: "Web Site",
-            indentationLevel: 2,
-            action: :on_cell_tapped,
+            action: :on_web_site_cell_tapped,
             arguments: { menu: "web" },
-            subviews: [icon_label(0xe62f)],
             accessoryType: UITableViewCellAccessoryNone
           },
           {
             title: "Email",
-            indentationLevel: 2,
-            action: :on_cell_tapped,
+            action: :on_email_cell_tapped,
             arguments: { menu: "email" },
-            subviews: [icon_label(0xe6af)],
             accessoryType: UITableViewCellAccessoryNone,
           },
         ]
       }
     ]
-  end
-
-  def icon_label(character)
-    UILabel.new.tap do |l|
-      l.frame = [[10, 13], [20, 20]]
-      l.backgroundColor = UIColor.clearColor
-      l.text = character.chr(Encoding::UTF_8)
-      l.textColor = rgb_color(0,0,0)
-      l.font = UIFont.fontWithName("ionicons", size:17.0)
-    end
   end
 
   def on_cell_tapped(args = {})
@@ -158,6 +104,25 @@ class Settings::RootScreen < PM::GroupedTableScreen
     open Settings::SharesScreen.new(nav_bar: true)
   end
 
+  def on_credit_cell_tapped
+    open Settings::CreditScreen.new(nav_bar: true)
+  end
+
+  def on_web_site_cell_tapped
+    UIApplication.sharedApplication.openURL(NSURL.URLWithString("https://github.com/ofl/RapidNews"))
+  end
+
+  def on_email_cell_tapped
+    unless MFMailComposeViewController.canSendMail
+      App.alert("It is necessary to set the send mail")
+      return
+    end
+    c = MFMailComposeViewController.alloc.init
+    c.setToRecipients(['admin@covered.jp'])
+    c.mailComposeDelegate = self
+    self.presentModalViewController(c, animated:true)
+  end
+
   def on_close_button_tapped
     close()
   end
@@ -166,5 +131,12 @@ class Settings::RootScreen < PM::GroupedTableScreen
     if args[:model_saved]
       update_table_data
     end
+  end
+
+  def mailComposeController(controller, didFinishWithResult: result, error: error)
+    if error
+      App.alert("[Error]Can not send mail.")
+    end
+    controller.dismissModalViewControllerAnimated(true)
   end
 end
