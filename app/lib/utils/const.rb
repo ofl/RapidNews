@@ -145,8 +145,8 @@ module RapidNews
       Const::BookmarkReader::SAFARI      => 'safari',
       Const::BookmarkReader::EMAIL       => 'email',
       Const::BookmarkReader::POCKET      => 'pocket',
-      Const::BookmarkReader::INSTAPAPER  => 'instapaper',
-      Const::BookmarkReader::READABILITY => 'readability',
+      # Const::BookmarkReader::INSTAPAPER  => 'instapaper',
+      # Const::BookmarkReader::READABILITY => 'readability',
     }
 
     SHARE_SERVICE = {

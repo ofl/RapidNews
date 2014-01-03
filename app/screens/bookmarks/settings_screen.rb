@@ -1,34 +1,17 @@
 class Bookmarks::SettingsScreen < PM::GroupedTableScreen
   title "Settings"
 
-  def set_up_table_view
+  def on_load
     @readers = []
     RN::Titles::BOOKMARK_READER.each do |k, v|
       @readers.push({name: v, id: k})
     end
     @readers.sort! { |a, b| a[:id] <=> b[:id] }
-    super
   end
 
   def table_data
     @settings_table_data = [
       {
-        cells: [
-          { 
-            title: "Sources", 
-            action: :on_cell_tapped, 
-            arguments: { menu: :source },
-            accessoryType: UITableViewCellAccessoryDisclosureIndicator
-          },
-          { 
-            title: "Bookmarks", 
-            action: :on_cell_tapped, 
-            arguments: { menu: :foo },
-            accessoryType: UITableViewCellAccessoryDisclosureIndicator
-          }
-        ]
-      },{
-        title: 'Bookmark Reader',
         cells: @readers.map{ |reader| create_cell reader }
       }
     ]
@@ -57,14 +40,6 @@ class Bookmarks::SettingsScreen < PM::GroupedTableScreen
       elsif args[:id] == RN::Const::BookmarkReader::SAFARI
         open Bookmarks::SafariScreen.new(nav_bar: true)
       end
-    # elsif args[:menu] == :action
-    #   open EditBookmarksScreen.new(nav_bar: true)
-    # elsif args[:menu] == :refresh
-    #   open EditUserDefaultScreen.new(
-    #     nav_bar: true, 
-    #     property: args[:menu], 
-    #     constant: "Speed", 
-    #     constant_names: RN::Titles::SPEED)
     end      
   end
 

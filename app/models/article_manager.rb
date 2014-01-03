@@ -140,6 +140,7 @@ class ArticleManager
   def add_to_bookmarks
     if self.current_article
       self.current_article.is_bookmarked = true
+      self.current_article.is_checked = true
       self.current_article.save
       update_bookmarks_count
       Article.save_to_file
