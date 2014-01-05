@@ -29,6 +29,7 @@ class ChannelsModalView < UIView
         button(:channel_button, { frame: CGRectMake(left, 21, 60, 60)}).tap do |b|
           if channel.image_url
             b.setImageWithURL(channel.image_url, forState: UIControlStateNormal, placeholderImage: img)
+            b.imageView.setContentMode(UIViewContentModeScaleAspectFill)
           else
             b.setImage(img, forState: UIControlStateNormal)
           end
