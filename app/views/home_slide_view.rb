@@ -200,7 +200,7 @@ class HomeSlideView < UIView
 
     if offset < 44 && offset > -44
       return_default_position current_view, upper_view, lower_view
-      delegate.show_controller if offset < 5 && offset > -5
+      delegate.toggle_toolbar if offset < 5 && offset > -5
     elsif offset > 0
       return_default_position(current_view, upper_view, lower_view) unless upper_view
       pull_down current_view, upper_view, offset
@@ -266,7 +266,7 @@ class HomeSlideView < UIView
     if upper_view
       slide_down
     else
-      delegate.show_controller
+      delegate.toggle_toolbar
     end
   end
 
