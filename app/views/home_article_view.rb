@@ -23,8 +23,7 @@ class HomeArticleView < UIView
     @image_view.contentMode = UIViewContentModeScaleAspectFill
     @image_view.hidden = false
     @image_view.setImageWithURL(image_url, 
-                                placeholderImage: UIImage.imageNamed("images/77x50.png"), 
-                                options:SDWebImageCacheMemoryOnly)
+                                placeholderImage: UIImage.imageNamed("images/77x50.png"))
     gradient = CAGradientLayer.layer
     gradient.frame = @image_view.bounds
     gradient.colors = [BW.rgba_color(0,0,0, 1.0).CGColor, BW.rgba_color(0,0,0, 0.3).CGColor]
@@ -53,8 +52,7 @@ class HomeArticleView < UIView
     end
 
     @favicon_image_view.setImageWithURL("http://www.google.com/s2/favicons?domain=#{article.host}", 
-                                        placeholderImage: UIImage.imageNamed("images/000000.png"), 
-                                        options:SDWebImageCacheMemoryOnly)
+                                        placeholderImage: UIImage.imageNamed("images/000000.png"))
     @host_label.text = "#{article.host} #{article.since_post}"
     top = @summary_label.frame.size.height + 240
     @host_label.frame = [[30, top - 3], [280, 17]]

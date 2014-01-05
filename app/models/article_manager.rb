@@ -196,8 +196,11 @@ class ArticleManager
 
     if over > 0
       articles = Article.where(:is_bookmarked).eq(false).order(:id).all()
+      shared_image_cache = SDImageCache.sharedImageCache 
+
       over.times do |index|
         unless @ids.include?(articles[index].id)
+          shared_image_cache.removeImageForKey(articles[index].image_url)
           articles[index].delete
         end
       end
