@@ -13,6 +13,7 @@ class HomeScreen < PM::Screen
     @interval = 3.0
     @timer = nil
     @speed_control_timer = nil
+    @toolbar_hidden = false
     add_observers
   end
 
@@ -107,7 +108,7 @@ class HomeScreen < PM::Screen
 
   #Show/Hide Menu
 
-  def show_controller
+  def show_toolbar
     stop_reading
     nf = CGRectMake(0, 0, App.frame.size.width, @nav_bar.frame.size.height)
     tf = CGRectMake(0, self.view.bounds.size.height - @tool_bar.frame.size.height,
@@ -120,11 +121,10 @@ class HomeScreen < PM::Screen
                                  @tool_bar.frame = tf
                                  @tool_bar.backgroundColor = BW.rgba_color(150, 150, 150, 0.30)
                                },
-                               completion: nil)
-    true
+                               completion: -> (finished) {@toolbar_hidden = false})
   end
 
-  def hide_controller
+  def hide_toolbar
     nf = CGRectMake(0, -66, App.frame.size.width, @nav_bar.frame.size.height)
     tf = CGRectMake(0, self.view.bounds.size.height - 44,
                     App.frame.size.width, @tool_bar.frame.size.height)
@@ -136,8 +136,15 @@ class HomeScreen < PM::Screen
                                  @tool_bar.frame = tf
                                  @tool_bar.backgroundColor = BW.rgba_color(60, 60, 60, 0)
                                },
-                               completion: -> (finished) {true})
-    false
+                               completion: -> (finished) {@toolbar_hidden = true})
+  end
+
+  def toggle_toolbar
+    if @toolbar_hidden
+      show_toolbar
+    else
+      hide_toolbar
+    end
   end
 
   def open_preview_screen
@@ -293,7 +300,7 @@ class HomeScreen < PM::Screen
   end
 
   def on_navbar_hide_menu_button_tapped
-    hide_controller
+    hide_toolbar
   end
 
   def on_return(args = {})
