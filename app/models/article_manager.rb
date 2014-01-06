@@ -168,13 +168,14 @@ class ArticleManager
   end
 
   def prefetch_image
+    return unless App::Persistence['show_picture']
     prefetch_id = @ids[@index + 2]
-    if prefetch_id
-      article =  Article.find(prefetch_id)
-      if article && article.image_url && article.image_url.include?('http')
-        url = NSURL.URLWithString(article.image_url)
-        SDWebImagePrefetcher.sharedImagePrefetcher.prefetchURLs([url])
-      end
+    return unless prefetch_id
+
+    article =  Article.find(prefetch_id)
+    if article && article.image_url && article.image_url.include?('http')
+      url = NSURL.URLWithString(article.image_url)
+      SDWebImagePrefetcher.sharedImagePrefetcher.prefetchURLs([url])
     end
   end
 

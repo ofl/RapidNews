@@ -2,7 +2,7 @@ class HomeNavigationBar < UINavigationBar
 
   include BW::KVO
 
-  BUTTONS = [:settings_button, :channels_button, :bookmarks_button, :hide_menu_button]
+  BUTTONS = [:settings_button, :channels_button, :bookmarks_button, :hide_picture_button]
   CAUTION_BOOKMARKS_COUNT = 25
   ALERT_BOOKMARKS_COUNT = 50
 
@@ -32,12 +32,12 @@ class HomeNavigationBar < UINavigationBar
 
       bookmarks_button = UIBarButtonItem.alloc.initWithCustomView(create_bookmarks_button_view)
 
-      hide_menu_button = UIBarButtonItem.alloc.initWithImage(UIImage.imageNamed('images/expand.png'),
+      hide_picture_button = UIBarButtonItem.alloc.initWithImage(UIImage.imageNamed('images/picture.png'),
                                                    style: UIBarButtonItemStylePlain,
                                                    target: self,
-                                                   action: "on_hide_menu_button_tapped")
+                                                   action: "on_hide_picture_button_tapped")
 
-      navigation_item.leftBarButtonItems = [settings_button, spacer, channels_button, spacer, bookmarks_button, spacer, hide_menu_button]
+      navigation_item.leftBarButtonItems = [settings_button, spacer, channels_button, spacer, bookmarks_button, spacer, hide_picture_button]
       self.pushNavigationItem(navigation_item, animated:false)
 
       observe(@article_manager, "bookmarks_count") do |old_value, new_value|
@@ -92,7 +92,7 @@ class HomeNavigationBar < UINavigationBar
     self.delegate.on_navbar_bookmarks_button_tapped
   end
 
-  def on_hide_menu_button_tapped
-    self.delegate.on_navbar_hide_menu_button_tapped
+  def on_hide_picture_button_tapped
+    self.delegate.on_navbar_hide_picture_button_tapped
   end
 end

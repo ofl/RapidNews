@@ -3,7 +3,6 @@ class HomeArticleView < UIView
   attr_accessor :index
 
   def initWithFrame(frame)
-    @index = 0
     super.tap do
       self.stylesheet = :home_article_view
       self.stylename = :base_view
@@ -37,15 +36,15 @@ class HomeArticleView < UIView
   end
 
   def update_article(index)
-    article = @article_manager.find_article_by_index(index)
+    @index ||= index
+    article = @article_manager.find_article_by_index(@index)
     return unless article
 
-    @index = index
     @title_label.text = article.title
     @summary_label.text = article.summary
     @summary_label.sizeToFit
 
-    if article.image_url && @article_manager.can_load_image
+    if App::Persistence['show_picture'] && article.image_url && @article_manager.can_load_image
       update_image_view(article.image_url)
     else
       @image_view.hidden = true
