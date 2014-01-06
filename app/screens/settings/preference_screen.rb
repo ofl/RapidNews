@@ -1,12 +1,12 @@
 class Settings::PreferenceScreen < PM::GroupedTableScreen
   attr_accessor :property, :constant, :constant_names
 
-  def will_present
-    @is_saved = false
+  def on_load
+    self.title = @property
   end
 
-  def will_appear
-    self.title = @property
+  def will_present
+    @is_saved = false
   end
 
   def table_data

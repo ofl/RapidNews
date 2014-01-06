@@ -1,6 +1,6 @@
 class Bookmarks::ReadabilityScreen < Bookmarks::ReaderScreen
 
-  def will_appear
+  def on_load
     @is_saved = false
     self.title = 'Readability'
   end

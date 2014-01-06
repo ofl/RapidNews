@@ -1,8 +1,5 @@
 class Bookmarks::ReaderScreen < PM::GroupedTableScreen
 
-  def will_appear
-  end
-
   def table_data
     @data = set_table_data
   end

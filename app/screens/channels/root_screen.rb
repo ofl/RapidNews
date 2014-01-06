@@ -4,12 +4,7 @@ class Channels::RootScreen < PM::TableScreen
   def on_load
     @editing = false    
     set_nav_bar_button :left, system_item: :close, action: :on_close_button_tapped
-  end
 
-  def will_present
-  end
-
-  def will_appear
     self.title = 'Channels'
     self.navigationItem.rightBarButtonItem = self.editButtonItem
     # set_nav_bar_button :right, system_item: :edit, action: :add_channel

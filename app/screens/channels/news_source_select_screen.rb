@@ -3,14 +3,12 @@ class Channels::NewsSourceSelectScreen < PM::GroupedTableScreen
 
   def on_load
     @current_choice = @news_source.send(@property)   
+    @is_changed = false
+    self.title = @property
   end
 
   def will_present
     @is_changed = false
-  end
-
-  def will_appear
-    self.title = @property
   end
 
   def table_data

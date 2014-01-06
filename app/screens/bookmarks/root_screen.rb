@@ -4,7 +4,7 @@ class Bookmarks::RootScreen < PM::TableScreen
 
   title "Bookmarks"
 
-  def will_appear
+  def on_load
     @article_manager = ArticleManager.instance
     @view_is_set_up ||= set_up_view
   end
