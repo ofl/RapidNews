@@ -19,6 +19,7 @@ class HomeSlideView < UIView
       @current_num = 0
       @upper_num = nil
       @lower_num = nil
+      @touch_begin_at = nil
 
       add_gesture_recognizer
     end
@@ -179,6 +180,7 @@ class HomeSlideView < UIView
 
   def touchesBegan(touches, withEvent: event)
     @beginY = touches.anyObject.locationInView(self).y
+    @touch_begin_at = Time.now
   end
 
   def touchesMoved(touches, withEvent: event)
@@ -206,7 +208,15 @@ class HomeSlideView < UIView
 
     if offset < 44 && offset > -44
       return_default_position current_view, upper_view, lower_view
-      delegate.toggle_toolbar if offset < 5 && offset > -5
+      if offset < 5 && offset > -5
+        if Time.now - @touch_begin_at < 0.8
+          # tap
+          delegate.toggle_toolbar 
+        else
+          # long press
+          delegate.open_channel_modal_view
+        end
+      end
     elsif offset > 0
       return_default_position(current_view, upper_view, lower_view) unless upper_view
       pull_down current_view, upper_view, offset
