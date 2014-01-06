@@ -4,7 +4,7 @@ class Channels::ChannelScreen < PM::Screen
 
   stylesheet :channel_screen
 
-  def will_appear
+  def on_load
     self.title = @channel.name
     @categories = RN::Titles::CATEGORY
     @view_is_set_up ||= set_up_view

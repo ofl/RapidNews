@@ -2,7 +2,7 @@ class Settings::RootScreen < PM::GroupedTableScreen
 
   title "Settings"
 
-  def will_appear
+  def on_load
     @view_is_set_up ||= set_up_view
   end
 

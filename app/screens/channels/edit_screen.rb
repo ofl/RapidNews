@@ -3,7 +3,7 @@ class Channels::EditScreen < PM::GroupedTableScreen
 
   attr_accessor :channel
 
-  def will_appear
+  def on_load
     @is_saved = false
     self.title = @channel.name
   end

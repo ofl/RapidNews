@@ -1,7 +1,7 @@
 class Settings::SharesScreen < PM::GroupedTableScreen
   title "Share Services"
 
-  def will_appear
+  def on_load
     @view_is_set_up ||= set_up_view
   end
 

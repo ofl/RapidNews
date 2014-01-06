@@ -7,7 +7,7 @@ class Channels::NewsSourceFeedsScreen < PM::TableScreen
 
   stylesheet :news_source_feeds_screen
 
-  def will_appear
+  def on_load
     self.title = @news_source.name
     @feed_hash = {}
     fetch_feed

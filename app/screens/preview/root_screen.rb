@@ -7,13 +7,15 @@ class Preview::RootScreen < PM::WebScreen
 
   attr_accessor :article, :is_modal
 
-  def will_appear
+  def on_load
     @url = @article.link_url
     @page_title = @article.title
     @beginScrollOffsetY = 0
     @toolbarScrollStatus = QVToolBarScrollStatusInit
-    @toolbar_hidden = false
+    @toolbar_hidden = false    
+  end
 
+  def will_appear
     @view_is_set_up ||= set_up_view
   end
 

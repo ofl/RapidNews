@@ -1,6 +1,6 @@
 class Bookmarks::SafariScreen < Bookmarks::ReaderScreen
 
-  def will_appear
+  def on_load
     @is_saved = false
     self.title = 'Safari Readin List'
   end

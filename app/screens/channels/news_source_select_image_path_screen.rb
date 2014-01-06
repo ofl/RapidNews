@@ -3,14 +3,11 @@ class Channels::NewsSourceSelectImagePathScreen < PM::GroupedTableScreen
 
   def on_load
     @current_choice = @news_source.image_path
+    self.title = 'Image Path'
   end
 
   def will_present
     @is_changed = false
-  end
-
-  def will_appear
-    self.title = 'Image Path'
   end
 
   def table_data

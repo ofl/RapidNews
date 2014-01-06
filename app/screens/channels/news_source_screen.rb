@@ -12,9 +12,7 @@ class Channels::NewsSourceScreen < PM::GroupedTableScreen
         Dispatch::Queue.main.async{ show_save_button }
       end
     end
-  end
 
-  def will_appear
     self.title = @news_source.name
     if self.is_changed
       show_save_button

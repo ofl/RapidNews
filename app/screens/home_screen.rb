@@ -15,9 +15,7 @@ class HomeScreen < PM::Screen
     @speed_control_timer = nil
     @toolbar_hidden = false
     add_observers
-  end
 
-  def will_appear
     @view_setup ||= set_up_view
   end
 

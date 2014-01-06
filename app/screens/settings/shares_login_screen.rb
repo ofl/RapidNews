@@ -1,7 +1,7 @@
 class Settings::SharesLoginScreen < PM::GroupedTableScreen
   attr_accessor :service
 
-  def will_appear
+  def on_load
     @is_saved = false
     self.title = RN::Titles::SHARE_SERVICE[@service]
   end
