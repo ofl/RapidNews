@@ -16,9 +16,9 @@ class HomeSlideView < UIView
 
       @article_manager = ArticleManager.instance
       @view_stack = []
-      @current_idx = 0
-      @upper_idx = nil
-      @lower_idx = nil
+      @current_num = 0
+      @upper_num = nil
+      @lower_num = nil
 
       add_gesture_recognizer
     end
@@ -43,17 +43,23 @@ class HomeSlideView < UIView
     @view_stack[0].update_article(index)    
   end
 
+  def update_articles
+    @view_stack.each do |view|
+      view.update_article(nil)
+    end
+  end
+
   def update_index(index)
-    @upper_idx = nil
-    @lower_idx = nil
+    @upper_num = nil
+    @lower_num = nil
 
     @view_stack.each_with_index do |view, i|
       if view.index == index
-        @current_idx = i
+        @current_num = i
       elsif view.index == index - 1
-        @upper_idx = i
+        @upper_num = i
       elsif view.index == index + 1
-        @lower_idx = i
+        @lower_num = i
       end
     end
   end
@@ -123,7 +129,7 @@ class HomeSlideView < UIView
 
   def pop_view_except_current
     if @view_stack.count > 1
-      current_view = @view_stack[@current_idx]
+      current_view = @view_stack[@current_num]
       @view_stack.each_with_index do |view|
         view.removeFromSuperview
         @view_stack.delete view
@@ -134,8 +140,8 @@ class HomeSlideView < UIView
   # animation
 
   def slide_up
-    current_view = @view_stack[@current_idx]
-    lower_view = @view_stack[@lower_idx]
+    current_view = @view_stack[@current_num]
+    lower_view = @view_stack[@lower_num]
     UIView.animateWithDuration(0.25,
                                delay: 0.0,
                                options: UIViewAnimationOptionCurveEaseOut,
@@ -150,8 +156,8 @@ class HomeSlideView < UIView
   end
 
   def slide_down
-    current_view = @view_stack[@current_idx]
-    upper_view = @view_stack[@upper_idx]
+    current_view = @view_stack[@current_num]
+    upper_view = @view_stack[@upper_num]
     UIView.animateWithDuration(0.25,
                                delay: 0.0,
                                options: UIViewAnimationOptionCurveEaseOut,
@@ -179,9 +185,9 @@ class HomeSlideView < UIView
     return if @view_stack.count < 1 || @article_manager.is_reading
     offset = touches.anyObject.locationInView(self).y - @beginY
 
-    current_view = @view_stack[@current_idx]
-    upper_view = @upper_idx ? @view_stack[@upper_idx] : nil
-    lower_view = @lower_idx ? @view_stack[@lower_idx] : nil
+    current_view = @view_stack[@current_num]
+    upper_view = @upper_num ? @view_stack[@upper_num] : nil
+    lower_view = @lower_num ? @view_stack[@lower_num] : nil
 
     if offset > 0
       move_down current_view, upper_view, offset
@@ -194,9 +200,9 @@ class HomeSlideView < UIView
     return if @view_stack.count < 1 || @article_manager.is_reading
     offset = touches.anyObject.locationInView(self).y - @beginY
 
-    current_view = @view_stack[@current_idx]
-    upper_view = @upper_idx ? @view_stack[@upper_idx] : nil
-    lower_view = @lower_idx ? @view_stack[@lower_idx] : nil
+    current_view = @view_stack[@current_num]
+    upper_view = @upper_num ? @view_stack[@upper_num] : nil
+    lower_view = @lower_num ? @view_stack[@lower_num] : nil
 
     if offset < 44 && offset > -44
       return_default_position current_view, upper_view, lower_view

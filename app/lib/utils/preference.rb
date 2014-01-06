@@ -5,6 +5,7 @@ module RapidNews
       App::Persistence['design']     ||= RN::Const::Design::BLACK
       App::Persistence['swipe_left'] ||= RN::Const::SwipeLeft::PREVIEW
       App::Persistence['swipe_right'] ||= RN::Const::SwipeRight::BOOKMARK
+      App::Persistence['show_picture'] = App::Persistence['show_picture'].nil? ? true : App::Persistence['show_picture']
       App::Persistence['lang']       ||= ['en_US', 'en_GB', 'ja_JP']
       App::Persistence['index']      ||= 0
       App::Persistence['bookmark_readers'] ||= [

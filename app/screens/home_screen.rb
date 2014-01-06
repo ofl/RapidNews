@@ -299,8 +299,9 @@ class HomeScreen < PM::Screen
     open_modal Bookmarks::RootScreen.new(nav_bar: true)
   end
 
-  def on_navbar_hide_menu_button_tapped
-    hide_toolbar
+  def on_navbar_hide_picture_button_tapped
+    App::Persistence['show_picture'] = !App::Persistence['show_picture']
+    @slide_view.update_articles
   end
 
   def on_return(args = {})
