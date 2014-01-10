@@ -1,7 +1,7 @@
 Teacup::Stylesheet.new :preview_screen do
   style :base_view,
-    backgroundColor: BW.rgb_color(255, 255, 255)
+    backgroundColor: UIColor.whiteColor
 
   style :webview,
-    backgroundColor: BW.rgb_color(255, 255, 255)
+    backgroundColor: UIColor.whiteColor
 end

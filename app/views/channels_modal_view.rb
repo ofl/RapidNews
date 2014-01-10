@@ -43,7 +43,7 @@ class ChannelsModalView < UIView
         end
 
         label_left = 74 * i + 4
-        subview(UILabel.new, :channel_label).tap do |l|
+        subview(UILabel.new, :channel_button_label).tap do |l|
           l.frame = CGRectMake(label_left, 84, 64, 10)
           l.text = channel.name
         end        

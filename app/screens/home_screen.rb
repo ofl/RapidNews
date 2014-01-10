@@ -111,13 +111,14 @@ class HomeScreen < PM::Screen
     nf = CGRectMake(0, 0, App.frame.size.width, @nav_bar.frame.size.height)
     tf = CGRectMake(0, self.view.bounds.size.height - @tool_bar.frame.size.height,
                     App.frame.size.width, @tool_bar.frame.size.height)
+    @tool_bar.tintColor = RN::Const::Color::TINT
     UIView.animateWithDuration(0.40,
                                delay: 0.0,
                                options: UIViewAnimationOptionCurveEaseOut,
                                animations: -> {
                                  @nav_bar.frame = nf
                                  @tool_bar.frame = tf
-                                 @tool_bar.backgroundColor = BW.rgba_color(150, 150, 150, 0.30)
+                                 @tool_bar.backgroundColor = RN::Const::Color::BAR_TINT
                                },
                                completion: -> (finished) {@toolbar_hidden = false})
   end
@@ -126,13 +127,14 @@ class HomeScreen < PM::Screen
     nf = CGRectMake(0, -66, App.frame.size.width, @nav_bar.frame.size.height)
     tf = CGRectMake(0, self.view.bounds.size.height - 44,
                     App.frame.size.width, @tool_bar.frame.size.height)
+    @tool_bar.tintColor = RN::Const::Color::DARK_TINT unless App::Persistence['appearence'] == RN::Const::Appearence::BLACK
     UIView.animateWithDuration(0.40,
                                delay: 0.0,
                                options: UIViewAnimationOptionCurveEaseOut,
                                animations: -> {
                                  @nav_bar.frame = nf
                                  @tool_bar.frame = tf
-                                 @tool_bar.backgroundColor = BW.rgba_color(60, 60, 60, 0)
+                                 @tool_bar.backgroundColor = RN::Const::Color::HOME_TOOL_BAR_TRANSPARENT
                                },
                                completion: -> (finished) {@toolbar_hidden = true})
   end
@@ -303,11 +305,9 @@ class HomeScreen < PM::Screen
   end
 
   def on_return(args = {})
-    if @article_manager.crawling_url_list_count > 0
-      SVProgressHUD.showWithStatus("Loading...", maskType: SVProgressHUDMaskTypeBlack)
+    if args[:refresh]
+      @slide_view.update_styles
     end
-    # if args[:model_saved]
-    # end
   end
 
   def gesture_action(direction)

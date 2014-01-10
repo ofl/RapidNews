@@ -2,7 +2,7 @@ Teacup::Stylesheet.new :home_tool_bar do
   style :base_view,
     frame: [[0, '100% -90'], ['100%', 90]],
     # translucent: true,
-    backgroundColor: BW.rgba_color(150, 150, 150, 0.30)
+    backgroundColor: RN::Const::Color::BAR_TINT
 
   style :clear_toolbar,
     frame: [[0, 0], ['100%', 44]]
@@ -26,7 +26,7 @@ Teacup::Stylesheet.new :home_tool_bar do
     left: 260,
     backgroundColor: UIColor.clearColor,
     text: "0/0",
-    textColor: BW.rgb_color(0,255,255),
+    textColor: RN::Const::Color::TINT,
     numberOfLines: 0,
     textAlignment: UITextAlignmentRight,
     font: UIFont.systemFontOfSize(15.0)

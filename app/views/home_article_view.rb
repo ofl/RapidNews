@@ -4,17 +4,18 @@ class HomeArticleView < UIView
 
   def initWithFrame(frame)
     super.tap do
-      self.stylesheet = :home_article_view
-      self.stylename = :base_view
-      subview UIView, :title_background
-
       @article_manager = ArticleManager.instance
+      appearence = RN::Titles::APPEARENCE[App::Persistence['appearence']]
+      self.stylesheet = :home_article_view
+
+      self.stylename = "#{appearence}_base_view".to_sym
+      @info_label = subview UILabel.new, "#{appearence}_info_label".to_sym
+      @title_background = subview UIView, "#{appearence}_title_background".to_sym
+      @title_label = subview VerticallyAlignedLabel.new, "#{appearence}_title_label".to_sym
+      @summary_label = subview VerticallyAlignedLabel.new, "#{appearence}_summary_label".to_sym
       @image_view = subview UIImageView.alloc.init, :image_view
-      @title_label = subview VerticallyAlignedLabel.new, :title_label
-      @summary_label = subview VerticallyAlignedLabel.new, :summary_label
       @favicon_image_view = subview UIImageView.alloc.init, :favicon_image_view
-      @host_label = subview UILabel.new, :host_label
-      @host_label.font = italic_font
+      @info_label.font = italic_font
     end
   end
 
@@ -43,6 +44,7 @@ class HomeArticleView < UIView
     @title_label.text = article.title
     @summary_label.text = article.summary
     @summary_label.sizeToFit
+    @info_label.text = "#{article.host} #{article.since_post}"
 
     if App::Persistence['show_picture'] && article.image_url && @article_manager.can_load_image
       update_image_view(article.image_url)
@@ -52,9 +54,17 @@ class HomeArticleView < UIView
 
     @favicon_image_view.setImageWithURL("http://www.google.com/s2/favicons?domain=#{article.host}", 
                                         placeholderImage: UIImage.imageNamed("images/000000.png"))
-    @host_label.text = "#{article.host} #{article.since_post}"
     top = @summary_label.frame.size.height + 240
-    @host_label.frame = [[30, top - 3], [280, 17]]
+    @info_label.frame = [[30, top - 3], [280, 17]]
     @favicon_image_view.frame = [[10, top], [15, 15]]
+  end
+
+  def update_style
+    appearence = RN::Titles::APPEARENCE[App::Persistence['appearence']]
+    self.stylename = "#{appearence}_base_view".to_sym
+    @info_label.stylename = "#{appearence}_info_label".to_sym
+    @title_background.stylename = "#{appearence}_title_background".to_sym
+    @title_label.stylename = "#{appearence}_title_label".to_sym
+    @summary_label.stylename = "#{appearence}_summary_label".to_sym
   end
 end

@@ -22,7 +22,7 @@ class Channels::RootScreen < PM::TableScreen
       cell_style: UITableViewCellStyleDefault,
       title: channel.name,
       action: :on_cell_tapped,
-      text_color: channel.is_checked ? BW.rgb_color(0, 0, 0) : BW.rgb_color(200, 200, 200),
+      text_color: channel.is_checked ? UIColor.blackColor : RN::Const::Color::DISABLE,
       # accessoryType: channel.is_checked ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone,
       accessoryType: UITableViewCellAccessoryDisclosureIndicator,
       arguments: {channel: channel}

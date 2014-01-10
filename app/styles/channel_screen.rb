@@ -4,7 +4,7 @@ Teacup::Stylesheet.new :channel_screen do
     backgroundColor: UIColor.whiteColor
 
   style :content_view,
-    backgroundColor: BW.rgb_color(200, 200, 200)
+    backgroundColor: RN::Const::Color::DISABLE
 
   style :registered_button,
     font: UIFont.systemFontOfSize(12),
@@ -16,10 +16,10 @@ Teacup::Stylesheet.new :channel_screen do
     titleColor: BW.rgb_color(60, 60, 255)
 
   style :tab_blured,
-    backgroundColor: BW.rgb_color(200, 200, 200)
+    backgroundColor: RN::Const::Color::DISABLE
 
   style :tab_selected,
-    backgroundColor: BW.rgb_color(255, 255, 255)
+    backgroundColor: UIColor.whiteColor
 
   style :scroll_view,
     showsVerticalScrollIndicator: false,
@@ -50,13 +50,13 @@ Teacup::Stylesheet.new :channel_screen do
     left: 0,
     title: 0xe6c7.chr(Encoding::UTF_8),
     font: UIFont.fontWithName("ionicons", size:20.0),
-    titleColor: BW.rgb_color(200,200,200)
+    titleColor: RN::Const::Color::DISABLE
 
   style :checked_button, extends: :button,
-    titleColor: BW.rgb_color(0,150,255)
+    titleColor: RN::Const::Color::CHECKED_BUTTON
 
-  style :nochecked_button, extends: :button,
-    titleColor: BW.rgb_color(230,230,230)
+  style :not_checked_button, extends: :button,
+    titleColor: RN::Const::Color::NOT_CHECKED_BUTTON
 
 
 end

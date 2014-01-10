@@ -45,7 +45,7 @@ class Preview::RootScreen < PM::WebScreen
         @url_label = VerticallyAlignedLabel.new.tap do |ul|
           ul.frame = [[0, 20], [App.frame.size.width - 100, 20]]
           ul.textAlignment = UITextAlignmentCenter
-          ul.textColor = BW.rgb_color(150,150,150)
+          ul.textColor = RN::Const::Color::DETAIL
           ul.font = UIFont.systemFontOfSize(10.0)
           t.addSubview ul
         end

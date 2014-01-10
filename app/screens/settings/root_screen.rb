@@ -8,7 +8,6 @@ class Settings::RootScreen < PM::GroupedTableScreen
 
   def set_up_view
     set_nav_bar_button :left, system_item: :close, action: :on_close_button_tapped
-    self.navigation_controller.navigationBar.barTintColor = UIColor.whiteColor
 
     true
   end
@@ -26,10 +25,10 @@ class Settings::RootScreen < PM::GroupedTableScreen
             cell_style: UITableViewCellStyleValue1,
           },
           {
-            title: "Design",
-            subtitle: RN::Titles::DESIGN[App::Persistence['design']],
+            title: "Appearece",
+            subtitle: RN::Titles::APPEARENCE[App::Persistence['appearence']],
             action: :on_cell_tapped,
-            arguments: { menu: :design },
+            arguments: { menu: :appearence },
             accessoryType: UITableViewCellAccessoryDisclosureIndicator,
             cell_style: UITableViewCellStyleValue1,
           }
@@ -124,7 +123,7 @@ class Settings::RootScreen < PM::GroupedTableScreen
   end
 
   def on_close_button_tapped
-    close()
+    close(refresh: true)
   end
 
   def on_return(args = {})
