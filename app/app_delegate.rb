@@ -7,7 +7,7 @@ class AppDelegate < PM::Delegate
     set_consumer_key
 
     open HomeScreen.new(nav_bar: true)
-    self.window.tintColor = BW.rgb_color(0,255,255)
+    self.window.tintColor = RN::Const::Color::TINT
   end
 
   def application(application, openURL: url, sourceApplication: s, annotation: a)

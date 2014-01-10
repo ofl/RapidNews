@@ -1,6 +1,6 @@
 Teacup::Stylesheet.new :channels_modal_view do
   style :base_view,
-    backgroundColor: BW.rgba_color(255, 255, 255, 0.80),
+    backgroundColor: RN::Const::Color::CHANNEL_MODAL_TOOLBAR,
     frame: CGRectMake( 0, 0, App.frame.size.width, 150)
 
   style :cancel_button,
@@ -18,8 +18,8 @@ Teacup::Stylesheet.new :channels_modal_view do
   style :channel_button,
     backgroundColor: BW.rgb_color(150, 150, 150)
 
-  style :channel_label,
+  style :channel_button_label,
     textAlignment: UITextAlignmentCenter,
-    textColor: BW.rgb_color(40, 40, 40),
+    textColor: RN::Const::Color::TITLE,
     font: UIFont.systemFontOfSize(9.0)
 end

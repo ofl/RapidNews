@@ -48,7 +48,7 @@ class Bookmarks::RootScreen < PM::TableScreen
     if article.is_checked
       set_attributes button, {stylename: :checked_button}
     else
-      set_attributes button, {stylename: :nochecked_button}
+      set_attributes button, {stylename: :not_checked_button}
     end
     {
       cell_identifier: "Cell",
@@ -67,7 +67,7 @@ class Bookmarks::RootScreen < PM::TableScreen
       },
       detailTextLabel: {
         frame: CGRectMake(35, 32, 150, 12),
-        textColor: BW.rgb_color(120,120,120),
+        textColor: RN::Const::Color::DETAIL,
         font: UIFont.systemFontOfSize(10.0)
       }
     }

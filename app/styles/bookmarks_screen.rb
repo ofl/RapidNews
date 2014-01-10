@@ -6,11 +6,11 @@ Teacup::Stylesheet.new :bookmarks_screen do
     left: 0,
     title: 0xe6c7.chr(Encoding::UTF_8),
     font: UIFont.fontWithName("ionicons", size:20.0),
-    titleColor: BW.rgb_color(200,200,200)
+    titleColor: RN::Const::Color::DISABLE
 
   style :checked_button, extends: :button,
-    titleColor: BW.rgb_color(0,150,255)
+    titleColor: RN::Const::Color::CHECKED_BUTTON
 
-  style :nochecked_button, extends: :button,
-    titleColor: BW.rgb_color(230,230,230)
+  style :not_checked_button, extends: :button,
+    titleColor: RN::Const::Color::NOT_CHECKED_BUTTON
 end

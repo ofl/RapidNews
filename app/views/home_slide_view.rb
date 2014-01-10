@@ -12,8 +12,6 @@ class HomeSlideView < UIView
   def initWithFrame(frame)
     super.tap do
       userInteractionEnabled = true
-      backgroundColor = UIColor.blackColor
-
       @article_manager = ArticleManager.instance
       @view_stack = []
       @current_num = 0
@@ -47,6 +45,12 @@ class HomeSlideView < UIView
   def update_articles
     @view_stack.each do |view|
       view.update_article(nil)
+    end
+  end
+
+  def update_styles
+    @view_stack.each do |view|
+      view.update_style
     end
   end
 

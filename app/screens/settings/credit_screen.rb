@@ -13,7 +13,7 @@ class Settings::CreditScreen < PM::WebScreen
 
   def set_up_view
     layout(self.view, :base_view)  do
-      self.webview.backgroundColor = BW.rgb_color(255, 255, 255)
+      self.webview.backgroundColor = UIColor.whiteColor
       self.navigationController.navigationBarHidden = false
     end
     true

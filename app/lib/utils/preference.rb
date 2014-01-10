@@ -2,7 +2,7 @@ module RapidNews
   module Preference
     def load
       App::Persistence['articles_size'] ||= RN::Const::ArticlesSize::SMALL
-      App::Persistence['design']     ||= RN::Const::Design::BLACK
+      App::Persistence['appearence']     ||= RN::Const::Appearence::BLWH
       App::Persistence['swipe_left'] ||= RN::Const::SwipeLeft::PREVIEW
       App::Persistence['swipe_right'] ||= RN::Const::SwipeRight::BOOKMARK
       App::Persistence['show_picture'] = App::Persistence['show_picture'].nil? ? true : App::Persistence['show_picture']

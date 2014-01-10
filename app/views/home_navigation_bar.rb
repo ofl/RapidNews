@@ -51,7 +51,7 @@ class HomeNavigationBar < UINavigationBar
     btn_view.backgroundColor = UIColor.clearColor
 
     image = UIImage.imageNamed('images/bookmark.png')
-    tinted_image = image.tintedImageWithColor(BW.rgb_color(0,255,255))
+    tinted_image = image.tintedImageWithColor(RN::Const::Color::TINT)
 
     book_button = UIButton.buttonWithType(UIButtonTypeCustom).tap do |b|
       b.setFrame(CGRectMake(0, 0, 40, 30))
@@ -72,11 +72,11 @@ class HomeNavigationBar < UINavigationBar
     count = @article_manager.bookmarks_count
     @badge.text = count.to_s
     if count < CAUTION_BOOKMARKS_COUNT  
-      @badge.backgroundColor = BW.rgb_color(0, 255, 255)
+      @badge.backgroundColor = RN::Const::Color::TINT
     elsif count < ALERT_BOOKMARKS_COUNT
-      @badge.backgroundColor = BW.rgb_color(255, 255, 0)
+      @badge.backgroundColor = RN::Const::Color::CAUTION
     else
-      @badge.backgroundColor = BW.rgb_color(255, 0, 0)
+      @badge.backgroundColor = RN::Const::Color::DANGER
     end
   end
 

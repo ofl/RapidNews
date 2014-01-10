@@ -44,7 +44,7 @@ class Channels::EditScreen < PM::GroupedTableScreen
       tf.textAlignment = UITextAlignmentRight
       tf.returnKeyType = UIReturnKeyDone
       tf.placeholder = 'Channel Name'
-      tf.textColor = BW.rgb_color(0,0,255)
+      tf.textColor = RN::Const::Color::EDITABLE
     end
   end
 

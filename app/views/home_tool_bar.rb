@@ -53,7 +53,7 @@ class HomeToolBar < TransparentToolbar
     end
 
     image = UIImage.imageNamed('images/slide_thumb.png')
-    thumb_image = image.tintedImageWithColor(BW.rgb_color(0,255,255))
+    thumb_image = image.tintedImageWithColor(RN::Const::Color::TINT)
 
     @slider = subview(UISlider.new, :slider).tap do |s|
       s.addTarget self, action: "on_slide:", forControlEvents: UIControlEventValueChanged

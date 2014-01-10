@@ -22,7 +22,7 @@ class Settings::SharesLoginScreen < PM::GroupedTableScreen
             style: UITableViewCellStyleDefault,
             action: :login,
             textLabel: {
-              color: !logged_in ? BW.rgb_color(0,255,0) : BW.rgb_color(200,200,200),
+              color: !logged_in ? BW.rgb_color(0,255,0) : RN::Const::Color::DISABLE,
               textAlignment: UITextAlignmentCenter,
             },
             userInteractionEnabled: !logged_in
@@ -32,7 +32,7 @@ class Settings::SharesLoginScreen < PM::GroupedTableScreen
             style: UITableViewCellStyleDefault,
             action: :logout,
             textLabel: {
-              color: logged_in ? BW.rgb_color(255,0,0) : BW.rgb_color(200,200,200),
+              color: logged_in ? BW.rgb_color(255,0,0) : RN::Const::Color::DISABLE,
               textAlignment: UITextAlignmentCenter,
             },
             userInteractionEnabled: logged_in,
