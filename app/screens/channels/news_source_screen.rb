@@ -30,10 +30,6 @@ class Channels::NewsSourceScreen < PM::GroupedTableScreen
     end
   end
 
-  def set_up_table_view
-    super
-  end
-
   def table_data
     name_field = create_text_field('name', 'name', 1)
     name_field.addTarget(self, action: 'name_field_blur:', forControlEvents: UIControlEventEditingDidEnd)

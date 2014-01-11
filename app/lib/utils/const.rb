@@ -188,8 +188,8 @@ module RapidNews
     SHARE_SERVICE = {
       Const::ShareService::HATENA      => 'hatena',
       Const::ShareService::POCKET      => 'pocket',
-      Const::ShareService::INSTAPAPER  => 'instapaper',
-      Const::ShareService::READABILITY => 'readability',
+      # Const::ShareService::INSTAPAPER  => 'instapaper',
+      # Const::ShareService::READABILITY => 'readability',
     }
 
     EMAIL_FIELD = {

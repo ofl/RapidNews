@@ -15,7 +15,6 @@ class Settings::SharesLoginScreen < PM::GroupedTableScreen
 
     [
       {
-        title: logged_in ? 'STATUS: Logged In' : 'STATUS: Not Logged In',
         cells: [
           {
             title: 'Login',
