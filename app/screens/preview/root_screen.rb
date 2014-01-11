@@ -34,20 +34,22 @@ class Preview::RootScreen < PM::WebScreen
       self.navigationItem.titleView = UIView.new.tap do |t|
         t.frame = [[0, 0], [App.frame.size.width - 100, 40]]
 
-        @title_label = VerticallyAlignedLabel.new.tap do |tl|
-          tl.frame = [[0, 2], [App.frame.size.width - 100, 20]]
-          tl.textAlignment = UITextAlignmentCenter
-          tl.textColor = UIColor.blackColor
-          tl.font = UIFont.systemFontOfSize(14.0)
-          t.addSubview tl
+        @title_label = VerticallyAlignedLabel.new.tap do |l|
+          l.frame = [[0, 2], [App.frame.size.width - 100, 20]]
+          l.textAlignment = UITextAlignmentCenter
+          l.textColor = UIColor.blackColor
+          l.font = UIFont.systemFontOfSize(14.0)
+          l.text = @page_title
+          t.addSubview l
         end
 
-        @url_label = VerticallyAlignedLabel.new.tap do |ul|
-          ul.frame = [[0, 20], [App.frame.size.width - 100, 20]]
-          ul.textAlignment = UITextAlignmentCenter
-          ul.textColor = RN::Const::Color::DETAIL
-          ul.font = UIFont.systemFontOfSize(10.0)
-          t.addSubview ul
+        @url_label = VerticallyAlignedLabel.new.tap do |l|
+          l.frame = [[0, 20], [App.frame.size.width - 100, 20]]
+          l.textAlignment = UITextAlignmentCenter
+          l.textColor = RN::Const::Color::DETAIL
+          l.font = UIFont.systemFontOfSize(10.0)
+          l.text = @url
+          t.addSubview l
         end
       end
       self.navigationItem.rightBarButtonItem = UIBarButtonItem.alloc.initWithBarButtonSystemItem(UIBarButtonSystemItemRefresh,
