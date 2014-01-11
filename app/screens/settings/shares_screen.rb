@@ -6,22 +6,17 @@ class Settings::SharesScreen < PM::GroupedTableScreen
   end
 
   def set_up_view
-    true
-  end
-
-  def set_up_table_view
     @services = []
     RN::Titles::SHARE_SERVICE.each do |k, v|
       @services.push({name: v, id: k})
     end
     @services.sort! { |a, b| a[:id] <=> b[:id] }
-    super
+    true
   end
 
   def table_data
     [
       {
-        title: 'Bookmark Reader',
         cells: @services.map{ |service|create_cell(service) }
       }
     ]
