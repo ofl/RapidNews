@@ -8,6 +8,7 @@ module RapidNews
       App::Persistence['show_picture'] = App::Persistence['show_picture'].nil? ? true : App::Persistence['show_picture']
       App::Persistence['lang']       ||= ['en_US', 'en_GB', 'ja_JP']
       App::Persistence['index']      ||= 0
+      App::Persistence['animation']      ||= RN::Const::Animation::ON
       App::Persistence['bookmark_readers'] ||= [
         RN::Const::BookmarkReader::EMAIL, 
         RN::Const::BookmarkReader::POCKET, 

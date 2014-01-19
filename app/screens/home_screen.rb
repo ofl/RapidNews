@@ -37,7 +37,7 @@ class HomeScreen < PM::Screen
   def set_article_at_index(index)
     return if @article_manager.count == 0
 
-    if @interval > THRESHOLD
+    if App::Persistence['animation'].zero? && @interval > THRESHOLD
       @slide_view.set_article_at_index(@article_manager.index)
     else
       @slide_view.update_article_at_index(@article_manager.index)
@@ -47,7 +47,7 @@ class HomeScreen < PM::Screen
   def show_next_article
     if @article_manager.index < @article_manager.count - 1
       adjust_interval
-      if @interval > THRESHOLD
+      if App::Persistence['animation'].zero? && @interval > THRESHOLD
         @slide_view.slide_up
       else
         @slide_view.pop_view_except_current
