@@ -2,8 +2,8 @@ class Channels::NewsSourceFeedsScreen < PM::TableScreen
   attr_accessor :news_source
 
   refreshable callback: :on_refresh,
-    pull_message: "Pull to refresh",
-    refreshing: "Refreshing data..."
+    pull_message: BW::localized_string(:pull_to_refresh, "Pull to refresh"),
+    refreshing: BW::localized_string(:refreshing, "Refreshing data...")
 
   stylesheet :news_source_feeds_screen
 

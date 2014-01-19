@@ -5,15 +5,15 @@ class HomeArticleView < UIView
   def initWithFrame(frame)
     super.tap do
       @article_manager = ArticleManager.instance
-      appearence = RN::Titles::APPEARENCE[App::Persistence['appearence']]
+      appearence = ['blwh', 'black', 'white'][App::Persistence['appearence']]
       self.stylesheet = :home_article_view
 
       self.stylename = "#{appearence}_base_view".to_sym
       @info_label = subview UILabel.new, "#{appearence}_info_label".to_sym
       @title_background = subview UIView, "#{appearence}_title_background".to_sym
+      @image_view = subview UIImageView.alloc.init, :image_view
       @title_label = subview VerticallyAlignedLabel.new, "#{appearence}_title_label".to_sym
       @summary_label = subview VerticallyAlignedLabel.new, "#{appearence}_summary_label".to_sym
-      @image_view = subview UIImageView.alloc.init, :image_view
       @favicon_image_view = subview UIImageView.alloc.init, :favicon_image_view
       @info_label.font = italic_font
     end
@@ -60,7 +60,7 @@ class HomeArticleView < UIView
   end
 
   def update_style
-    appearence = RN::Titles::APPEARENCE[App::Persistence['appearence']]
+    appearence = ['blwh', 'black', 'white'][App::Persistence['appearence']]
     self.stylename = "#{appearence}_base_view".to_sym
     @info_label.stylename = "#{appearence}_info_label".to_sym
     @title_background.stylename = "#{appearence}_title_background".to_sym

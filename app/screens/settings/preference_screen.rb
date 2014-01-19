@@ -2,7 +2,7 @@ class Settings::PreferenceScreen < PM::GroupedTableScreen
   attr_accessor :property, :constant, :constant_names
 
   def on_load
-    self.title = @property
+    self.title = BW::localized_string(@property.to_sym, @property)
   end
 
   def will_present

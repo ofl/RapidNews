@@ -5,7 +5,7 @@ class Channels::RootScreen < PM::TableScreen
     @editing = false    
     set_nav_bar_button :left, system_item: :close, action: :on_close_button_tapped
 
-    self.title = 'Channels'
+    self.title = BW::localized_string(:channels, "Channels")
     self.navigationItem.rightBarButtonItem = self.editButtonItem
     # set_nav_bar_button :right, system_item: :edit, action: :add_channel
     self.table_view.allowsSelectionDuringEditing = true

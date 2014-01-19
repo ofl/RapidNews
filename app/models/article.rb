@@ -56,11 +56,11 @@ class Article
     hour = (since/(60*60)).floor
     minutes = ((since/60)%60).to_i
     if hour == 0
-      return "#{minutes}m ago"
+      return "#{minutes}m+"
     elsif day == 0
-      return "#{hour}h ago"
+      return "#{hour}h+"
     else
-      return "#{day}d ago"
+      return "#{day}d+"
     end
   end
 end

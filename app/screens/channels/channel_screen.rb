@@ -21,7 +21,7 @@ class Channels::ChannelScreen < PM::Screen
   def set_scroll_view
     cf = CGRectMake( 0,  0, 70 * (@categories.length), 44)
     @registered_button = button(:registered_button, { frame: CGRectMake(0, 60, 70, 44) }).tap do |b|
-      b.setTitle('registered', forState: UIControlStateNormal)
+      b.setTitle(BW::localized_string(:registered, 'Rgistered'), forState: UIControlStateNormal)
       b.when(UIControlEventTouchUpInside) {
         @under_line_view.stylename = :under_line_view_blured
         @content_view.stylename = :tab_blured

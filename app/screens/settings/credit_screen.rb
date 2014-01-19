@@ -1,6 +1,6 @@
 class Settings::CreditScreen < PM::WebScreen
 
-  title 'Credit'
+  title BW::localized_string(:credit, "Credit")
 
   def will_appear
     @view_is_set_up ||= set_up_view

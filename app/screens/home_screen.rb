@@ -163,7 +163,7 @@ class HomeScreen < PM::Screen
   end
 
   def add_to_bookmark
-    App.alert("No article is selected.") unless @article_manager.add_to_bookmarks
+    App.alert(BW::localized_string(:no_article, "No article is selected.")) unless @article_manager.add_to_bookmarks
   end
 
   def load_channel_articles(channel_id)
@@ -174,9 +174,9 @@ class HomeScreen < PM::Screen
         source = NewsSource.find(id)
         source.crawl_articles if source
       end
-      SVProgressHUD.showWithStatus("Loading...", maskType: SVProgressHUDMaskTypeBlack)
+      SVProgressHUD.showWithStatus(BW::localized_string(:loading, "Loading..."), maskType: SVProgressHUDMaskTypeBlack)
     else
-      App.alert("No source is selected.")
+      App.alert(BW::localized_string(:no_source, "No source is selected."))
     end    
   end
 
@@ -202,9 +202,9 @@ class HomeScreen < PM::Screen
         Dispatch::Queue.main.async{
           new_article_size = @article_manager.count - @article_manager.index - 1
           if new_article_size > 0
-            SVProgressHUD.showSuccessWithStatus("#{new_article_size} new articles.")
+            SVProgressHUD.showSuccessWithStatus("#{new_article_size}" + BW::localized_string(:new_articles, " new articles."))
           else
-            SVProgressHUD.showErrorWithStatus("No new articles found.")
+            SVProgressHUD.showErrorWithStatus(BW::localized_string(:no_new_articles, "No new articles found."))
           end
         }
         @channel.update_image_url
@@ -265,7 +265,7 @@ class HomeScreen < PM::Screen
       activityView = URLActivityViewController.alloc.initWithDefaultActivities([text, url])
       self.presentViewController(activityView, animated:true, completion:nil)
     else
-      App.alert("No article is selected.")
+      App.alert(BW::localized_string(:no_article, "No article is selected."))
     end
   end
 
@@ -279,7 +279,7 @@ class HomeScreen < PM::Screen
     end
     @article_manager.interval = interval
     App::Persistence[:interval] = interval
-    SVProgressHUD.showProgress(interval/30, status: "Slide Interval: #{sprintf("%2.2f", interval.to_s)}")
+    SVProgressHUD.showProgress(interval/30, status: BW::localized_string(:slide_interval, "Slide Interval") + ": #{sprintf("%2.2f", interval.to_s)}")
     @speed_control_timer = NSTimer.scheduledTimerWithTimeInterval(2.0, 
                                                                   target: self, 
                                                                   selector: 'hide_speed_status', 

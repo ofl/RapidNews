@@ -14,14 +14,14 @@ class Channels::EditScreen < PM::GroupedTableScreen
       {
         cells: [
           {
-            title: "Title",
+            title: BW::localized_string(:title, 'Title'),
             selectionStyle: UITableViewCellSelectionStyleNone,
             value: @channel.name,
             accessory: {
               view: @text_field
             }
           }, {
-            title: "Enabled",
+            title: BW::localized_string(:enabled, 'Enabled'),
             selectionStyle: UITableViewCellSelectionStyleNone,
             accessory: {
               view: :switch,
@@ -43,7 +43,7 @@ class Channels::EditScreen < PM::GroupedTableScreen
       tf.autocapitalizationType = UITextAutocapitalizationTypeNone
       tf.textAlignment = UITextAlignmentRight
       tf.returnKeyType = UIReturnKeyDone
-      tf.placeholder = 'Channel Name'
+      tf.placeholder = BW::localized_string(:channel_name, 'Channel Name')
       tf.textColor = RN::Const::Color::EDITABLE
     end
   end
