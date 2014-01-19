@@ -1,6 +1,6 @@
 class Settings::RootScreen < PM::GroupedTableScreen
 
-  title "Settings"
+  title BW::localized_string(:settings, "Settings")
 
   def on_load
     @view_is_set_up ||= set_up_view
@@ -17,7 +17,7 @@ class Settings::RootScreen < PM::GroupedTableScreen
       {
         cells: [
           {
-            title: "Article Size",
+            title: BW::localized_string(:articles_size, "Article Size"),
             subtitle: RN::Titles::ARTICLES_SIZE[App::Persistence['articles_size']],
             action: :on_cell_tapped,
             arguments: { menu: :articles_size },
@@ -25,7 +25,7 @@ class Settings::RootScreen < PM::GroupedTableScreen
             cell_style: UITableViewCellStyleValue1,
           },
           {
-            title: "Appearece",
+            title: BW::localized_string(:appearence, "Appearece"),
             subtitle: RN::Titles::APPEARENCE[App::Persistence['appearence']],
             action: :on_cell_tapped,
             arguments: { menu: :appearence },
@@ -34,10 +34,10 @@ class Settings::RootScreen < PM::GroupedTableScreen
           }
         ]
       },{
-        title: 'Share',
+        title: BW::localized_string(:share, 'Share'),
         cells: [
           {
-            title: "Services",
+            title: BW::localized_string(:services, "Services"),
             action: :on_share_cell_tapped,
             arguments: { menu: :share },
             accessoryType: UITableViewCellAccessoryDisclosureIndicator,
@@ -45,10 +45,10 @@ class Settings::RootScreen < PM::GroupedTableScreen
           }
         ]
       },{
-        title: 'Gesture',
+        title: BW::localized_string(:gesture, 'Gesture'),
         cells: [
           {
-            title: "Swipe Left",
+            title: BW::localized_string(:swipe_left, "Swipe Left"),
             subtitle: RN::Titles::SWIPE_LEFT[App::Persistence['swipe_left']],
             action: :on_cell_tapped,
             arguments: { menu: "swipe_left" },
@@ -56,7 +56,7 @@ class Settings::RootScreen < PM::GroupedTableScreen
             cell_style: UITableViewCellStyleValue1,
           },
           {
-            title: "Swipe Right",
+            title: BW::localized_string(:swipe_right, "Swipe Right"),
             subtitle: RN::Titles::SWIPE_RIGHT[App::Persistence['swipe_right']],
             action: :on_cell_tapped,
             arguments: { menu: "swipe_right" },
@@ -65,21 +65,21 @@ class Settings::RootScreen < PM::GroupedTableScreen
           }
         ]
       },{
-        title: 'About',
+        title: BW::localized_string(:about, 'About'),
         cells: [
           {
-            title: "Credit",
+            title: BW::localized_string(:credit, "Credit"),
             action: :on_credit_cell_tapped,
             accessoryType: UITableViewCellAccessoryDisclosureIndicator,
           },
           {
-            title: "Web Site",
+            title: BW::localized_string(:web_site, "Web Site"),
             action: :on_web_site_cell_tapped,
             arguments: { menu: "web" },
             accessoryType: UITableViewCellAccessoryNone
           },
           {
-            title: "Email",
+            title: BW::localized_string(:email, "Email"),
             action: :on_email_cell_tapped,
             arguments: { menu: "email" },
             accessoryType: UITableViewCellAccessoryNone,
@@ -113,7 +113,7 @@ class Settings::RootScreen < PM::GroupedTableScreen
 
   def on_email_cell_tapped
     unless MFMailComposeViewController.canSendMail
-      App.alert("It is necessary to set the send mail")
+      App.alert(BW::localized_string(:needs_email_setting, "It is necessary to set the send mail"))
       return
     end
     c = MFMailComposeViewController.alloc.init
@@ -134,7 +134,7 @@ class Settings::RootScreen < PM::GroupedTableScreen
 
   def mailComposeController(controller, didFinishWithResult: result, error: error)
     if error
-      App.alert("[Error]Can not send mail.")
+      App.alert(BW::localized_string(:send_email_error, "[Error]Can not send mail."))
     end
     controller.dismissModalViewControllerAnimated(true)
   end

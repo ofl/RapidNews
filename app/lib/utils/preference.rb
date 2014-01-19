@@ -16,7 +16,7 @@ module RapidNews
       App::Persistence['bookmark_desolve_after'] ||= []
       App::Persistence['bookmark_all_send'] ||= []
       App::Persistence['default_channel_id'] ||= 1
-      App::Persistence['email_subject'] ||= 'Reading list :RapidNews'
+      App::Persistence['email_subject'] ||= BW::localized_string(:email_title, 'Reading list :RapidNews')
       App::Persistence['email_to'] ||= []
       App::Persistence['email_cc'] ||= []
       App::Persistence['email_bcc'] ||= []

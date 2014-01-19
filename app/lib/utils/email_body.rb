@@ -3,7 +3,7 @@ module RapidNews
   module EmailBody
 
     def html(bookmarks)
-      title = "Todays your bookmarks"
+      title = BW::localized_string(:email_html_title, "Todays your bookmarks")
       date = Time.now.strftime("%Y.%m.%d")
       bookmark_list = ''
       bookmarks.each do |bookmark|

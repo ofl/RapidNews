@@ -1,5 +1,5 @@
 class Bookmarks::SettingsScreen < PM::GroupedTableScreen
-  title "Settings"
+  title BW::localized_string(:settings, "Setting")
 
   def on_load
     @readers = []

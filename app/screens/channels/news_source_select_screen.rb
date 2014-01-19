@@ -4,7 +4,7 @@ class Channels::NewsSourceSelectScreen < PM::GroupedTableScreen
   def on_load
     @current_choice = @news_source.send(@property)   
     @is_changed = false
-    self.title = @property
+    self.title = BW::localized_string(@property.to_sym, @property)
   end
 
   def will_present

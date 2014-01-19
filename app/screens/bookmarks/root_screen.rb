@@ -2,7 +2,7 @@
 class Bookmarks::RootScreen < PM::TableScreen
   stylesheet :bookmarks_screen
 
-  title "Bookmarks"
+  title BW::localized_string(:bookmarks, 'Bookmarks')
 
   def on_load
     @article_manager = ArticleManager.instance
@@ -10,8 +10,7 @@ class Bookmarks::RootScreen < PM::TableScreen
   end
 
   def set_up_view
-    self.title = 'Bookmarks'
-    set_nav_bar_button :right, title: "Setting", action: :open_bookmark_settings
+    set_nav_bar_button :right, title: BW::localized_string(:settings, "Setting"), action: :open_bookmark_settings
     set_nav_bar_button :left, system_item: :close, action: :on_close_button_tapped
     self.navigationController.setToolbarHidden(false, animated:false)
     self.tableView.setSeparatorInset(UIEdgeInsetsMake(43, 55, 0, 2))
@@ -34,7 +33,7 @@ class Bookmarks::RootScreen < PM::TableScreen
       button = UIBarButtonItem.alloc.initWithImage(UIImage.imageNamed(RN::Images::BOOKMARK_READER[reader]),
                                                    style: UIBarButtonItemStylePlain,
                                                    target: self,
-                                                   action: "send_to_#{RN::Titles::BOOKMARK_READER[reader]}")
+                                                   action: "send_to_#{['safari', 'email', 'pocket'][reader]}")
       toolbar_items.push(button)
       toolbar_items.push(spacer)
     end
@@ -94,10 +93,10 @@ class Bookmarks::RootScreen < PM::TableScreen
   def on_trash_button_tapped
     action_sheet = UIActionSheet.alloc.init.tap do |as|
       as.delegate = self
-      as.title = 'Dissolve bookmarks'
-      as.addButtonWithTitle('Dissolve Checked')
-      as.addButtonWithTitle('Dissolve All')
-      as.addButtonWithTitle('Cancel')
+      as.title = BW::localized_string(:dissolve, 'Dissolve bookmarks')
+      as.addButtonWithTitle(BW::localized_string(:dissolve_checked, 'Dissolve Checked'))
+      as.addButtonWithTitle(BW::localized_string(:dissolve_all, 'Dissolve All'))
+      as.addButtonWithTitle(BW::localized_string(:cancel, 'Cancel'))
       as.cancelButtonIndex = 2
     end
     # action_sheet.showInView(self.window)
@@ -112,12 +111,12 @@ class Bookmarks::RootScreen < PM::TableScreen
 
   def send_to_email
     unless MFMailComposeViewController.canSendMail
-      App.alert("It is necessary to set the send mail")
+      App.alert(BW::localized_string(:needs_email_setting, "It is necessary to set the send mail."))
       return
     end
     send_bookmarks = self.selected_bookmarks(RN::Const::BookmarkReader::EMAIL)
     unless send_bookmarks.count > 0
-      App.alert("No bookmarks are selected.")
+      App.alert(BW::localized_string(:no_bookmarks, "No bookmarks are selected."))
       return
     end
     c = MFMailComposeViewController.alloc.init
@@ -132,7 +131,7 @@ class Bookmarks::RootScreen < PM::TableScreen
 
   def mailComposeController(controller, didFinishWithResult: result, error: error)
     if error
-      App.alert("[Error]Can not send mail.")
+      App.alert(BW::localized_string(:send_email_error, "[Error]Can not send mail."))
     else
       case result
       when MFMailComposeResultSent
@@ -171,7 +170,7 @@ class Bookmarks::RootScreen < PM::TableScreen
     reader = RN::Const::BookmarkReader::POCKET
     send_bookmarks = self.selected_bookmarks(reader)
     unless send_bookmarks.count > 0
-      App.alert("No bookmarks are selected.")
+      App.alert(BW::localized_string(:no_bookmarks, "No bookmarks are selected."))
       return
     end
 
@@ -182,11 +181,11 @@ class Bookmarks::RootScreen < PM::TableScreen
       actions: BW::JSON.generate(urls)
     }.map{ |k,v| "#{k}=#{v}" }.join("&")
 
-    SVProgressHUD.showWithStatus("保存中...")
+    SVProgressHUD.showWithStatus(BW::localized_string(:saving, "Saving..."))
     BubbleWrap::HTTP.get("https://getpocket.com/v3/send?#{query}") do |response|
       if response.ok?
         cleanup(reader)
-        SVProgressHUD.showSuccessWithStatus("保存しました")
+        SVProgressHUD.showSuccessWithStatus(BW::localized_string(:saved, "Successfully Saved"))
       elsif response.status_code.to_s =~ /40\d/
         NSLog("#{response.headers}")
         SVProgressHUD.showErrorWithStatus(response.body.to_s)
@@ -207,7 +206,7 @@ class Bookmarks::RootScreen < PM::TableScreen
     reader = RN::Const::BookmarkReader::SAFARI
     send_bookmarks = self.selected_bookmarks(reader)
     unless send_bookmarks.count > 0
-      App.alert("No bookmarks are selected.")
+      App.alert(BW::localized_string(:no_bookmarks, "No bookmarks are selected."))
       return
     end
     readList = SSReadingList.defaultReadingList

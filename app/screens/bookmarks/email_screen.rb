@@ -6,12 +6,13 @@ class Bookmarks::EmailScreen < Bookmarks::ReaderScreen
   end
 
   def create_text_field(field_num, field_name)
-    data = App::Persistence[RN::Titles::EMAIL_FIELD[field_num]]
+    data = App::Persistence[['email_subject', 'email_to', 'email_cc', 'email_bcc'][field_num]]
     text = data.instance_of?(Array) ? data.join(',') : data
 
     text_field = UITextField.alloc.initWithFrame(CGRectMake(100, 10, 200, 22)).tap do |tf|
       tf.delegate = self
       tf.text = text
+      tf.textColor = RN::Const::Color::EDITABLE
       tf.autocorrectionType = UITextAutocorrectionTypeNo
       tf.autocapitalizationType = UITextAutocapitalizationTypeNone
       tf.textAlignment = UITextAlignmentRight
@@ -26,7 +27,7 @@ class Bookmarks::EmailScreen < Bookmarks::ReaderScreen
     @fields = RN::Titles::EMAIL_FIELD
     cells = []
     @placeholder_titles = {
-      email_subject: 'Hello',
+      email_subject: '',
       email_to: 'test@example.com',
       email_cc: 'test@example.com',
       email_bcc: 'test@example.com',
@@ -36,12 +37,12 @@ class Bookmarks::EmailScreen < Bookmarks::ReaderScreen
       cells.push(textFieldCell(k,v))
     end
 
-    [create_button_cell, {title: 'Field', cells: cells}]
+    [create_button_cell, {title: BW::localized_string(:fields, 'Fields'), cells: cells}]
   end
 
   def textFieldCell(k,v)
     {
-      title: v,
+      title: BW::localized_string(v.to_sym, v),
       selectionStyle: UITableViewCellSelectionStyleNone,
       accessory: { view: create_text_field(k, v) },
     }

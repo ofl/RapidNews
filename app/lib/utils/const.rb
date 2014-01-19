@@ -121,14 +121,14 @@ module RapidNews
 
   module Titles
     CATEGORY = {
-      Const::Category::SOCIAL => 'social',
-      Const::Category::BUSINESS => 'business',
-      Const::Category::ENTERTAINMENT => 'ent',
-      Const::Category::SPORTS => 'sports',
-      Const::Category::TECHNOLOGY => 'tech',
-      Const::Category::POLITICS => 'politics',
-      Const::Category::SCIENCE => 'sience',
-      Const::Category::WORLD => 'world'
+      Const::Category::SOCIAL => BW::localized_string(:social, "Social"),
+      Const::Category::BUSINESS => BW::localized_string(:business, "Business"),
+      Const::Category::ENTERTAINMENT => BW::localized_string(:ent, "Ent"),
+      Const::Category::SPORTS => BW::localized_string(:sports, "Sports"),
+      Const::Category::TECHNOLOGY => BW::localized_string(:tech, "Tech"),
+      Const::Category::POLITICS => BW::localized_string(:politics, "Politics"),
+      Const::Category::SCIENCE => BW::localized_string(:sience, "Sience"),
+      Const::Category::WORLD => BW::localized_string(:world, "World")
     }
 
     COUNTRY = {
@@ -144,59 +144,59 @@ module RapidNews
     }
 
     APPEARENCE = {
-      Const::Appearence::BLWH      => 'blwh',
-      Const::Appearence::BLACK      => 'black',
-      Const::Appearence::WHITE      => 'white',
+      Const::Appearence::BLWH       => BW::localized_string(:blwh, 'Black + White'),
+      Const::Appearence::BLACK      => BW::localized_string(:black, 'Black'),
+      Const::Appearence::WHITE      => BW::localized_string(:white, 'White'),
     }
 
     SWIPE_RIGHT = {
-      Const::SwipeRight::START       => 'start',
-      Const::SwipeRight::STOP        => 'stop',
-      Const::SwipeRight::PREVIEW     => 'preview',
-      Const::SwipeRight::BOOKMARK    => 'bookmark',
-      Const::SwipeRight::SAFARI      => 'safari',
-      Const::SwipeRight::CHROME      => 'chrome',
-      Const::SwipeRight::TWEET       => 'tweet',
-      Const::SwipeRight::FACEBOOK    => 'facebook',
-      Const::SwipeRight::POCKET      => 'pocket',
-      # Const::SwipeRight::INSTAPAPER  => 'instapaper',
-      # Const::SwipeRight::READABILITY => 'readability',
+      Const::SwipeRight::START       => BW::localized_string(:start, 'Start slideshow'),
+      Const::SwipeRight::STOP        => BW::localized_string(:stop, "Stop slideshow"),
+      Const::SwipeRight::PREVIEW     => BW::localized_string(:preview, "Preview"),
+      Const::SwipeRight::BOOKMARK    => BW::localized_string(:add_bookmark, "Add to bookmarks"),
+      Const::SwipeRight::SAFARI      => BW::localized_string(:open_safari, "Open URL in Safari"),
+      Const::SwipeRight::CHROME      => BW::localized_string(:open_chrome, "Open URL in Chrome"),
+      Const::SwipeRight::TWEET       => BW::localized_string(:post_tweet, "Tweet"),
+      Const::SwipeRight::FACEBOOK    => BW::localized_string(:post_facebook, "Post on Facebook wall"),
+      Const::SwipeRight::POCKET      => BW::localized_string(:send_pocket, "Send to Pocket"),
+      # Const::SwipeRight::INSTAPAPER  => BW::localized_string(:send_instapaper, "Send to Instapaper"),
+      # Const::SwipeRight::READABILITY => BW::localized_string(:send_readability, "Send to Readability"),
     }
 
     SWIPE_LEFT = {
-      Const::SwipeLeft::START       => 'start',
-      Const::SwipeLeft::STOP        => 'stop',
-      Const::SwipeLeft::PREVIEW     => 'preview',
-      Const::SwipeLeft::BOOKMARK    => 'bookmark',
-      Const::SwipeLeft::SAFARI      => 'safari',
-      Const::SwipeLeft::CHROME      => 'chrome',
-      Const::SwipeLeft::TWEET       => 'tweet',
-      Const::SwipeLeft::FACEBOOK    => 'facebook',
-      Const::SwipeLeft::POCKET      => 'pocket',
-      # Const::SwipeLeft::INSTAPAPER  => 'instapaper',
-      # Const::SwipeLeft::READABILITY => 'readability',
+      Const::SwipeLeft::START       => BW::localized_string(:start, 'Start slideshow'),
+      Const::SwipeLeft::STOP        => BW::localized_string(:stop, "Stop slideshow"),
+      Const::SwipeLeft::PREVIEW     => BW::localized_string(:preview, "Preview"),
+      Const::SwipeLeft::BOOKMARK    => BW::localized_string(:add_bookmark, "Add to bookmarks"),
+      Const::SwipeLeft::SAFARI      => BW::localized_string(:open_safari, "Open URL in Safari"),
+      Const::SwipeLeft::CHROME      => BW::localized_string(:open_chrome, "Open URL in Chrome"),
+      Const::SwipeLeft::TWEET       => BW::localized_string(:post_tweet, "Tweet"),
+      Const::SwipeLeft::FACEBOOK    => BW::localized_string(:post_facebook, "Post on Facebook wall"),
+      Const::SwipeLeft::POCKET      => BW::localized_string(:send_pocket, "Send to Pocket"),
+      # Const::SwipeLeft::INSTAPAPER  => BW::localized_string(:send_instapaper, "Send to Instapaper"),
+      # Const::SwipeLeft::READABILITY => BW::localized_string(:send_readability, "Send to Readability"),
     }
 
     BOOKMARK_READER = {
-      Const::BookmarkReader::SAFARI      => 'safari',
-      Const::BookmarkReader::EMAIL       => 'email',
-      Const::BookmarkReader::POCKET      => 'pocket',
-      # Const::BookmarkReader::INSTAPAPER  => 'instapaper',
-      # Const::BookmarkReader::READABILITY => 'readability',
+      Const::BookmarkReader::SAFARI      => BW::localized_string(:safari, 'safari'),
+      Const::BookmarkReader::EMAIL       => BW::localized_string(:email, 'email'),
+      Const::BookmarkReader::POCKET      => BW::localized_string(:pocket, 'pocket'),
+      # Const::BookmarkReader::INSTAPAPER  => BW::localized_string(:instapaper, 'instapaper'),
+      # Const::BookmarkReader::READABILITY => BW::localized_string(:readability, 'readability'),
     }
 
     SHARE_SERVICE = {
-      Const::ShareService::HATENA      => 'hatena',
-      Const::ShareService::POCKET      => 'pocket',
-      # Const::ShareService::INSTAPAPER  => 'instapaper',
-      # Const::ShareService::READABILITY => 'readability',
+      Const::ShareService::HATENA      => BW::localized_string(:hatena, 'Hatena'),
+      Const::ShareService::POCKET      => BW::localized_string(:pocket, 'Pocket'),
+      # Const::ShareService::INSTAPAPER  => BW::localized_string(:instapaper, 'Instapaper'),
+      # Const::ShareService::READABILITY => BW::localized_string(:readability, 'Readability'),
     }
 
     EMAIL_FIELD = {
-      Const::EmailField::SUBJECT     => 'email_subject',
-      Const::EmailField::TO          => 'email_to',
-      Const::EmailField::CC          => 'email_cc',
-      Const::EmailField::BCC         => 'email_bcc',
+      Const::EmailField::SUBJECT     => BW::localized_string(:email_subject, 'Subject'),
+      Const::EmailField::TO          => BW::localized_string(:email_to, 'To'),
+      Const::EmailField::CC          => BW::localized_string(:email_cc, 'Cc'),
+      Const::EmailField::BCC         => BW::localized_string(:email_bcc, 'Bcc'),
     }
   end
 

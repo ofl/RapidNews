@@ -39,7 +39,7 @@ class Channels::NewsSourceScreen < PM::GroupedTableScreen
       {
         cells: [
           {
-            title: 'Name',
+            title: BW::localized_string(:name, 'Name'),
             selectionStyle: UITableViewCellSelectionStyleNone,
             accessory: { view: name_field },
           },
@@ -54,7 +54,7 @@ class Channels::NewsSourceScreen < PM::GroupedTableScreen
         title: '',
         cells: [
           {
-            title: "Category",
+            title: BW::localized_string(:category, 'Category'),
             subtitle: RN::Titles::CATEGORY[@news_source.category],
             action: :on_cell_tapped,
             arguments: { menu: :category },
@@ -62,7 +62,7 @@ class Channels::NewsSourceScreen < PM::GroupedTableScreen
             cell_style: UITableViewCellStyleValue1,
           },
           {
-            title: "Country",
+            title: BW::localized_string(:country, 'Country'),
             subtitle: RN::Titles::COUNTRY[@news_source.country],
             action: :on_cell_tapped,
             arguments: { menu: :country },
@@ -70,7 +70,7 @@ class Channels::NewsSourceScreen < PM::GroupedTableScreen
             cell_style: UITableViewCellStyleValue1,
           },
           {
-            title: "Image Path",
+            title: BW::localized_string(:image_path, "Image Path"),
             subtitle: @news_source.image_path,
             action: :on_image_path_cell_tapped,
             arguments: { menu: :image_path },
@@ -83,7 +83,7 @@ class Channels::NewsSourceScreen < PM::GroupedTableScreen
         title: '',
         cells: [
           {
-            title: 'Preview',
+            title: BW::localized_string(:preview, 'Preview'),
             action: :open_news_source_feeds,
             accessoryType: UITableViewCellAccessoryDisclosureIndicator,
           },
@@ -141,10 +141,10 @@ class Channels::NewsSourceScreen < PM::GroupedTableScreen
   def on_add_button_tapped
     action_sheet = UIActionSheet.alloc.init.tap do |as|
       as.delegate = self
-      as.title = 'Add News Source'
-      as.addButtonWithTitle('Create')
-      as.addButtonWithTitle('Copy and Create')
-      as.addButtonWithTitle('Cancel')
+      as.title = BW::localized_string(:add_news_source, 'Add News Source')
+      as.addButtonWithTitle(BW::localized_string(:create, 'Create'))
+      as.addButtonWithTitle(BW::localized_string(:copy_and_create, 'Copy and Create'))
+      as.addButtonWithTitle(BW::localized_string(:cancel, 'Cancel'))
       as.cancelButtonIndex = 2
     end
     # action_sheet.showInView(self.window)
@@ -184,10 +184,10 @@ class Channels::NewsSourceScreen < PM::GroupedTableScreen
         @news_source.url = text_field.text
         @news_source.host = url.host
       else
-        App.alert 'invalid URL'
+        App.alert BW::localized_string(:invalid_url, 'Invalid URL')
       end
     else
-      App.alert 'invalid URL'
+      App.alert BW::localized_string(:invalid_url, 'Invalid URL')
     end
   end
 

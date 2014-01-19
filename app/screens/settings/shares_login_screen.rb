@@ -17,7 +17,7 @@ class Settings::SharesLoginScreen < PM::GroupedTableScreen
       {
         cells: [
           {
-            title: 'Login',
+            title: BW::localized_string(:login, 'Login'),
             style: UITableViewCellStyleDefault,
             action: :login,
             textLabel: {
@@ -27,7 +27,7 @@ class Settings::SharesLoginScreen < PM::GroupedTableScreen
             userInteractionEnabled: !logged_in
           },
           {
-            title: 'Logout',
+            title: BW::localized_string(:logout, 'Logout'),
             style: UITableViewCellStyleDefault,
             action: :logout,
             textLabel: {

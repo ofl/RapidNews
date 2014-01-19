@@ -7,12 +7,12 @@ class Bookmarks::PocketScreen < Bookmarks::ReaderScreen
 
   def set_table_data
     @reader = RN::Const::BookmarkReader::POCKET
-    title = PocketAPI.sharedAPI.loggedIn? ? 'Logout' : 'Login'
+    title = PocketAPI.sharedAPI.loggedIn? ? BW::localized_string(:logout, 'Logout') : BW::localized_string(:login, 'Login')
 
     [
       create_button_cell,
       {
-        title: 'Login',
+        title: BW::localized_string(:login, 'Login'),
         cells: [
           {
             title: title,

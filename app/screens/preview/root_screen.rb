@@ -130,7 +130,7 @@ class Preview::RootScreen < PM::WebScreen
       activityView = URLActivityViewController.alloc.initWithDefaultActivities([@page_title, NSURL.URLWithString(@url)])
       self.presentViewController(activityView, animated:true, completion:nil)
     else
-      App.alert("No url is selected.")
+      App.alert(BW::localized_string(:no_url, "No url is selected."))
     end
   end
 

@@ -3,7 +3,7 @@ class Channels::NewsSourceSelectImagePathScreen < PM::GroupedTableScreen
 
   def on_load
     @current_choice = @news_source.image_path
-    self.title = 'Image Path'
+    self.title = BW::localized_string(:image_path, "Image Path")
   end
 
   def will_present

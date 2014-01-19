@@ -12,9 +12,9 @@ class Bookmarks::ReaderScreen < PM::GroupedTableScreen
       'bookmark_readers', 'bookmark_desolve_after', 'bookmark_all_send'
     ]
     titles = {
-      bookmark_readers: "Show Button", 
-      bookmark_desolve_after: "Desolve all after send.", 
-      bookmark_all_send: "Always send all"
+      bookmark_readers: BW::localized_string(:show_button, "Show Button"), 
+      bookmark_desolve_after: BW::localized_string(:desolve_after, "Desolve all after send."), 
+      bookmark_all_send: BW::localized_string(:send_all, "Always send all")
     }
     cells = @switch_settings.map do |name|
       {
