@@ -34,6 +34,18 @@ class Settings::RootScreen < PM::GroupedTableScreen
           }
         ]
       },{
+        title: BW::localized_string(:slideshow, 'Slideshow'),
+        cells: [
+          {
+            title: BW::localized_string(:animation, "Animation"),
+            subtitle: RN::Titles::ANIMATION[App::Persistence['animation']],
+            action: :on_cell_tapped,
+            arguments: { menu: :animation },
+            accessoryType: UITableViewCellAccessoryDisclosureIndicator,
+            cell_style: UITableViewCellStyleValue1,
+          }
+        ]
+      },{
         title: BW::localized_string(:share, 'Share'),
         cells: [
           {

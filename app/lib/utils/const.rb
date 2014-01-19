@@ -29,6 +29,11 @@ module RapidNews
       LARGE = 2
     end
 
+    module Animation
+      ON = 0
+      OFF = 1
+    end
+
     module SwipeRight
       START = 0
       STOP = 1
@@ -197,6 +202,11 @@ module RapidNews
       Const::EmailField::TO          => BW::localized_string(:email_to, 'To'),
       Const::EmailField::CC          => BW::localized_string(:email_cc, 'Cc'),
       Const::EmailField::BCC         => BW::localized_string(:email_bcc, 'Bcc'),
+    }
+
+    ANIMATION = {
+      Const::Animation::ON      => BW::localized_string(:on, 'On'),
+      Const::Animation::OFF       => BW::localized_string(:off, 'Off'),
     }
   end
 
