@@ -9,7 +9,7 @@ Teacup::Stylesheet.new :home_tool_bar do
 
   style :slider,
     tag: 4,
-    top: 56,
+    top: 57,
     left: 75,
     height: 15,
     width: 180,
@@ -29,12 +29,12 @@ Teacup::Stylesheet.new :home_tool_bar do
     textColor: RN::Const::Color::TINT,
     numberOfLines: 0,
     textAlignment: UITextAlignmentRight,
-    font: UIFont.systemFontOfSize(15.0)
+    font: UIFont.systemFontOfSize(13.0)
 
   style :segmented_control,
-    height: 22,
-    width: 50,
-    top: 53,
-    left: 10,
+    height: 26,
+    width: 54,
+    top: 51,
+    left: 8,
     momentary: true
 end

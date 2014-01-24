@@ -134,3 +134,12 @@
   host: www.bbc.co.uk
   channels:
     - 3
+
+- name: "新着トピックス（全ジャンル一覧）"
+  category: 1
+  country: jp
+  url: http://komachi-rss.yomiuri.co.jp/rss/yol/komachi/rss00
+  fetched_at: 2013-01-01 11:00:00
+  host: www.yomiuri.co.jp
+  channels:
+    - 3

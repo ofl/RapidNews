@@ -20,9 +20,11 @@ class HomeScreen < PM::Screen
   end
 
   def set_up_view
+    appearence = ['blwh', 'black', 'white'][App::Persistence['appearence']]
     layout(self.view, :base_view) do # from rubymotion/TeaCup
       self.navigation_controller.navigationBarHidden = true
       @slide_view = subview HomeSlideView.new, {frame: self.view.bounds, delegate: self}
+      @counter_label = subview UILabel.new, "#{appearence}_counter_label".to_sym
       @nav_bar = subview HomeNavigationBar.new, delegate: self
       @tool_bar = subview HomeToolBar.new, delegate: self
     end
@@ -215,6 +217,7 @@ class HomeScreen < PM::Screen
       Dispatch::Queue.main.async{
         if @article_manager.count > 0
           @slide_view.set_article_at_index(@article_manager.index)
+          @counter_label.text = @article_manager.label_text
         end
       }
     end
@@ -223,6 +226,7 @@ class HomeScreen < PM::Screen
       Dispatch::Queue.main.async{
         if @article_manager.count > 0 && @article_manager.index < @article_manager.count
           @slide_view.set_article_at_index(@article_manager.index)
+          @counter_label.text = @article_manager.label_text
         end
       }
     end
@@ -279,7 +283,7 @@ class HomeScreen < PM::Screen
     end
     @article_manager.interval = interval
     App::Persistence[:interval] = interval
-    SVProgressHUD.showProgress(interval/30, status: BW::localized_string(:slide_interval, "Slide Interval") + ": #{sprintf("%2.2f", interval.to_s)}")
+    SVProgressHUD.showProgress(interval/30, status: BW::localized_string(:slide_interval, "Slide Interval") + ": #{sprintf("%2.1f", interval.to_s)}")
     @speed_control_timer = NSTimer.scheduledTimerWithTimeInterval(2.0, 
                                                                   target: self, 
                                                                   selector: 'hide_speed_status', 

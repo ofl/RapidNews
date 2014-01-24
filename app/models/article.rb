@@ -17,11 +17,12 @@ class Article
 
   class << self
     def build(source, item)
+      date = item[:pubDate] ? item[:pubDate][:text] : item['dc:date'][:text]
       self.new({
         link_url:      item[:link][:text],
         title:         item[:title][:text],
-        pub_at:        item[:pubDate][:text],
-        summary:       item[:description][:text].split('<')[0],
+        pub_at:        date,
+        summary:       strip_tags(item[:description][:text]),
         link_url:      item[:link][:text],
         host:          source.host,
         is_checked:    true,
@@ -40,6 +41,19 @@ class Article
         return result
       end
       nil
+    end
+
+    def strip_tags(string)
+      if md = string.match(/^<!\[CDATA\[(.*)]]>$/m)
+        string = md[0]
+      end
+      string.gsub!("&nbsp;", " ")
+      string.gsub!("&quot;", "\"")
+      string.gsub!("&apos;", "'")
+      string.gsub!("&amp;", "&")
+      string.gsub!("&lt;", "<")
+      string.gsub!("&gt;", ">")
+      string.gsub( %r{</?[^>]+?>}, '' )
     end
 
     def bookmarks

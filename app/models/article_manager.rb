@@ -99,8 +99,10 @@ class ArticleManager
   end
 
   def on_success_crawl(operation, responseObject)
+
+    responseString = NSString.alloc.initWithData(operation.responseData, encoding:NSUTF8StringEncoding)
     err = Pointer.new(:object)
-    dict = XMLReader.dictionaryForXMLString(operation.responseString, error: err)
+    dict = XMLReader.dictionaryForXMLString(responseString, error: err)
     return unless dict.is_a?(Hash)
 
     Dispatch::Queue.concurrent.async do
@@ -116,8 +118,18 @@ class ArticleManager
   end
 
   def parse_rss(dict, source)
-    entries_path = @feed_hash.valueForKeyPath('rss.channel.atom') ? 'rss.channel.atom' : 'rss.channel.item' 
-    dict.valueForKeyPath(entries_path).each do |item|
+    if dict.valueForKeyPath('rss.channel.atom')
+      entries_path = 'rss.channel.atom'
+    elsif dict.valueForKeyPath('rdf:RDF.channel.atom:link')
+      entries_path = 'rdf:RDF.item'
+    else
+      entries_path = 'rss.channel.item'
+    end
+        
+    items = dict.valueForKeyPath(entries_path)
+    return unless items
+
+    items.each do |item|
       break if is_over_max_article_size
       next unless item
       next if item['rel'] == 'self' # for atom info item
