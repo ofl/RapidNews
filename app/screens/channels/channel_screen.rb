@@ -106,14 +106,17 @@ class SourcesTableScreen < PM::TableScreen
     else
       @news_sources = NewsSource.where(:category).eq(@category_id).all
     end
-    [{ cells: @news_sources.map{ |news_source| create_cell(news_source) } }]
+    [{ cells: @news_sources.map.with_index{ |news_source, index| create_cell(news_source, index) } }]
   end
 
-  def create_cell(news_source)
+  def create_cell(news_source, index)
     registered = news_source.channels ? news_source.channels.include?(@channel.id) : false
-
     button = UIButton.new
-    button.when(UIControlEventTouchUpInside) { toggle_checked_button(news_source) }
+    if @category_id.nil?
+      button.addTarget(self, action:'delete_row:', forControlEvents:UIControlEventTouchUpInside)
+    else
+      button.addTarget(self, action:'toggle_checked_button:', forControlEvents:UIControlEventTouchUpInside)
+    end
     if registered
       set_attributes button, {stylename: :checked_button}
     else
@@ -148,7 +151,27 @@ class SourcesTableScreen < PM::TableScreen
     update_table_data
   end
 
-  def toggle_checked_button(news_source)
+  def delete_row(button)
+    index_path = table_view.indexPathForCell(button.superview.superview)
+    index = index_path.indexAtPosition(index_path.length - 1)
+    news_source = @news_sources[index]
+    return unless news_source
+
+    if news_source.channels && news_source.channels.include?(@channel.id)
+      @channel.unregist(news_source)
+      @news_sources.delete(news_source)
+      self.promotion_table_data.delete_cell(index_path: index_path)
+      table_view.deleteRowsAtIndexPaths([index_path], withRowAnimation:UITableViewRowAnimationRight)
+    end
+  end
+
+
+  def toggle_checked_button(button)
+    index_path = table_view.indexPathForCell(button.superview.superview)
+    index = index_path.indexAtPosition(index_path.length - 1)
+    news_source = @news_sources[index]
+    return unless news_source
+
     if news_source.channels && news_source.channels.include?(@channel.id)
       @channel.unregist(news_source)
     else
@@ -156,6 +179,29 @@ class SourcesTableScreen < PM::TableScreen
     end
     update_table_data    
   end
+
+  # def toggle_checked_button(news_source, index)
+  #   if news_source.channels && news_source.channels.include?(@channel.id)
+  #     @channel.unregist(news_source)
+  #     # delete_row(NSIndexPath.indexPathForRow(index, inSection:0))
+
+  #     sender = table_view.viewWithTag(index + 1)
+
+  #     p index + 1
+
+  #     # index_path = sender.superview.superview.superview.indexPathForCell(sender.superview.superview)
+  #     index_path = table_view.indexPathForCell(sender.superview)
+
+  #     # index_path = NSIndexPath.indexPathForRow(index, inSection:0)
+
+  #     self.promotion_table_data.delete_cell(index_path: index_path)
+
+  #     table_view.deleteRowsAtIndexPaths([index_path], withRowAnimation:UITableViewRowAnimationRight)
+  #   else
+  #     @channel.regist(news_source)
+  #     update_table_data    
+  #   end
+  # end
 
   def on_cell_tapped(args={})
     delegate.open_feeds(args[:news_source_id])    
