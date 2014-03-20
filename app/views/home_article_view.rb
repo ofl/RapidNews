@@ -22,7 +22,7 @@ class HomeArticleView < UIView
   def update_image_view(image_url)
     @image_view.contentMode = UIViewContentModeScaleAspectFill
     @image_view.hidden = false
-    @image_view.setImageWithURL(image_url, 
+    @image_view.setImageWithURL(NSURL.URLWithString(image_url), 
                                 placeholderImage: UIImage.imageNamed("images/77x50.png"))
     gradient = CAGradientLayer.layer
     gradient.frame = @image_view.bounds
@@ -52,7 +52,7 @@ class HomeArticleView < UIView
       @image_view.hidden = true
     end
 
-    @favicon_image_view.setImageWithURL("http://www.google.com/s2/favicons?domain=#{article.host}", 
+    @favicon_image_view.setImageWithURL(NSURL.URLWithString("http://www.google.com/s2/favicons?domain=#{article.host}"), 
                                         placeholderImage: UIImage.imageNamed("images/000000.png"))
     top = @summary_label.frame.size.height + 240
     @info_label.frame = [[30, top - 3], [280, 17]]

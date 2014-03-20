@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
-# $:.unshift("/Library/RubyMotion/lib")
-$:.unshift("/Library/RubyMotion2.16/lib")
+$:.unshift("/Library/RubyMotion/lib")
 
 require 'motion/project/template/ios'
 require 'bundler'
 Bundler.require
+require 'rubygems'
+require 'motion-cocoapods'
 
 Motion::Project::App.setup do |app|
   app.name = 'RapidNews'
@@ -32,11 +33,11 @@ Motion::Project::App.setup do |app|
     pod 'XMLReader'
     pod 'PocketAPI', :git => 'git@github.com:naoya/Pocket-ObjC-SDK.git', :branch => 'cocoapods-dependency'
     pod 'TUSafariActivity'
-    pod 'AFNetworking', '~> 1.3'
+    pod 'AFNetworking'
     pod 'SVProgressHUD'
     pod 'FXReachability'
     pod 'KNSemiModalViewController'
-    pod 'SDWebImage'
+    pod 'JMImageCache'
   end
 
   app.entitlements['keychain-access-groups'] = [app.seed_id + '.' + app.identifier]  

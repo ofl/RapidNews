@@ -28,7 +28,8 @@ class ChannelsModalView < UIView
         left = 74 * i + 6
         button(:channel_button, { frame: CGRectMake(left, 21, 60, 60)}).tap do |b|
           if channel.image_url
-            b.setImageWithURL(channel.image_url, forState: UIControlStateNormal, placeholderImage: img)
+            image = JMImageCache.sharedCache.imageForURL(NSURL.URLWithString(channel.image_url), delegate: self)
+            b.setImage(image, forState: UIControlStateNormal)
             b.imageView.setContentMode(UIViewContentModeScaleAspectFill)
           else
             b.setImage(img, forState: UIControlStateNormal)

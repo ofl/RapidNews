@@ -186,8 +186,7 @@ class ArticleManager
 
     article =  Article.find(prefetch_id)
     if article && article.image_url && article.image_url.include?('http')
-      url = NSURL.URLWithString(article.image_url)
-      SDWebImagePrefetcher.sharedImagePrefetcher.prefetchURLs([url])
+      JMImageCache.sharedCache.imageForURL(NSURL.URLWithString(article.image_url), delegate: self)
     end
   end
 
@@ -209,11 +208,10 @@ class ArticleManager
 
     if over > 0
       articles = Article.where(:is_bookmarked).eq(false).order(:id).all()
-      shared_image_cache = SDImageCache.sharedImageCache 
 
       over.times do |index|
         unless @ids.include?(articles[index].id)
-          shared_image_cache.removeImageForKey(articles[index].image_url)
+          JMImageCache.sharedCache.removeImageForURL(NSURL.URLWithString(articles[index].image_url))
           articles[index].delete
         end
       end

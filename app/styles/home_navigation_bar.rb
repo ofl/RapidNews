@@ -10,5 +10,5 @@ Teacup::Stylesheet.new :home_navigation_bar do
     height: 16,
     width: 18,
     textAlignment: UITextAlignmentCenter,
-    titleColor: UIColor.whiteColor
+    textColor: UIColor.whiteColor
 end
