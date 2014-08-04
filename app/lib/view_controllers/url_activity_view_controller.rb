@@ -5,9 +5,9 @@ class URLActivityViewController < UIActivityViewController
     activities.push  TUSafariActivity.new
     activities.push  PocketActivity.new
 
-    if HTBHatenaBookmarkManager.sharedManager.authorized
-      activities.push HTBHatenaBookmarkActivity.new
-    end
+    # if HTBHatenaBookmarkManager.sharedManager.authorized
+    #   activities.push HTBHatenaBookmarkActivity.new
+    # end
     # chrome = ARChromeActivity.new.tap do |activity|
     #   activity.activityTitle = "Chromeで開く"
     # end

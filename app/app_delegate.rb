@@ -29,8 +29,8 @@ class AppDelegate < PM::Delegate
 
   def set_consumer_key
     PocketAPI.sharedAPI.setConsumerKey(MY_ENV['pocket']['consumer_key'])
-    HTBHatenaBookmarkManager.sharedManager.setConsumerKey(MY_ENV['hatena']['consumer_key'],
-                                                          consumerSecret: MY_ENV['hatena']['consumer_secret'])
+    # HTBHatenaBookmarkManager.sharedManager.setConsumerKey(MY_ENV['hatena']['consumer_key'],
+    #                                                       consumerSecret: MY_ENV['hatena']['consumer_secret'])
   end
 end
 

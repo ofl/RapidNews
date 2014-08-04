@@ -36,8 +36,8 @@ class Settings::SharesScreen < PM::GroupedTableScreen
 
   def on_cell_tapped(args = {})
     case args[:id]
-    when RN::Const::ShareService::HATENA
-      open Settings::SharesHTBScreen.new(nav_bar: true, service: args[:id])    
+    # when RN::Const::ShareService::HATENA
+    #   open Settings::SharesHTBScreen.new(nav_bar: true, service: args[:id])    
     when RN::Const::ShareService::POCKET
       open Settings::SharesPocketScreen.new(nav_bar: true, service: args[:id])    
     end

@@ -3,7 +3,7 @@
 class ArticleManager
   
   include BW::KVO
-  attr_accessor :index, :is_reading, :count, :ids, :crawling_url_list_count, 
+  attr_accessor :index, :is_reading, :count, :ids, :crawling_url_list_count, :crawling_url_list,
                 :interval, :bookmarks_count, :can_load_image
 
   def self.instance
@@ -89,32 +89,30 @@ class ArticleManager
     add_to_crawling_url_list(source)
     NSLog("Request: #{source.url}")
 
-    req = NSURLRequest.alloc.initWithURL(NSURL.URLWithString(source.url))
-    AFXMLRequestOperation.addAcceptableContentTypes(NSSet.setWithObject("application/rss+xml"))
+    AFHTTPRequestOperationManager.manager.tap do |manager|
+      manager.responseSerializer = AFHTTPResponseSerializer.serializer
+      manager.responseSerializer.acceptableContentTypes = NSSet.setWithObjects("application/rss+xml", nil)
+      manager.GET(source.url, 
+        parameters:nil, 
+        success: lambda do |operation, responseObject|
+            responseString = NSString.alloc.initWithData(operation.responseData, encoding:NSUTF8StringEncoding)
+            err = Pointer.new(:object)
+            dict = XMLReader.dictionaryForXMLString(responseString, error: err)
+            return unless dict.is_a?(Hash)
 
-    op = AFXMLRequestOperation.alloc.initWithRequest(req)
-    op.setCompletionBlockWithSuccess(method(:on_success_crawl).to_proc, 
-                                     failure: method(:on_failure_crawl).to_proc)
-    op.start
-  end
-
-  def on_success_crawl(operation, responseObject)
-
-    responseString = NSString.alloc.initWithData(operation.responseData, encoding:NSUTF8StringEncoding)
-    err = Pointer.new(:object)
-    dict = XMLReader.dictionaryForXMLString(responseString, error: err)
-    return unless dict.is_a?(Hash)
-
-    Dispatch::Queue.concurrent.async do
-      parse_rss(dict, @crawling_url_list[operation.request.URL.absoluteString])
-      cut_over
-      remove_from_crawling_url_list(operation.request.URL.absoluteString)
+            Dispatch::Queue.concurrent.async do
+              url = @crawling_url_list[operation.request.URL.absoluteString]
+              parse_rss(dict, url)
+              cut_over
+              remove_from_crawling_url_list(operation.request.URL.absoluteString)
+            end
+          end, 
+        failure: lambda do |operation, error|
+            remove_from_crawling_url_list(operation.request.URL.absoluteString)
+            NSLog(error.localizedDescription)
+          end
+        )
     end
-  end
-
-  def on_failure_crawl(operation, error)
-    remove_from_crawling_url_list(operation.request.URL.absoluteString)
-    NSLog(error.localizedDescription)
   end
 
   def parse_rss(dict, source)
